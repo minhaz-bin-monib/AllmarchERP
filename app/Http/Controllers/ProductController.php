@@ -21,8 +21,10 @@ class ProductController extends Controller
     }
 
     // [httpPost]
-    public function store()
+    public function store(Request $request)
     {
-        return view('product.productlist');
+        echo "<pre>";
+        print_r($request->all());
+        //return view('product.productlist');
     }
 }
