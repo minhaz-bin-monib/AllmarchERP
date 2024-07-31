@@ -11,14 +11,25 @@
 <h5>Add/Edit Product</h5>
 <form action="{{url('/')}}/product/create" method="post">
     @csrf
+   
     <div class="form-row">
         <div class="form-group col-md-4">
-            <label for="registration_date">Registration Date</label>
-            <input type="date" name="registration_date" class="form-control" id="registration_date">
+            <label for="registration_date">Registration Date <span class="text-danger"><b>*</b></span></label>
+            <input type="date" name="registration_date" value="{{old('registration_date')}}" class="form-control" id="registration_date">
+            <span class="text-danger">
+                @error('registration_date')
+                    {{$message}}
+                @enderror
+            </span>
         </div>
         <div class="form-group col-md-4">
-            <label for="product_name">Product Name</label>
-            <input type="text" name="product_name" class="form-control" id="product_name">
+            <label for="product_name">Product Name <span class="text-danger"><b>*</b></span></label>
+            <input type="text" name="product_name" value="{{old('product_name')}}" class="form-control" id="product_name">
+            <span class="text-danger">
+                @error('product_name')
+                    {{$message}}
+                @enderror
+            </span>
         </div>
         <div class="form-group col-md-4">
             <label for="product_code">Product Code</label>
@@ -140,43 +151,41 @@
             <label for="product_category"> Product Category</label>
             <select name="product_category" class="form-control">
                 <option value="" selected="">Select</option>
-                <option value="1">Printex</option>
-                <option value="2">Ecoplast</option>
-                <option value="3">TMN Colors</option>
-                <option value="4">IMPEX</option>
-                <option value="5">Nanoprint</option>
-                <option value="6">Pending</option>
+                <option value="Printex">Printex</option>
+                <option value="Ecoplast">Ecoplast</option>
+                <option value="TMN Colors">TMN Colors</option>
+                <option value="IMPEX">IMPEX</option>
+                <option value="Nanoprint">Nanoprint</option>
+                <option value="Pending">Pending</option>
             </select>
         </div>
         <div class="form-group col-md-4">
             <label for="product_brand"> Product Brand</label>
             <select name="product_brand" class="form-control">
                 <option value="" selected="">Select</option>
-                <option value="1">Turan Kimya</option>
-                <option value="2">All-march</option>
-                <option value="3">IMPEX</option>
-                <option value="4">Philips</option>
-                <option value="5">Lenovo</option>
-                <option value="6">Nanoprint</option>
-                <option value="7">Pending</option>
+                <option value="Turan Kimya">Turan Kimya</option>
+                <option value="All-march">All-march</option>
+                <option value="IMPEX">IMPEX</option>
+                <option value="Philips">Philips</option>
+                <option value="Lenovo">Lenovo</option>
+                <option value="Nanoprint">Nanoprint</option>
+                <option value="Pending">Pending</option>
             </select>
         </div>
         <div class="form-group col-md-4">
             <label for="product_grouping">Product Grouping</label>
             <select name="product_grouping" class="form-control">
                 <option value="" selected="">Select</option>
-                <option value="1">PAB</option>
-                <option value="2">PAW</option>
-                <option value="3">BXSN</option>
-                <option value="4">BXSN-B</option>
-                <option value="5">BINDER</option>
-                <option value="6">GUM MTG</option>
-                <option value="7">CXM</option>
-                <option value="8">WXM</option>
-                <option value="9">TEST</option>
-                <option value="10">TEST1</option>
-                <option value="11">Nanoprint</option>
-                <option value="12">IMPEX</option>
+                <option value="PAB">PAB</option>
+                <option value="PAW">PAW</option>
+                <option value="BXSN">BXSN</option>
+                <option value="BXSN-B">BXSN-B</option>
+                <option value="BINDER">BINDER</option>
+                <option value="GUM MTG">GUM MTG</option>
+                <option value="CXM">CXM</option>
+                <option value="WXM">WXM</option>
+                <option value="Nanoprint">Nanoprint</option>
+                <option value="IMPEX">IMPEX</option>
             </select>
         </div>
         <div class="form-group col-md-4">

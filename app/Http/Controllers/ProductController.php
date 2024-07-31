@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
@@ -10,8 +11,11 @@ class ProductController extends Controller
     // [httpGet]
     public function show()
     {
-        // Fetach data from BD and show into view page
-        return view('product.productlist');
+        $products = Product::all();
+        echo '<pre>';
+        print_r($products->toArray());
+
+        //return view('product.productlist');
     }
 
     // [httpGet]
@@ -23,6 +27,12 @@ class ProductController extends Controller
     // [httpPost]
     public function store(Request $request)
     {
+        $request->validate(
+            [
+                'registration_date' => 'required',
+                'product_name' => 'required'
+            ]
+        );
         echo "<pre>";
         print_r($request->all());
         //return view('product.productlist');
