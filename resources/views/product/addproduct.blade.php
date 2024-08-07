@@ -8,14 +8,14 @@
 @section('main-section')
 <!-- START View Content Here -->
 
-<h5>Add/Edit Product</h5>
-<form action="{{url('/')}}/product/create" method="post">
+<h5>{{$toptitle}}</h5>
+<form action="{{$url}}" method="post">
     @csrf
    
     <div class="form-row">
         <div class="form-group col-md-4">
             <label for="registration_date">Registration Date <span class="text-danger"><b>*</b></span></label>
-            <input type="date" name="registration_date" value="{{old('registration_date')}}" class="form-control" id="registration_date">
+            <input type="date" name="registration_date" value="{{old('registration_date',$product->registration_date)}}" class="form-control" id="registration_date">
             <span class="text-danger">
                 @error('registration_date')
                     {{$message}}
@@ -24,7 +24,7 @@
         </div>
         <div class="form-group col-md-4">
             <label for="product_name">Product Name <span class="text-danger"><b>*</b></span></label>
-            <input type="text" name="product_name" value="{{old('product_name')}}" class="form-control" id="product_name">
+            <input type="text" name="product_name" value="{{old('product_name',$product->product_name)}}" class="form-control" id="product_name">
             <span class="text-danger">
                 @error('product_name')
                     {{$message}}
@@ -33,33 +33,33 @@
         </div>
         <div class="form-group col-md-4">
             <label for="product_code">Product Code</label>
-            <input type="text" name="product_code" class="form-control" id="product_code">
+            <input type="text" name="product_code" value="{{old('product_code',$product->product_code)}}" class="form-control" id="product_code">
         </div>
 
         <div class="form-group col-md-4">
             <label for="product_unit_type">Product Unit Type</label>
-            <input type="text" name="product_unit_type"  class="form-control" id="product_unit_type" value="Kg">
+            <input type="text" name="product_unit_type" value="{{old('product_unit_type',$product->product_unit_type)}}"  class="form-control" id="product_unit_type" value="Kg">
         </div>
         <div class="form-group col-md-4">
             <label for="product_unit_price">Product Unit Price</label>
-            <input type="number" name="product_unit_price" min="0" class="form-control" id="product_unit_price" value="01">
+            <input type="number" name="product_unit_price" value="{{old('product_unit_price',$product->product_unit_price)}}" min="0" class="form-control" id="product_unit_price" >
         </div>
         <div class="form-group col-md-4">
             <label for="product_actual_price">Product Actual Price</label>
-            <input type="number" name="product_actual_price" min="0" class="form-control" id="product_actual_price" value="01">
+            <input type="number" name="product_actual_price" value="{{old('product_actual_price',$product->product_actual_price)}}" min="0" class="form-control" id="product_actual_price" >
         </div>
 
         <div class="form-group col-md-4">
             <label for="product_unit_price_c">Product Unit Price C</label>
-            <input type="number" name="product_unit_price_c" min="0" class="form-control" id="product_unit_price_c" value="01">
+            <input type="number" name="product_unit_price_c" value="{{old('product_unit_price_c',$product->product_unit_price_c)}}" min="0" class="form-control" id="product_unit_price_c" >
         </div>
         <div class="form-group col-md-4">
             <label for="product_net_price">Product Net Price</label>
-            <input type="number" name="product_net_price" min="0" class="form-control" id="product_net_price" value="01">
+            <input type="number" name="product_net_price" value="{{old('product_net_price',$product->product_net_price)}}" min="0" class="form-control" id="product_net_price" >
         </div>
         <div class="form-group col-md-4">
             <label for="atv_rate">ATV Rate (%)</label>
-            <input type="number" name="atv_rate" class="form-control" min="0" id="atv_rate" placeholder="ATV Rate (%)">
+            <input type="number" name="atv_rate" value="{{old('atv_rate',$product->atv_rate)}}" class="form-control" min="0" id="atv_rate" placeholder="ATV Rate (%)">
         </div>
 
         <div class="form-group col-md-4">
@@ -76,12 +76,12 @@
         </div>
         <div class="form-group col-md-4">
             <label for="product_packing">Product Packing</label>
-            <input type="number" name="product_packing" min="0" class="form-control" id="product_packing" value="01">
+            <input type="number" name="product_packing" value="{{old('product_packing',$product->product_packing)}}" min="0" class="form-control" id="product_packing" >
         </div>
 
         <div class="form-group col-md-4">
             <label for="import_information">Import Information</label>
-            <input type="text" name="import_information" class="form-control" id="import_information">
+            <input type="text" name="import_information" value="{{old('import_information',$product->import_information)}}" class="form-control" id="import_information">
         </div>
         <div class="form-group col-md-4">
             <label for="second_material_description">Second Material Description</label>
@@ -128,15 +128,15 @@
         </div>
         <div class="form-group col-md-4">
             <label for="h_s_code">Harmonized System (H.S Code)</label>
-            <input type="text" name="h_s_code" class="form-control" id="h_s_code">
+            <input type="text" name="h_s_code" value="{{old('h_s_code',$product->h_s_code)}}" class="form-control" id="h_s_code">
         </div>
         <div class="form-group col-md-4">
             <label for="low_stock_alert">Low Stock Alert</label>
-            <input type="number" name="low_stock_alert" min="0" class="form-control" id="low_stock_alert" value="01">
+            <input type="number" name="low_stock_alert" value="{{old('low_stock_alert',$product->low_stock_alert)}}" min="0" class="form-control" id="low_stock_alert" >
         </div>
         <div class="form-group col-md-4">
             <label for="product_description">Product Description</label>
-            <input type="text" name="product_description" class="form-control" id="product_description">
+            <input type="text" name="product_description" value="{{old('product_description',$product->product_description)}}" class="form-control" id="product_description">
         </div>
         <div class="form-group col-md-4">
             <label for="product_generic"> Product Generic</label>

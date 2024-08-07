@@ -24,6 +24,9 @@ Route::group(['prefix' => 'product'], function () {
     Route::get('list', [ProductController::class, 'show']);
     Route::get('create', [ProductController::class, 'create']);
     Route::post('create', [ProductController::class, 'store']);
+    Route::get('delete/{id}', [ProductController::class, 'delete']);
+    Route::get('edit/{id}', [ProductController::class, 'edit']);
+    Route::post('update/{id}', [ProductController::class, 'update']);
 });
 
 // ------------------------- Employee Routes ------------------------
