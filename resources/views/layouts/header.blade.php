@@ -84,7 +84,20 @@
                             </li>
                         </ul>
                     </li>
-                   
+                    <li>
+                        <a href="#customerSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Customer </a>
+                        <ul class="collapse list-unstyled" id="customerSubmenu">
+                            <li>
+                                <a href="{{url('/customer/create')}}">Add Customer</a>
+                            </li>
+                            <li>
+                                <a href="{{url('/customer/list')}}">Customers</a>
+                            </li>
+                            <li>
+                                <a href="#">customer 3</a>
+                            </li>
+                        </ul>
+                    </li>
                     <li>
                         <a href="/auth/logout">Logout</a>
                     </li>

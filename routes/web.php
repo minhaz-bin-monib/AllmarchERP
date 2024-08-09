@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\CustomerController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,4 +36,12 @@ Route::group(['prefix' => 'employee'], function () {
     Route::get('list', [EmployeeController::class, 'show']);
     Route::get('create', [EmployeeController::class, 'create']);
     Route::post('create', [EmployeeController::class, 'store']);
+});
+
+// ------------------------- Customer Routes ------------------------
+
+Route::group(['prefix' => 'customer'], function () {
+    Route::get('list', [CustomerController::class, 'show']);
+    Route::get('create', [CustomerController::class, 'create']);
+    Route::post('create', [CustomerController::class, 'store']);
 });
