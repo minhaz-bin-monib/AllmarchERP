@@ -27,7 +27,7 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{$prod->product_name}}</td>
                     <td>{{$prod->product_unit_price}}</td>
-                    <td>{{$prod->action_date}}</td>
+                    <td>{{$prod->registration_date}}</td>
                     <td> 
                        <a class="btn btn-primary" href="{{url('/product/edit')}}/{{$prod->product_id}}">Edit</a> 
                        <a class="btn btn-danger" href="{{url('/product/delete')}}/{{$prod->product_id}}">Delete</a> 

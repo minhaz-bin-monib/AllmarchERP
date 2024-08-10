@@ -44,4 +44,7 @@ Route::group(['prefix' => 'customer'], function () {
     Route::get('list', [CustomerController::class, 'show']);
     Route::get('create', [CustomerController::class, 'create']);
     Route::post('create', [CustomerController::class, 'store']);
+    Route::get('delete/{id}', [CustomerController::class, 'delete']);
+    Route::get('edit/{id}', [CustomerController::class, 'edit']);
+    Route::post('update/{id}', [CustomerController::class, 'update']);
 });

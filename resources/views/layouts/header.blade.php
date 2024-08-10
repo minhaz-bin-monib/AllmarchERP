@@ -93,9 +93,6 @@
                             <li>
                                 <a href="{{url('/customer/list')}}">Customers</a>
                             </li>
-                            <li>
-                                <a href="#">customer 3</a>
-                            </li>
                         </ul>
                     </li>
                     <li>

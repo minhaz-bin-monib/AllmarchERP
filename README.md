@@ -1,6 +1,18 @@
 - Laravel framework 8.x 
 --- 
 
+- Install Laravel Project some command 
+
+        => composer global require laravel/installer
+        => composer install
+        =>  composer dump-autoload
+        => mv .env.example .env  
+        => php artisan cache:clear 
+        =>  composer dump-autoload
+        =>  php artisan key:generate
+        =>   php artisan config:cache
+        => php artisan migrate
+
 -- Some Basic Command 
 
 - command list 
@@ -38,4 +50,4 @@
 
         
 
-- 
+ 
