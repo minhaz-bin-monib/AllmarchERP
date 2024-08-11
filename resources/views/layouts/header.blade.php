@@ -96,6 +96,17 @@
                         </ul>
                     </li>
                     <li>
+                        <a href="#batchSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Batch </a>
+                        <ul class="collapse list-unstyled" id="batchSubmenu">
+                            <li>
+                                <a href="{{url('/batch/create')}}">Add Batch</a>
+                            </li>
+                            <li>
+                                <a href="{{url('/batch/list')}}">Batchs</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
                         <a href="/auth/logout">Logout</a>
                     </li>
                 </ul>

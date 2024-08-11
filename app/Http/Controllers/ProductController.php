@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Carbon\Carbon;
 
 class ProductController extends Controller
 {
@@ -24,6 +25,7 @@ class ProductController extends Controller
     public function create()
     {
         $product = new Product(); 
+        $product->registration_date = Carbon::now()->format('Y-m-d');
         $url = url('/product/create');
         $toptitle = 'Add Product';
         $data = compact('product','url', 'toptitle');

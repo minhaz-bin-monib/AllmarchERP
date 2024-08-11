@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\BatchController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -47,4 +48,15 @@ Route::group(['prefix' => 'customer'], function () {
     Route::get('delete/{id}', [CustomerController::class, 'delete']);
     Route::get('edit/{id}', [CustomerController::class, 'edit']);
     Route::post('update/{id}', [CustomerController::class, 'update']);
+});
+
+// ------------------------- Batch Routes ------------------------
+
+Route::group(['prefix' => 'batch'], function () {
+    Route::get('list', [BatchController::class, 'show']);
+    Route::get('create', [BatchController::class, 'create']);
+    Route::post('create', [BatchController::class, 'store']);
+    Route::get('delete/{id}', [BatchController::class, 'delete']);
+    Route::get('edit/{id}', [BatchController::class, 'edit']);
+    Route::post('update/{id}', [BatchController::class, 'update']);
 });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Customer;
+use Carbon\Carbon;
 
 class CustomerController extends Controller
 {
@@ -23,6 +24,7 @@ class CustomerController extends Controller
      public function create()
      {
         $customer = new Customer(); 
+        $customer->registration_date = Carbon::now()->format('Y-m-d');
         $url = url('/customer/create');
         $toptitle = 'Add Customer';
         $data = compact('customer','url', 'toptitle');
