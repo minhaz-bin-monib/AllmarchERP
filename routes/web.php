@@ -29,6 +29,9 @@ Route::group(['prefix' => 'product'], function () {
     Route::get('delete/{id}', [ProductController::class, 'delete']);
     Route::get('edit/{id}', [ProductController::class, 'edit']);
     Route::post('update/{id}', [ProductController::class, 'update']);
+
+    // APIs
+    Route::get('getList', [ProductController::class, 'getList']);
 });
 
 // ------------------------- Employee Routes ------------------------
@@ -48,6 +51,9 @@ Route::group(['prefix' => 'customer'], function () {
     Route::get('delete/{id}', [CustomerController::class, 'delete']);
     Route::get('edit/{id}', [CustomerController::class, 'edit']);
     Route::post('update/{id}', [CustomerController::class, 'update']);
+
+    //APIs
+    Route::get('getList', [CustomerController::class, 'getList']);
 });
 
 // ------------------------- Batch Routes ------------------------
@@ -59,4 +65,7 @@ Route::group(['prefix' => 'batch'], function () {
     Route::get('delete/{id}', [BatchController::class, 'delete']);
     Route::get('edit/{id}', [BatchController::class, 'edit']);
     Route::post('update/{id}', [BatchController::class, 'update']);
+
+    // APIs
+    Route::get('getBatchByProductId/{id}', [BatchController::class, 'getBatchByProductId']);
 });

@@ -24,7 +24,8 @@ return new class extends Migration
             $table->double('product_unit_price_c',8,2)->nullable();
             $table->double('product_net_price',8,2)->nullable();
             $table->double('atv_rate',8,2)->nullable();
-            $table->double('material_description',500)->nullable();
+            $table->string('material_description',500)->nullable();
+            $table->string('second_material_description',500)->nullable();
             $table->double('product_packing',8,2)->nullable();
             $table->string('import_information',500)->nullable();
             $table->string('h_s_code',200)->nullable();

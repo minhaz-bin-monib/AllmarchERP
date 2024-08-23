@@ -29,8 +29,8 @@
                 @foreach($batchs as  $btc)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{$btc->product_name}}</td>
-                    <td>{{$btc->customer_name}}</td>
+                    <td>{{$btc->product_id}}</td>
+                    <td>{{$btc->customer_id}}</td>
                     <td>{{$btc->batch_title}}</td>
                     <td>{{$btc->batch_no}}</td>
                     <td>{{$btc->production_date}}</td>

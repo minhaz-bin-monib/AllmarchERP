@@ -48,6 +48,8 @@
         
         =>php artisan make:model ModelName -m
 
-        
+- Role back one step 
+
+        =>  php artisan migrate:rollback --step=1
 
  

@@ -18,8 +18,8 @@ return new class extends Migration
             $table->date('registration_date');
             $table->date('production_date');
             $table->date('expire_date');
-            $table->string('product_name',500);
-            $table->string('customer_name',300);
+            $table->integer('product_id');
+            $table->integer('customer_id');
             $table->string('batch_title',300);
             $table->string('batch_no',200);
             $table->integer('batch_packing')->nullable();

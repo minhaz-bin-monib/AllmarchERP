@@ -19,6 +19,14 @@ class BatchController extends Controller
 
         return view('batch.batchlist')->with($data);
     }
+    public function getBatchByProductId($id)
+    {
+        $batchs = Batch::where('action_type', '!=', 'DELETE')
+                        ->where('product_id', $id)
+                        ->get();
+       
+        return response()->json($batchs);
+    }
 
     // [httpGet]
     public function create()
@@ -44,8 +52,8 @@ class BatchController extends Controller
                 'registration_date' => 'required',
                 'production_date' => 'required',
                 'expire_date' => 'required',
-                'product_name' => 'required',
-                'customer_name' => 'required',
+                'product_id' => 'required',
+                'customer_id' => 'required',
                 'batch_title' => 'required',
                 'batch_no' => 'required'
             ]
@@ -56,8 +64,8 @@ class BatchController extends Controller
         $batch->registration_date = $request['registration_date'];
         $batch->production_date = $request['production_date'];
         $batch->expire_date = $request['expire_date'];
-        $batch->product_name = $request['product_name'];
-        $batch->customer_name = $request['customer_name'];
+        $batch->product_id = $request['product_id'];
+        $batch->customer_id = $request['customer_id'];
         $batch->batch_title = $request['batch_title'];
         $batch->batch_no = $request['batch_no'];
         $batch->batch_packing = $request['batch_packing'];

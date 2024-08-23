@@ -85,7 +85,7 @@
         </div>
         <div class="form-group col-md-4">
             <label for="second_material_description">Second Material Description</label>
-            <select name="material_description" class="form-control">
+            <select name="second_material_description" class="form-control">
                 <option value="" selected="">Select</option>
                 <option value="ECHODISCHARGE ULTRA WHITE">ECHODISCHARGE ULTRA WHITE</option>
                 <option value="ECHODISCHARGE BASE">ECHODISCHARGE BASE</option>

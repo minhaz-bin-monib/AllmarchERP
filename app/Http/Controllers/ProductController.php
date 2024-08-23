@@ -20,6 +20,15 @@ class ProductController extends Controller
 
         return view('product.productlist')->with($data);
     }
+    // API [httpGet]
+    public function getList()
+    {
+        $products = Product::where('action_type', '!=', 'DELETE')
+                            ->orderBy('product_name')
+                            ->get();
+        
+        return response()->json($products);
+    }
 
     // [httpGet]
     public function create()

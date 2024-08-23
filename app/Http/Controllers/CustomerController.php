@@ -19,6 +19,15 @@ class CustomerController extends Controller
 
         return view('customer.customerlist')->with($data);
      }
+      // API only [httpGet] 
+      public function getList()
+      { 
+         $customers = Customer::where('action_type', '!=', 'DELETE')
+                             ->orderBy('customer_name')
+                             ->get();
+
+         return response()->json($customers);
+      }
  
      // [httpGet]
      public function create()
