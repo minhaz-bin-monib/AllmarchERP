@@ -7,6 +7,8 @@
 
 @section('main-section')
     <!-- START View Content Here -->
+    <div class="container">
+        
         <h5>{{$toptitle}}</h5>
 
 <form action="{{$url}}" method="post">
@@ -257,6 +259,7 @@
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
 </form>
+    </div>
 
     <!-- END View Content Here -->
 @endsection 

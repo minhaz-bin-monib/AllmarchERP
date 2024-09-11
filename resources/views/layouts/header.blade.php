@@ -18,6 +18,23 @@
 
 <body>
 
+    <div id="topHeader" style="
+        background: #ffffff;
+        width: 100%;
+        height: 41px;
+        z-index: 1;
+        border-bottom: 1px solid #e1e1e1;
+        position: fixed;
+        top: 0;
+        box-sizing: border-box;
+        box-shadow: 1px 1px 10px #e4e4e4;
+        text-align: right;
+        padding: 5px 42px;">
+            <b><span id="dateShow"></span> &nbsp;
+                <span id="timeShow"></span>&nbsp;
+                <span id="dayShow"></span>&nbsp;
+            </b>
+        </div>
     <div class="wrapper d-flex align-items-stretch">
         <nav id="sidebar">
             <div class="custom-menu">
@@ -26,8 +43,8 @@
                     <span class="sr-only">Toggle Menu</span>
                 </button>
             </div>
-            <div class="p-4 pt-5">
-                <h1><a href="/" class="logo">All March</a></h1>
+            <div class="mx-2 p-1 pt-1">
+                <h5><a href="/" class="logo"><span class="text-white"> All March<span></a></h5>
                 <ul class="list-unstyled components mb-5">
                     <li class="active">
                         <a href="#salesSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Sales </a>
@@ -116,4 +133,39 @@
             </div>
         </nav>
 
+        <script>
+            function updateTime() {
+                const now = new Date();
+        
+                // Get date components
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+                const day = String(now.getDate()).padStart(2, '0');
+        
+                // Get time components and convert to 12-hour format
+                let hours = now.getHours();
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12 || 12; // Convert 0 to 12 for 12 AM/PM hour format
+                const timeString = `${hours}:${minutes}:${seconds} ${ampm}`;
+        
+                // Get the day of the week
+                const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                const dayOfWeek = daysOfWeek[now.getDay()];
+        
+                // Format the date and day
+                const dateString = `${month}-${day}-${year}`;
+                const dayString = `${dayOfWeek}`;
+        
+                // Display the formatted date, time, and day
+                document.getElementById('dateShow').textContent = dateString;
+                document.getElementById('timeShow').textContent = timeString;
+                document.getElementById('dayShow').textContent = dayString;
+            }
+        
+            // Update the time immediately and set an interval to update every second
+            updateTime();
+            setInterval(updateTime, 1000);
+        </script>
         

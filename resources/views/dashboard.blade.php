@@ -9,8 +9,9 @@
 <!-- START View Content Here -->
 <link rel="stylesheet" href="{{ asset('bootstrap/css/dashboard.css') }}">
 
-<h5>Dashboard</h5>
+
 <div class="container">
+    <h5>Dashboard</h5>
     <div class="row">
         <div class="col-md-4 col-xl-3">
             <div class="card bg-c-blue order-card">

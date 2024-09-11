@@ -7,7 +7,7 @@
 
 @section('main-section')
     <!-- START View Content Here -->
-      
+    <div class="container">
         <h5>Products</h5>
 
        
@@ -44,6 +44,7 @@
                @endforeach
             </tbody>
         </table>
+    </div>
    
 
     <!-- END View Content Here -->
