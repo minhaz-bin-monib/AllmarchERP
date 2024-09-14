@@ -27,6 +27,15 @@ class BatchController extends Controller
        
         return response()->json($batchs);
     }
+    public function getBatchByCustomerAndProductId($cid, $pid)
+    {
+        $batchs = Batch::where('action_type', '!=', 'DELETE')
+                        ->where('customer_id', $cid)
+                        ->where('product_id', $pid)
+                        ->get();
+       
+        return response()->json($batchs);
+    }
 
     // [httpGet]
     public function create()

@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\BatchController;
+use App\Http\Controllers\SalesInvoiceController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -68,4 +69,19 @@ Route::group(['prefix' => 'batch'], function () {
 
     // APIs
     Route::get('getBatchByProductId/{id}', [BatchController::class, 'getBatchByProductId']);
+    Route::get('getBatchByCustomerAndProductId/{cid}/{pid}', [BatchController::class, 'getBatchByCustomerAndProductId']);
+});
+
+// ------------------------- SalesInvoice Routes ------------------------
+
+Route::group(['prefix' => 'salesInvoice'], function () {
+    Route::get('list', [SalesInvoiceController::class, 'show']);
+    Route::get('create', [SalesInvoiceController::class, 'create']);
+    Route::post('create', [SalesInvoiceController::class, 'store']);
+    Route::get('delete/{id}', [SalesInvoiceController::class, 'delete']);
+    Route::get('edit/{id}', [SalesInvoiceController::class, 'edit']);
+    Route::post('update/{id}', [SalesInvoiceController::class, 'update']);
+
+    // APIs
+    
 });

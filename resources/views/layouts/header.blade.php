@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap CSS -->
-  
+    <link rel="icon" href="{{ url('img/tablogo.png') }}" type="image/png">
     <script src="{{ asset('bootstrap/js/jquery3.5.1.min.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('bootstrap/css/font-awesome.min.css') }}">
@@ -18,7 +18,8 @@
 
 <body>
 
-    <div id="topHeader" style="
+    <div id="topHeader"
+        style="
         background: #ffffff;
         width: 100%;
         height: 41px;
@@ -30,11 +31,11 @@
         box-shadow: 1px 1px 10px #e4e4e4;
         text-align: right;
         padding: 5px 42px;">
-            <b><span id="dateShow"></span> &nbsp;
-                <span id="timeShow"></span>&nbsp;
-                <span id="dayShow"></span>&nbsp;
-            </b>
-        </div>
+        <b><span id="dateShow"></span> &nbsp;
+            <span id="timeShow"></span>&nbsp;
+            <span id="dayShow"></span>&nbsp;
+        </b>
+    </div>
     <div class="wrapper d-flex align-items-stretch">
         <nav id="sidebar">
             <div class="custom-menu">
@@ -44,84 +45,69 @@
                 </button>
             </div>
             <div class="mx-2 p-1 pt-1">
-                <h5><a href="/" class="logo"><span class="text-white"> All March<span></a></h5>
+                <h5><a href="/" class="logo">
+                        <img style="width: 29px;height: 26px;display: inline-block;margin-top: -9px;margin-left: 1px;"
+                            src="{{ url('/img/logo.png') }}">
+                        <span class="text-white">All March<span>
+                    </a></h5>
                 <ul class="list-unstyled components mb-5">
-                    <li class="active">
-                        <a href="#salesSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Sales </a>
-                        <ul class="collapse list-unstyled" id="salesSubmenu">
-                            <li>
-                                <a href="#">sales 1</a>
-                            </li>
-                            <li>
-                                <a href="#">sales 2</a>
-                            </li>
-                            <li>
-                                <a href="#">sales 3</a>
-                            </li>
-                        </ul>
-                    </li>
-                  
                     <li>
-                        <a href="#accountsSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Accounts </a>
-                        <ul class="collapse list-unstyled" id="accountsSubmenu">
+                        <a href="#invoiceSubmenu" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle">Invoice</a>
+                        <ul class="collapse list-unstyled" id="invoiceSubmenu">
                             <li>
-                                <a href="#">accounts 1</a>
+                                <a href="{{ url('/salesInvoice/create') }}">Add Sales Invoice</a>
                             </li>
                             <li>
-                                <a href="#">accounts 2</a>
-                            </li>
-                            <li>
-                                <a href="#">accounts 3</a>
+                                <a href="{{ url('/salesInvoice/list') }}">Sales Invoice List</a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="#employeeSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Employee </a>
+                        <a href="#employeeSubmenu" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle">Employee </a>
                         <ul class="collapse list-unstyled" id="employeeSubmenu">
                             <li>
-                                <a href="{{url('/employee/create')}}">Add Employee</a>
+                                <a href="{{ url('/employee/create') }}">Add Employee</a>
                             </li>
                             <li>
-                                <a href="{{url('/employee/list')}}">Employees</a>
-                            </li>
-                            <li>
-                                <a href="#">employee 3</a>
+                                <a href="{{ url('/employee/list') }}">Employees</a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="#productSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Product </a>
+                        <a href="#productSubmenu" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle">Product </a>
                         <ul class="collapse list-unstyled" id="productSubmenu">
                             <li>
-                                <a href="{{url('/product/create')}}">Add Product</a>
+                                <a href="{{ url('/product/create') }}">Add Product</a>
                             </li>
                             <li>
-                                <a href="{{url('/product/list')}}">Products</a>
-                            </li>
-                            <li>
-                                <a href="#">product 3</a>
+                                <a href="{{ url('/product/list') }}">Products</a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="#customerSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Customer </a>
+                        <a href="#customerSubmenu" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle">Customer </a>
                         <ul class="collapse list-unstyled" id="customerSubmenu">
                             <li>
-                                <a href="{{url('/customer/create')}}">Add Customer</a>
+                                <a href="{{ url('/customer/create') }}">Add Customer</a>
                             </li>
                             <li>
-                                <a href="{{url('/customer/list')}}">Customers</a>
+                                <a href="{{ url('/customer/list') }}">Customers</a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="#batchSubmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Batch </a>
+                        <a href="#batchSubmenu" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle">Batch </a>
                         <ul class="collapse list-unstyled" id="batchSubmenu">
                             <li>
-                                <a href="{{url('/batch/create')}}">Add Batch</a>
+                                <a href="{{ url('/batch/create') }}">Add Batch</a>
                             </li>
                             <li>
-                                <a href="{{url('/batch/list')}}">Batchs</a>
+                                <a href="{{ url('/batch/list') }}">Batchs</a>
                             </li>
                         </ul>
                     </li>
@@ -129,19 +115,19 @@
                         <a href="/auth/logout">Logout</a>
                     </li>
                 </ul>
-               
+
             </div>
         </nav>
 
         <script>
             function updateTime() {
                 const now = new Date();
-        
+
                 // Get date components
                 const year = now.getFullYear();
                 const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
                 const day = String(now.getDate()).padStart(2, '0');
-        
+
                 // Get time components and convert to 12-hour format
                 let hours = now.getHours();
                 const minutes = String(now.getMinutes()).padStart(2, '0');
@@ -149,23 +135,22 @@
                 const ampm = hours >= 12 ? 'PM' : 'AM';
                 hours = hours % 12 || 12; // Convert 0 to 12 for 12 AM/PM hour format
                 const timeString = `${hours}:${minutes}:${seconds} ${ampm}`;
-        
+
                 // Get the day of the week
                 const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
                 const dayOfWeek = daysOfWeek[now.getDay()];
-        
+
                 // Format the date and day
                 const dateString = `${month}-${day}-${year}`;
                 const dayString = `${dayOfWeek}`;
-        
+
                 // Display the formatted date, time, and day
                 document.getElementById('dateShow').textContent = dateString;
                 document.getElementById('timeShow').textContent = timeString;
                 document.getElementById('dayShow').textContent = dayString;
             }
-        
+
             // Update the time immediately and set an interval to update every second
             updateTime();
             setInterval(updateTime, 1000);
         </script>
-        

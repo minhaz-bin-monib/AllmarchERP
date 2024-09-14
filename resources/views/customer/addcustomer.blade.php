@@ -251,7 +251,7 @@
             </select>
         </div>
         <div class="form-group col-md-4">
-            <label for="customer_image">Product Image</label>
+            <label for="customer_image">Customer Image</label>
             <input type="file" name="customer_image" class="form-control" id="customer_image">
         </div>
         
