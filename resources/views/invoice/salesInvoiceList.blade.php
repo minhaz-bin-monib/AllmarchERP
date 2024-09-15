@@ -15,21 +15,38 @@
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>#SL</th>
+                    <th>Invoice No</th>
+                    <th>Edit</th>
+                    <th>Discount(%)</th>
+                    <th>Invoice Type</th>
                     <th>Created</th>
-                    <th>Action</th>
+                    <th>Invoice Date</th>
+                    <th>Delivery By</th>
+                    <th>Reference</th>
+                    <th>Remark</th>
+                    <th>Company</th>
+                    <th>Print Invoice</th>
+                    <th>Print Delivery Receipt</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($salesInvoices as  $slesInv)
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    
-                    <td>{{$slesInv->registration_date}}</td>
+                    <td>{{$slesInv->salesInvoice_id}}</td>
                     <td> 
-                       <a class="btn btn-primary" href="{{url('/salesInvoice/edit')}}/{{$prod->salesInvoice_id}}">Edit</a> 
-                       <a class="btn btn-danger" href="{{url('/salesInvoice/delete')}}/{{$prod->salesInvoice_id}}">Delete</a> 
+                       <a class="" href="{{url('/salesInvoice/edit')}}/{{$slesInv->salesInvoice_id}}"><i class="fa fa-edit"></i></a> 
+                       {{-- <a class="btn btn-danger" href="{{url('/salesInvoice/delete')}}/{{$slesInv->salesInvoice_id}}">Delete</a>  --}}
                     </td>
+                    <td>{{$slesInv->discount}} %</td>
+                    <td>{{$slesInv->invoice_type}}</td>
+                    <td>{{$slesInv->registration_date}}</td>
+                    <td>{{$slesInv->invoice_date}}</td>
+                    <td>{{$slesInv->delivery_by}}</td>
+                    <td>{{$slesInv->order_ref}}</td>
+                    <td>{{$slesInv->remark}}</td>
+                    <td>{{$slesInv->Company}}</td>
+                    <td></td>
+                    <td></td>
                 </tr>
                @endforeach
             </tbody>

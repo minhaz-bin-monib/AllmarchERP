@@ -68,7 +68,7 @@
                     </span>
                 </div>
                 <div class="form-group col-md-3">
-                    <label for="manufacturer_id"> Manufacturer  </label>
+                    <label for="manufacturer_id"> Manufacturer </label>
                     <select id="manufacturer_id" name="manufacturer_id" class="form-control">
                         <option value="" selected="">Select</option>
 
@@ -142,9 +142,6 @@
                         @enderror
                     </span>
                 </div>
-
-
-
                 <div class="form-group col-md-3">
                     <label for="delivery_by"> Delivery By </label>
                     <select id="delivery_by" name="delivery_by" class="form-control">
@@ -192,16 +189,151 @@
 
 
                 <button type="submit" class="btn btn-primary">Add</button>
+            </div>
         </form>
+
+        @if ($salesInvoice->salesInvoice_id)
+            <div class="row mt-2">
+                <div class="col-4">
+                </div>
+                <div class="col-4">
+                    <input type="checkbox" /> Batch Number &nbsp;
+                    <input type="checkbox" /> Seal Signature
+                </div>
+                <div class="col-4">
+                    <select name="" id="" class="form-control">
+                        <option value="">All-March Bangladesi</option>
+                        <option value="">All-March International</option>
+                        <option value="">All-March Need to work</option>
+                    </select>
+                </div>
+            </div>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>SL.</th>
+                        <th>Product Name</th>
+                        <th>Batch No</th>
+                        <th>Packing Size</th>
+                        <th>No of packing</th>
+                        <th>Total Quantity</th>
+                        <th>Unit price(Tk)</th>
+                        <th>Total Price(Tk)</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach ($salesInvoiceProduct as $salesInvProd)
+                        <tr>
+                            <td>{{ $salesInvProd->salesInvoiceProduct_id }}</td>
+                            <td>{{ $salesInvProd->product_id }}</td>
+                            <td>{{ $salesInvProd->batch_no }}</td>
+                            <td>{{ $salesInvProd->packing }} Kg</td>
+                            <td>{{ $salesInvProd->no_of_packing }}</td>
+                            <td>{{ $salesInvProd->packing * $salesInvProd->no_of_packing }} kg</td>
+                            <td>{{ $salesInvProd->unit_price }}</td>
+                            <td>{{ ($salesInvProd->packing + $salesInvProd->no_of_packing) * $salesInvProd->unit_price }}
+                            </td>
+                            <td>
+                                <a class=""
+                                    href="{{ url('/salesInvoice/edit') }}/{{ $salesInvProd->salesInvoice_id }}">Special</a>
+                                <a href="{{ url('/salesInvoice/edit') }}/{{ $salesInvProd->salesInvoice_id }}">Delete</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Gross Amount</td>
+                        <td>2302029 Tk</td>
+                        <td rowspan="5" style="vertical-align : middle;text-align:center;">
+                            <button class="btn btn-sm btn-primary">Make Payment</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Discount Cash Purchase [3.00 %]</td>
+                        <td>-230 Tk</td>
+
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Net Amount</td>
+                        <td>23003933 Tk</td>
+
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Paid Amount</td>
+                        <td>23003933 Tk</td>
+
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Total Payable</td>
+                        <td>23003933 Tk</td>
+
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <p>In Word: need to work</p>
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    <button class="btn btn-sm btn-primary">Customer Invoice</button>
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-sm btn-primary">Customer Delivery</button>
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-sm btn-primary">Small</button>
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-sm btn-primary">Special Invoice</button>
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-sm btn-primary">Special Delivery</button>
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-sm btn-primary">Special Calculate</button>
+                </div>
+            </div>
+        @endif
     </div>
 
     <script type="text/javascript">
         let productList = [];
         let customerList = [];
         let batchList = [];
-        let selectedCustomerId = "{{ old('customer_id', $salesInvoice->customer_id ?? '') }}"; 
-        let selectedProductId = "{{ old('product_id', $salesInvoice->product_id ?? '') }}"; 
-        let selectedBatchId = "{{ old('batch_id', $salesInvoice->batch_id ?? '') }}"; 
+        let selectedCustomerId = "{{ old('customer_id', $salesInvoice->customer_id ?? '') }}";
+        let selectedProductId = "{{ old('product_id', $salesInvoice->product_id ?? '') }}";
+        let selectedBatchId = "{{ old('batch_id', $salesInvoice->batch_id ?? '') }}";
         let productIdByOnChange = '';
         let customerIdByOnchange = '';
 
@@ -210,7 +342,7 @@
                 url: "{{ url('/customer/getList') }}",
                 method: 'GET',
                 success: function(data) {
-                    
+
                     customerList = data;
 
                     // Clear existing options
@@ -234,7 +366,7 @@
                 url: "{{ url('/product/getList') }}",
                 method: 'GET',
                 success: function(data) {
-                     productList = data;
+                    productList = data;
 
                     // Clear existing options
                     $('#products').empty();
@@ -265,7 +397,7 @@
                 $('#discount').text(product.atv_rate);
 
                 getBatchById();
-              
+
             });
 
             $('#customers').on('change', function() {
@@ -285,7 +417,7 @@
                     //console.log(batchProduct);
 
                     $('#batch_no').val(batchProduct.batch_no);
-                  
+
                 }
 
 
@@ -293,51 +425,49 @@
             });
 
             // when first time load data then call it 
-            if(selectedCustomerId && selectedProductId)
-            {
+            if (selectedCustomerId && selectedProductId) {
                 getBatchItems(selectedCustomerId, selectedProductId);
             }
-            function getBatchById()
-            {
-                if(customerIdByOnchange && productIdByOnChange)
-                {
+
+            function getBatchById() {
+                if (customerIdByOnchange && productIdByOnChange) {
                     getBatchItems(customerIdByOnchange, productIdByOnChange);
                 }
             }
-            function getBatchItems(customerId, productId)
-            {
-                    $.ajax({
-                        url: "{{ url('/batch/getBatchByCustomerAndProductId') }}/" + customerId  + "/" + productId,
-                        type: "GET",
-                        dataType: "json",
-                        success: function(data) {
-                            batchList = data;
 
-                            $('#existingBatchItems').empty();
-                            $('#existingBatchItems').append(
-                                '<option value="">Existing Batch List (' + data.length +
-                                ')</option>');
-                            $.each(data, function(key, item) {
-                                let customer = customerList.find(f => f.customer_id ==
-                                    item.customer_id);
+            function getBatchItems(customerId, productId) {
+                $.ajax({
+                    url: "{{ url('/batch/getBatchByCustomerAndProductId') }}/" + customerId + "/" +
+                        productId,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        batchList = data;
 
-                                    let isSelected = item.batch_id == selectedBatchId ? 'selected' :
-                                    '';
+                        $('#existingBatchItems').empty();
+                        $('#existingBatchItems').append(
+                            '<option value="">Existing Batch List (' + data.length +
+                            ')</option>');
+                        $.each(data, function(key, item) {
+                            let customer = customerList.find(f => f.customer_id ==
+                                item.customer_id);
 
-                                $('#existingBatchItems').append('<option '+ isSelected +' value="' + item
-                                    .batch_id + '">' +
-                                    item.batch_no + ', ' + item.production_date +
-                                    ', ' + item.expire_date + ', ' +
-                                    customer.customer_name + ', ' + item.remark +
-                                    '</option>');
-                            });
-                        }
-                    });
-                
+                            let isSelected = item.batch_id == selectedBatchId ? 'selected' :
+                                '';
+
+                            $('#existingBatchItems').append('<option ' + isSelected +
+                                ' value="' + item
+                                .batch_id + '">' +
+                                item.batch_no + ', ' + item.production_date +
+                                ', ' + item.expire_date + ', ' +
+                                customer.customer_name + ', ' + item.remark +
+                                '</option>');
+                        });
+                    }
+                });
+
             }
         });
-
-
     </script>
 
     <!-- END View Content Here -->

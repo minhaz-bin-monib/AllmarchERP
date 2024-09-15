@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\SalesInvoice;
+use App\Models\SalesInvoiceProduct;
 use Carbon\Carbon;
 
 class SalesInvoiceController extends Controller
@@ -52,11 +53,11 @@ class SalesInvoiceController extends Controller
                 'invoice_date' => 'required',
             ]
         );
-    
+
         try {
             // Create and save the SalesInvoice
             $salesInvoice = new SalesInvoice();
-    
+
             $salesInvoice->registration_date = $request['registration_date'];
             $salesInvoice->customer_id = $request['customer_id'];
             $salesInvoice->batch_id = $request['batch_id'];
@@ -76,40 +77,63 @@ class SalesInvoiceController extends Controller
             $salesInvoice->action_type = 'INSERT';
             $salesInvoice->user_id = 'sys-user';
             $salesInvoice->action_date = now();
-    
+
             $salesInvoice->save();
-    
+
+            // Create and save SaleInvoiceProduct 
+            $salesInvoiceProduct = new SalesInvoiceProduct();
+
+            $salesInvoiceProduct->registration_date = $request['registration_date'];
+            $salesInvoiceProduct->salesInvoice_id = $salesInvoice->salesInvoice_id;
+            $salesInvoiceProduct->batch_id = $request['batch_id'];
+            $salesInvoiceProduct->product_id = $request['product_id'];
+            //$salesInvoiceProduct->manufacturer_id = $request['manufacturer_id'];
+            $salesInvoiceProduct->batch_no = $request['batch_no'];
+            $salesInvoiceProduct->packing = $request['packing'];
+            $salesInvoiceProduct->no_of_packing = $request['no_of_packing'];
+            $salesInvoiceProduct->unit_price = $request['unit_price'];
+            $salesInvoiceProduct->discount = $request['discount'];
+            $salesInvoiceProduct->enable_discount = $request['enable_discount'];
+            $salesInvoice->action_type = 'INSERT';
+            $salesInvoice->user_id = 'sys-user';
+            $salesInvoice->action_date = now();
+
+            $salesInvoiceProduct->save();
+
             // Redirect to the edit page of the newly created invoice
-            return redirect('salesInvoice/edit/'. $salesInvoice->salesInvoice_id)
-                             ->with('success', 'Invoice created successfully.');
+            return redirect('salesInvoice/edit/' . $salesInvoice->salesInvoice_id)
+                ->with('success', 'Invoice created successfully.');
         } catch (\Exception $e) {
             // Log the exception if necessary
             \Log::error('Error creating sales invoice: ' . $e->getMessage());
-    
+
             // Return back to the form with an error message
             return redirect()->back()->with('error', 'Failed to create the invoice. Please try again.');
         }
     }
-    
-    
+
+
 
 
     // [httpGet]
     public function edit($id)
     {
         $salesInvoice = SalesInvoice::find($id);
+        //$salesInvoiceProduct = SalesInvoiceProduct::where('action_type', '!=', 'DELETE')
+        $salesInvoiceProduct = SalesInvoiceProduct::where('salesInvoice_id', '=', $salesInvoice->salesInvoice_id)
+            ->orderBy('salesInvoiceProduct_id', 'desc')
+            ->get();
 
         if (is_null($salesInvoice)) {
             // salesInvoice not found
             return redirect('/salesInvoice/list');
         } else {
             $url = url('/salesInvoice/update') . "/" . $id;
-            $toptitle = 'Sales Invoice '. $salesInvoice->salesInvoice_id;
+            $toptitle = 'Sales Invoice ' . $salesInvoice->salesInvoice_id;
 
-            $data = compact('salesInvoice', 'url', 'toptitle'); // data and dynamic url pass into view
+            $data = compact('salesInvoice', 'salesInvoiceProduct', 'url', 'toptitle'); // data and dynamic url pass into view
 
             return view('invoice.addSalesInvoice')->with($data);
-            ;
 
         }
 
@@ -120,34 +144,90 @@ class SalesInvoiceController extends Controller
     {
         $request->validate(
             [
-                'registration_date' => 'required'
+                'registration_date' => 'required',
+                'customer_id' => 'required',
+                'batch_id' => 'required',
+                'product_id' => 'required',
+                // 'manufacturer_id' => 'required',
+                'batch_no' => 'required',
+                'order_ref' => 'required',
+                'packing' => 'required',
+                'no_of_packing' => 'required',
+                'unit_price' => 'required',
+                'invoice_date' => 'required',
             ]
         );
 
-        $salesInvoice = SalesInvoice::find($id);
+        try {
+            $salesInvoice = SalesInvoice::find($id);
 
-        $salesInvoice->registration_date = $request['registration_date'];
+            $salesInvoice->registration_date = $request['registration_date'];
+            $salesInvoice->customer_id = $request['customer_id'];
+            $salesInvoice->batch_id = $request['batch_id'];
+            $salesInvoice->product_id = $request['product_id'];
+            $salesInvoice->manufacturer_id = $request['manufacturer_id'];
+            $salesInvoice->order_ref = $request['order_ref'];
+            $salesInvoice->batch_no = $request['batch_no'];
+            $salesInvoice->packing = $request['packing'];
+            $salesInvoice->no_of_packing = $request['no_of_packing'];
+            $salesInvoice->unit_price = $request['unit_price'];
+            $salesInvoice->invoice_date = $request['invoice_date'];
+            $salesInvoice->delivery_by = $request['delivery_by'];
+            $salesInvoice->remark = $request['remark'];
+            $salesInvoice->discount = $request['discount'];
+            $salesInvoice->enable_discount = $request['enable_discount'];
+            $salesInvoice->invoice_type = 'Statement';
+            $salesInvoice->action_type = 'UPDATE';
+            $salesInvoice->user_id = 'sys-user';
+            $salesInvoice->action_date = now();
 
-        $salesInvoice->action_type = 'UPDATE';
-        $salesInvoice->user_id = 'sys-user';
-        $salesInvoice->action_date = now();
+            $salesInvoice->save();
 
-        $salesInvoice->save();
+            // Create and save SaleInvoiceProduct 
+            $salesInvoiceProduct = new SalesInvoiceProduct();
 
-        return redirect('/salesInvoice/list');
+            $salesInvoiceProduct->registration_date = $request['registration_date'];
+            $salesInvoiceProduct->salesInvoice_id = $salesInvoice->salesInvoice_id;
+            $salesInvoiceProduct->batch_id = $request['batch_id'];
+            $salesInvoiceProduct->product_id = $request['product_id'];
+            //$salesInvoiceProduct->manufacturer_id = $request['manufacturer_id'];
+            $salesInvoiceProduct->batch_no = $request['batch_no'];
+            $salesInvoiceProduct->packing = $request['packing'];
+            $salesInvoiceProduct->no_of_packing = $request['no_of_packing'];
+            $salesInvoiceProduct->unit_price = $request['unit_price'];
+            $salesInvoiceProduct->discount = $request['discount'];
+            $salesInvoiceProduct->enable_discount = $request['enable_discount'];
+            $salesInvoice->action_type = 'INSERT';
+            $salesInvoice->user_id = 'sys-user';
+            $salesInvoice->action_date = now();
+
+            $salesInvoiceProduct->save();
+            // Redirect to the edit page of the newly created invoice
+            return redirect('salesInvoice/edit/' . $salesInvoice->salesInvoice_id)
+                ->with('success', 'Invoice created successfully.');
+        } catch (\Exception $e) {
+            // Log the exception if necessary
+            \Log::error('Error creating sales invoice: ' . $e->getMessage());
+
+            // Return back to the form with an error message
+            return redirect()->back()->with('error', 'Failed to create the invoice. Please try again.');
+        }
 
     }
 
     // [httpGet]
     public function delete($id)
     {
+        /* Delete has the History table 
+        //relation to maintain and all related item mark as delted as well
+        
         $salesInvoice = SalesInvoice::find($id);
 
         $salesInvoice->action_type = 'DELETE';
         $salesInvoice->action_date = now();
 
         $salesInvoice->save();
-
+        */
         return redirect('/salesInvoice/list');
     }
 }
