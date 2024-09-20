@@ -124,29 +124,29 @@ class SalesInvoiceController extends Controller
     {
         $numberToWords = new NumberToWords();
         $converter = $numberToWords->getNumberTransformer('en');
-        
+
         // $salesInvoice = SalesInvoice::find($id);
         $salesInvoice = SalesInvoice::where('salesInvoice_id', $id)
-                      ->where('action_type', '!=', 'DELETE')
-                      ->first();
+            ->where('action_type', '!=', 'DELETE')
+            ->first();
 
         if (is_null($salesInvoice)) {
-           // salesInvoice not found
+            // salesInvoice not found
             return redirect('/salesInvoice/list');
         } else {
-             $salesInvoiceProduct = DB::table('sales_invoice_products')
-                                ->join('products', 'sales_invoice_products.product_id', '=', 'products.product_id')
-                               // ->join('customers', 'batches.customer_id', '=', 'customers.customer_id')
-                               ->where('sales_invoice_products.salesInvoice_id', '=', $salesInvoice->salesInvoice_id) 
-                               ->where('sales_invoice_products.action_type', '!=', 'DELETE')
-                               ->select('sales_invoice_products.*', 'products.product_name')
-                                ->get();
+            $salesInvoiceProduct = DB::table('sales_invoice_products')
+                ->join('products', 'sales_invoice_products.product_id', '=', 'products.product_id')
+                // ->join('customers', 'batches.customer_id', '=', 'customers.customer_id')
+                ->where('sales_invoice_products.salesInvoice_id', '=', $salesInvoice->salesInvoice_id)
+                ->where('sales_invoice_products.action_type', '!=', 'DELETE')
+                ->select('sales_invoice_products.*', 'products.product_name')
+                ->get();
 
-     
+
             $url = url('/salesInvoice/update') . "/" . $id;
             $toptitle = 'Sales Invoice ' . $salesInvoice->salesInvoice_id;
 
-            $data = compact('converter','salesInvoice', 'salesInvoiceProduct', 'url', 'toptitle'); // data and dynamic url pass into view
+            $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'url', 'toptitle'); // data and dynamic url pass into view
 
             return view('invoice.addSalesInvoice')->with($data);
 
@@ -175,10 +175,10 @@ class SalesInvoiceController extends Controller
 
         try {
             $salesInvoice = SalesInvoice::where('salesInvoice_id', $id)
-                                        ->where('action_type', '!=', 'DELETE')
-                                        ->first();
+                ->where('action_type', '!=', 'DELETE')
+                ->first();
             if (!is_null($salesInvoice)) {
-               
+
                 $salesInvoice->registration_date = $request['registration_date'];
                 $salesInvoice->customer_id = $request['customer_id'];
                 $salesInvoice->batch_id = $request['batch_id'];
@@ -198,12 +198,12 @@ class SalesInvoiceController extends Controller
                 $salesInvoice->action_type = 'UPDATE';
                 $salesInvoice->user_id = 'sys-user';
                 $salesInvoice->action_date = now();
-    
+
                 $salesInvoice->save();
-    
+
                 // Create and save SaleInvoiceProduct 
                 $salesInvoiceProduct = new SalesInvoiceProduct();
-    
+
                 $salesInvoiceProduct->registration_date = $request['registration_date'];
                 $salesInvoiceProduct->salesInvoice_id = $salesInvoice->salesInvoice_id;
                 $salesInvoiceProduct->batch_id = $request['batch_id'];
@@ -218,9 +218,9 @@ class SalesInvoiceController extends Controller
                 $salesInvoiceProduct->action_type = 'INSERT';
                 $salesInvoiceProduct->user_id = 'sys-user';
                 $salesInvoiceProduct->action_date = now();
-    
+
                 $salesInvoiceProduct->save();
-             }
+            }
             // Redirect to the edit page of the newly created invoice
             return redirect('salesInvoice/edit/' . $salesInvoice->salesInvoice_id)
                 ->with('success', 'Invoice created successfully.');
@@ -239,22 +239,21 @@ class SalesInvoiceController extends Controller
     {
         try {
 
-             $salesInvoice = SalesInvoice::find($id);
-            if(!is_null($salesInvoice))
-            {
+            $salesInvoice = SalesInvoice::find($id);
+            if (!is_null($salesInvoice)) {
                 $salesInvoice->action_type = 'DELETE';
                 $salesInvoice->action_date = now();
-        
+
                 $salesInvoice->save();
 
                 // Update all child Invoice Producs 
                 DB::table('sales_invoice_products')
-                ->where('salesInvoice_id', $id)
-                ->update(['action_type' => 'DELETE', 'action_date' => now()]);
+                    ->where('salesInvoice_id', $id)
+                    ->update(['action_type' => 'DELETE', 'action_date' => now()]);
 
             }
 
-          
+
             return redirect('/salesInvoice/list');
         } catch (\Exception $e) {
             // Log the exception if necessary
@@ -263,22 +262,21 @@ class SalesInvoiceController extends Controller
             // Return back to the form with an error message
             return redirect()->back()->with('error', 'Failed to deleted the invoice product. Please try again.');
         }
-      
-        
-   
 
-       
+
+
+
+
     }
     // [httpGet]
     public function invoiceProductDelete($invoiceId, $invoiceProductid)
     {
         try {
             $salesInvoiceProduct = SalesInvoiceProduct::find($invoiceProductid);
-            if(!is_null($salesInvoiceProduct))
-            {
+            if (!is_null($salesInvoiceProduct)) {
                 $salesInvoiceProduct->action_type = 'DELETE';
                 $salesInvoiceProduct->action_date = now();
-        
+
                 $salesInvoiceProduct->save();
 
             }
@@ -293,8 +291,8 @@ class SalesInvoiceController extends Controller
             // Return back to the form with an error message
             return redirect()->back()->with('error', 'Failed to deleted the invoice product. Please try again.');
         }
-      
-        
+
+
         return redirect('/salesInvoice/list');
     }
     // [httpGet]
@@ -316,22 +314,24 @@ class SalesInvoiceController extends Controller
     // [httpGet]
     public function salesCustomerInvoicePdf($salesInvoiceId)
     {
-       // Instantiate and use the Dompdf class
-       $options = new Options();
-       $options->set('defaultFont', 'DejaVu Sans');
-       $dompdf = new Dompdf($options);
+        // Instantiate and configure the Dompdf class
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+       // $options->set('isRemoteEnabled', true); // Enable remote content
+        $options->set('isHtml5ParserEnabled', true); // Enable HTML5 support
+        $dompdf = new Dompdf($options);
 
-       // Load your Blade view
-       $html = view('templateForPdf.salesCustomerInvoice')->render();
-       $dompdf->loadHtml($html);
+        // Load your Blade view
+        $html = view('templateForPdf.salesCustomerInvoice')->render();
+        $dompdf->loadHtml($html);
 
-       // (Optional) Setup the paper size and orientation
-       $dompdf->setPaper('A4', 'landscape');
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
 
-       // Render the HTML as PDF
-       $dompdf->render();
+        // Render the HTML as PDF
+        $dompdf->render();
 
-       // Output the generated PDF to the browser
-       return $dompdf->stream('Invoice.pdf', ['Attachment' => false]);
+        // Output the generated PDF to the browser
+        return $dompdf->stream('Invoice.pdf', ['Attachment' => false]);
     }
 }
