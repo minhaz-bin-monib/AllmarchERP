@@ -2,13 +2,13 @@
 
 <!-- Set Title -->
 @push('title')
-    <title>Products</title>
+    <title>Batch List</title>
 @endpush
 
 @section('main-section')
     <!-- START View Content Here -->
     <div class="container">
-        <h5>Products</h5>
+        <h5>Batch List</h5>
 
        
         <table class="table table-striped table-bordered">
@@ -29,8 +29,8 @@
                 @foreach($batchs as  $btc)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{$btc->product_id}}</td>
-                    <td>{{$btc->customer_id}}</td>
+                    <td>{{$btc->product_name}}</td>
+                    <td>{{$btc->customer_name}}</td>
                     <td>{{$btc->batch_title}}</td>
                     <td>{{$btc->batch_no}}</td>
                     <td>{{$btc->production_date}}</td>

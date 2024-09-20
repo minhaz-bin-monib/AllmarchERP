@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Batch;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class BatchController extends Controller
 {
@@ -12,9 +13,14 @@ class BatchController extends Controller
     // [httpGet]
     public function show()
     {
-        $batchs = Batch::where('action_type', '!=', 'DELETE')
-                            ->orderBy('batch_id', 'desc')
-                            ->get();
+        // $batchs = Batch::where('action_type', '!=', 'DELETE')
+        //                     ->orderBy('batch_id', 'desc')
+        //                     ->get();
+        $batchs = DB::table('batches')
+            ->join('products', 'batches.product_id', '=', 'products.product_id')
+            ->join('customers', 'batches.customer_id', '=', 'customers.customer_id')
+            ->select('batches.*', 'products.product_name', 'customers.customer_name')
+            ->get();
         $data = compact('batchs');
 
         return view('batch.batchlist')->with($data);
