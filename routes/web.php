@@ -79,6 +79,8 @@ Route::group(['prefix' => 'salesInvoice'], function () {
     Route::get('create', [SalesInvoiceController::class, 'create']);
     Route::post('create', [SalesInvoiceController::class, 'store']);
     Route::get('delete/{id}', [SalesInvoiceController::class, 'delete']);
+    Route::get('productDelete/{invoiceId}/{invoiceProductid}', [SalesInvoiceController::class, 'invoiceProductDelete']);
+    Route::get('productStickar/{invoiceId}/{invoiceProductid}', [SalesInvoiceController::class, 'invoiceProductStickar']);
     Route::get('edit/{id}', [SalesInvoiceController::class, 'edit']);
     Route::post('update/{id}', [SalesInvoiceController::class, 'update']);
 

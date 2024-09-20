@@ -223,23 +223,33 @@
                     </tr>
                 </thead>
                 <tbody>
-
+                    @php
+                        $totalCost = 0; 
+                    @endphp
                     @foreach ($salesInvoiceProduct as $salesInvProd)
+                        @php
+                            $totalWeight = $salesInvProd->packing * $salesInvProd->no_of_packing;
+                            $totalPrice = $totalWeight * $salesInvProd->unit_price;
+                            $totalCost += $totalPrice;
+                         @endphp
                         <tr>
                             <td>{{ $salesInvProd->salesInvoiceProduct_id }}</td>
-                            <td>{{ $salesInvProd->product_id }}</td>
+                            <td>{{ $salesInvProd->product_name }}</td>
                             <td>{{ $salesInvProd->batch_no }}</td>
                             <td>{{ $salesInvProd->packing }} Kg</td>
                             <td>{{ $salesInvProd->no_of_packing }}</td>
-                            <td>{{ $salesInvProd->packing * $salesInvProd->no_of_packing }} kg</td>
+                            <td>{{ $totalWeight }} kg</td>
                             <td>{{ $salesInvProd->unit_price }}</td>
-                            <td>{{ ($salesInvProd->packing + $salesInvProd->no_of_packing) * $salesInvProd->unit_price }}
+                            <td>{{ $totalPrice }}
                             </td>
                             <td>
                                 <a class=""
-                                    href="{{ url('/salesInvoice/edit') }}/{{ $salesInvProd->salesInvoice_id }}">Special</a>
-                                <a href="{{ url('/salesInvoice/edit') }}/{{ $salesInvProd->salesInvoice_id }}">Delete</a>
-                            </td>
+                                    href="{{ url('/salesInvoice/productStickar') }}/{{ $salesInvProd->salesInvoice_id }}/{{ $salesInvProd->salesInvoiceProduct_id }}">Special</a>
+                                    <a class="btn btn-sm btn-danger" 
+                                        onClick="confirmDelete('{{ url('/salesInvoice/productDelete') }}/{{ $salesInvProd->salesInvoice_id }}/{{ $salesInvProd->salesInvoiceProduct_id }}')">
+                                        <i class="fa fa-trash"></i>
+                                    </a>    
+                             </td>
                         </tr>
                     @endforeach
                     <tr>
@@ -249,21 +259,28 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td>Gross Amount</td>
-                        <td>2302029 Tk</td>
+                        <td><b>Gross Amount</b></td>
+                        <td>{{$totalCost}} Tk</td>
                         <td rowspan="5" style="vertical-align : middle;text-align:center;">
                             <button class="btn btn-sm btn-primary">Make Payment</button>
                         </td>
                     </tr>
                     <tr>
+                    @php
+                        // Calculate discount and final total cost
+                    
+                        $discount = ($salesInvProd->enable_discount ? $salesInvProd->discount ?? 0.00 : 0.00);
+                        $discountAmount = ($totalCost * ($discount/100)) ?? 0.00; // Calculate the discount amount
+                        $finalTotalCost = ($totalCost - $discountAmount) ?? 00; // Final cost after discount
+                    @endphp
                         <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td>Discount Cash Purchase [3.00 %]</td>
-                        <td>-230 Tk</td>
+                        <td>Discount Cash Purchase [ {{ number_format($salesInvProd->discount ?? 0.00, 2)}} %]</td>
+                        <td>{{$discountAmount == 0 ? '' : '-'}}{{number_format($discountAmount,2)}} Tk</td>
 
                     </tr>
                     <tr>
@@ -274,7 +291,7 @@
                         <td></td>
                         <td></td>
                         <td>Net Amount</td>
-                        <td>23003933 Tk</td>
+                        <td>{{number_format($finalTotalCost,2)}} Tk</td>
 
                     </tr>
                     <tr>
@@ -285,7 +302,7 @@
                         <td></td>
                         <td></td>
                         <td>Paid Amount</td>
-                        <td>23003933 Tk</td>
+                        <td>0.00 Tk</td>
 
                     </tr>
                     <tr>
@@ -296,7 +313,7 @@
                         <td></td>
                         <td></td>
                         <td>Total Payable</td>
-                        <td>23003933 Tk</td>
+                        <td>{{number_format($finalTotalCost,2)}} Tk</td>
 
                     </tr>
                 </tbody>
@@ -334,9 +351,14 @@
         let selectedCustomerId = "{{ old('customer_id', $salesInvoice->customer_id ?? '') }}";
         let selectedProductId = "{{ old('product_id', $salesInvoice->product_id ?? '') }}";
         let selectedBatchId = "{{ old('batch_id', $salesInvoice->batch_id ?? '') }}";
-        let productIdByOnChange = '';
-        let customerIdByOnchange = '';
+        let productIdByOnChange = selectedProductId ?? '';
+        let customerIdByOnchange = selectedCustomerId ?? '';
 
+        function confirmDelete(url) {
+            if (confirm("Want to delete this item?")) {
+                window.location.href = url;
+            }
+        }
         $(document).ready(function() {
             $.ajax({
                 url: "{{ url('/customer/getList') }}",

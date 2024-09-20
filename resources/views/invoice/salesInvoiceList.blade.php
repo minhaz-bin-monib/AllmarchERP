@@ -27,6 +27,7 @@
                     <th>Company</th>
                     <th>Print Invoice</th>
                     <th>Print Delivery Receipt</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,14 +46,29 @@
                     <td>{{$slesInv->order_ref}}</td>
                     <td>{{$slesInv->remark}}</td>
                     <td>{{$slesInv->Company}}</td>
-                    <td></td>
-                    <td></td>
+                    <td>DO</td>
+                    <td>DO</td>
+                    <td>
+                    <a class="btn btn-sm btn-danger" 
+                                        onClick="confirmDelete('{{ url('/salesInvoice/delete') }}/{{ $slesInv->salesInvoice_id }}')">
+                                        <i class="fa fa-trash"></i>
+                                    </a>   
+                    </td>
                 </tr>
                @endforeach
             </tbody>
         </table>
    
     </div>
+
+    <script type="text/javascript">
+
+        function confirmDelete(url) {
+                    if (confirm("Want to delete this item?")) {
+                        window.location.href = url;
+                    }
+                }
+    </script>
 
     <!-- END View Content Here -->
 @endsection
