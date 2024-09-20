@@ -83,7 +83,8 @@ Route::group(['prefix' => 'salesInvoice'], function () {
     Route::get('productStickar/{invoiceId}/{invoiceProductid}', [SalesInvoiceController::class, 'invoiceProductStickar']);
     Route::get('edit/{id}', [SalesInvoiceController::class, 'edit']);
     Route::post('update/{id}', [SalesInvoiceController::class, 'update']);
-
+    
     // APIs
+    Route::get('salesCustomerInvoicePdf/{salesInvoiceId}', [SalesInvoiceController::class, 'salesCustomerInvoicePdf']);
     
 });

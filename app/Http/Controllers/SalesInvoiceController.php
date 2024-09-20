@@ -7,7 +7,9 @@ use App\Models\SalesInvoice;
 use App\Models\SalesInvoiceProduct;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use NumberToWords\NumberToWords;
 
 class SalesInvoiceController extends Controller
 {
@@ -120,6 +122,9 @@ class SalesInvoiceController extends Controller
     // [httpGet]
     public function edit($id)
     {
+        $numberToWords = new NumberToWords();
+        $converter = $numberToWords->getNumberTransformer('en');
+        
         // $salesInvoice = SalesInvoice::find($id);
         $salesInvoice = SalesInvoice::where('salesInvoice_id', $id)
                       ->where('action_type', '!=', 'DELETE')
@@ -141,7 +146,7 @@ class SalesInvoiceController extends Controller
             $url = url('/salesInvoice/update') . "/" . $id;
             $toptitle = 'Sales Invoice ' . $salesInvoice->salesInvoice_id;
 
-            $data = compact('salesInvoice', 'salesInvoiceProduct', 'url', 'toptitle'); // data and dynamic url pass into view
+            $data = compact('converter','salesInvoice', 'salesInvoiceProduct', 'url', 'toptitle'); // data and dynamic url pass into view
 
             return view('invoice.addSalesInvoice')->with($data);
 
@@ -306,5 +311,27 @@ class SalesInvoiceController extends Controller
         $salesInvoice->save();
         */
         return redirect('/salesInvoice/list');
+    }
+
+    // [httpGet]
+    public function salesCustomerInvoicePdf($salesInvoiceId)
+    {
+       // Instantiate and use the Dompdf class
+       $options = new Options();
+       $options->set('defaultFont', 'DejaVu Sans');
+       $dompdf = new Dompdf($options);
+
+       // Load your Blade view
+       $html = view('templateForPdf.salesCustomerInvoice')->render();
+       $dompdf->loadHtml($html);
+
+       // (Optional) Setup the paper size and orientation
+       $dompdf->setPaper('A4', 'landscape');
+
+       // Render the HTML as PDF
+       $dompdf->render();
+
+       // Output the generated PDF to the browser
+       return $dompdf->stream('Invoice.pdf', ['Attachment' => false]);
     }
 }

@@ -319,11 +319,11 @@
                 </tbody>
             </table>
             <div class="row">
-                <p>In Word: need to work</p>
+                <p>In Word: {{$converter->toWords($finalTotalCost)}} only</p>
             </div>
             <div class="row">
                 <div class="col-2">
-                    <button class="btn btn-sm btn-primary">Customer Invoice</button>
+                    <a class="btn btn-sm btn-primary" href="{{ url('/salesInvoice/salesCustomerInvoicePdf') }}/{{ $salesInvProd->salesInvoice_id }}" target="_blank">Customer Invoice</a>
                 </div>
                 <div class="col-2">
                     <button class="btn btn-sm btn-primary">Customer Delivery</button>
