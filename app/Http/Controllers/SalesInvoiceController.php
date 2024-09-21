@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SalesInvoice;
 use App\Models\SalesInvoiceProduct;
+use App\Models\Customer;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Dompdf\Dompdf;
@@ -314,24 +315,44 @@ class SalesInvoiceController extends Controller
     // [httpGet]
     public function salesCustomerInvoicePdf($salesInvoiceId)
     {
-        // Instantiate and configure the Dompdf class
+        $numberToWords = new NumberToWords();
+        $converter = $numberToWords->getNumberTransformer('en');
         $options = new Options();
         $options->set('defaultFont', 'Arial');
        // $options->set('isRemoteEnabled', true); // Enable remote content
         $options->set('isHtml5ParserEnabled', true); // Enable HTML5 support
         $dompdf = new Dompdf($options);
 
-        // Load your Blade view
-        $html = view('templateForPdf.salesCustomerInvoice')->render();
-        $dompdf->loadHtml($html);
+        // $salesInvoice = SalesInvoice::find($id);
+        $salesInvoice = SalesInvoice::where('salesInvoice_id', $salesInvoiceId)
+            ->where('action_type', '!=', 'DELETE')
+            ->first();
+        if (!is_null($salesInvoice)) {
 
-        // (Optional) Setup the paper size and orientation
-        $dompdf->setPaper('A4', 'portrait');
+            $customer = Customer::where('customer_id', $salesInvoice->customer_id)
+            ->where('action_type', '!=', 'DELETE')
+            ->first();
 
-        // Render the HTML as PDF
-        $dompdf->render();
+  
+            $salesInvoiceProduct = DB::table('sales_invoice_products')
+                ->join('products', 'sales_invoice_products.product_id', '=', 'products.product_id')
+                // ->join('customers', 'batches.customer_id', '=', 'customers.customer_id')
+                ->where('sales_invoice_products.salesInvoice_id', '=', $salesInvoice->salesInvoice_id)
+                ->where('sales_invoice_products.action_type', '!=', 'DELETE')
+                ->select('sales_invoice_products.*', 'products.product_name')
+                ->get();
 
-        // Output the generated PDF to the browser
-        return $dompdf->stream('Invoice.pdf', ['Attachment' => false]);
+            $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
+
+            $html = view('templateForPdf.salesCustomerInvoice')->with($data)->render();
+    
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            return $dompdf->stream('Invoice.pdf', ['Attachment' => false]);
+        }
+
+        // If pdf not gennrate then return into Invoice list
+        return redirect('/salesInvoice/list');
     }
 }
