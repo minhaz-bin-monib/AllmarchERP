@@ -425,6 +425,8 @@
             $('#customers').on('change', function() {
                 var customerId = $(this).val();
                 customerIdByOnchange = customerId;
+                let customer = customerList.find(f => f.customer_id == customerId);
+                $('#discount').val(customer.loyalty_discount);
                 getBatchById();
             });
 
