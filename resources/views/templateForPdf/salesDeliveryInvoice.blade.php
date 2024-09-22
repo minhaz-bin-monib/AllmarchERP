@@ -144,7 +144,7 @@
         </div>
         <!-- title row -->
         <div class="row textC" style="margin-bottom: 20px">
-            <h2 style="font-size: 16px;">Invoice</h2>
+            <h2 style="font-size: 16px;">Delivery Receipt</h2>
         </div>
 
         <div class="row middle" style="width: 97%">
@@ -170,76 +170,43 @@
                         <th width="5%" style="text-align:center;">SL.</th>
                         <th width="30%">Product Name</th>
                         <th width="20%" style="text-align:center;" >Batch No.</th>
-                        <th width="10%" style="text-align:center;">Quantity</th>
-                        <th width="15%" style="text-align:center;">Unit price(Tk)</th>
-                        <th width="20%" style="text-align:center;">Total Price(Tk)</th>
+                        <th width="10%" style="text-align:center;">Packing</th>
+                        <th width="15%" style="text-align:center;">No of Packing (Pcs)</th>
+                        <th width="20%" style="text-align:center;">Quantity</th>
                     </tr>
                 </thead>
                 <tbody>
 
                 @php
-                    $totalCost = 0; 
-                    $totalWeightCount = 0;
+                    $totalPcs = 0; 
+                    $totalQuantity = 0;
                 @endphp
                 @foreach ($salesInvoiceProduct as $salesInvProd)
                     @php
                         $totalWeight = $salesInvProd->packing * $salesInvProd->no_of_packing;
                         $totalPrice = $totalWeight * $salesInvProd->unit_price;
-                        $totalWeightCount += $totalWeight;
-                        $totalCost += $totalPrice;
+                        $totalPcs += $salesInvProd->no_of_packing;
+                        $totalQuantity += $totalWeight;
                      @endphp
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $salesInvProd->product_name }}</td>
                         <td>{{ $salesInvProd->batch_no }}</td>
-                        <td>{{ number_format($totalWeight,2) }} kg</td>
-                        <td class="textC">{{ number_format($salesInvProd->unit_price,2) }}</td>
-                        <td>{{ number_format($totalPrice,2) }} Tk</td>
+                        <td>{{ number_format($salesInvProd->packing,2) }} kg</td>
+                        <td class="textC">{{ number_format($salesInvProd->no_of_packing,2) }}</td>
+                        <td>{{ number_format($totalWeight,2) }} Kg</td>
                        
                     </tr>
                 @endforeach
                     <tr>
-                        <td colspan="3"></td>
-                        <td><strong>{{number_format($totalWeightCount,2)}}</strong> Kg</td>
-                        <td align="right"><strong>Total Amount</strong></td>
-                        <td align="right"><strong> {{number_format($totalCost,2)}}</strong> Tk</td>
+                        <td class="textC" colspan="4">Total</td>
+                        <td class="textC"><strong>{{number_format($totalPcs,2)}}</strong> pcs</td>
+                        <td align="right"><strong> {{number_format($totalQuantity,2)}}</strong> Kg</td>
                     </tr>
-                    @php
-                        // Calculate discount and final total cost
-                        $discount = ($salesInvProd->enable_discount ? $salesInvProd->discount ?? 0.00 : 0.00);
-                        $discountAmount = ($totalCost * ($discount/100)) ?? 0.00; // Calculate the discount amount
-                        $finalTotalCost = ($totalCost - $discountAmount) ?? 00; // Final cost after discount
-                     @endphp
-                    @if ($salesInvProd->enable_discount)
-                    <tr>
-                        <td colspan="4"></td>
-                      
-                        <td align="right">Discount Cash Purchase [ {{ number_format($salesInvProd->discount ?? 0.00, 2)}} %]</td>
-                        <td align="right">{{$discountAmount == 0 ? '' : '-'}}{{number_format($discountAmount,2)}} Tk</td>
-                    </tr>
-                    <tr>
-                        <td colspan="4"></td>
-                      
-                        <td align="right">Net Amount</td>
-                        <td align="right">{{number_format($finalTotalCost,2)}} Tk</td>
-                    </tr>
-                 @endif
-                    <tr>
-                        <td colspan="4"></td>
-                      
-                        <td align="right">Paid Amount</td>
-                        <td align="right"> Tk</td>
-                    </tr>
-                    <tr>
-                        <td colspan="4"></td>
-                    
-                        <td align="right"><strong>Total Payable</strong></td>
-                        <td align="right"><strong>{{number_format($finalTotalCost,2)}}</strong> Tk</td>
-                    </tr>
+                   
 
                 </tbody>
             </table>
-            In Word: <b>{{$converter->toWords($totalCost)}}</b> only 
 
         </div>
 

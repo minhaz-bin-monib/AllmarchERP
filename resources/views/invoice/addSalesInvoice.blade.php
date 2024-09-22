@@ -187,8 +187,12 @@
                 </div>
 
 
-
-                <button type="submit" class="btn btn-primary">Add</button>
+                @if ($salesInvoice->salesInvoice_id > 0)
+                    <button type="submit" class="btn btn-sm btn-primary mx-2">Add Product</button>
+                    {{-- <button type="submit" class="btn btn-sm btn-primary">Update Invoice</button> --}}
+                @else
+                     <button type="submit" class="btn btn-sm btn-primary">Create Invoice with Product</button>
+                @endif
             </div>
         </form>
 
@@ -326,7 +330,7 @@
                     <a class="btn btn-sm btn-primary" href="{{ url('/salesInvoice/salesCustomerInvoicePdf') }}/{{ $salesInvProd->salesInvoice_id }}" target="_blank">Customer Invoice</a>
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-sm btn-primary">Customer Delivery</button>
+                    <a class="btn btn-sm btn-primary" href="{{ url('/salesInvoice/salesDeliveryInvoicePdf') }}/{{ $salesInvProd->salesInvoice_id }}" target="_blank">Customer Delivery</a>
                 </div>
                 <div class="col-2">
                     <button class="btn btn-sm btn-primary">Small</button>

@@ -86,5 +86,6 @@ Route::group(['prefix' => 'salesInvoice'], function () {
     
     // APIs
     Route::get('salesCustomerInvoicePdf/{salesInvoiceId}', [SalesInvoiceController::class, 'salesCustomerInvoicePdf']);
+    Route::get('salesDeliveryInvoicePdf/{salesInvoiceId}', [SalesInvoiceController::class, 'salesDeliveryInvoicePdf']);
     
 });

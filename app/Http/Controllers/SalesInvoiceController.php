@@ -327,8 +327,9 @@ class SalesInvoiceController extends Controller
         $salesInvoice = SalesInvoice::where('salesInvoice_id', $salesInvoiceId)
             ->where('action_type', '!=', 'DELETE')
             ->first();
+        
         if (!is_null($salesInvoice)) {
-
+            $salesInvoice->invoice_date = date('d-m-Y', strtotime($salesInvoice->invoice_date));
             $customer = Customer::where('customer_id', $salesInvoice->customer_id)
             ->where('action_type', '!=', 'DELETE')
             ->first();
@@ -345,6 +346,49 @@ class SalesInvoiceController extends Controller
             $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
 
             $html = view('templateForPdf.salesCustomerInvoice')->with($data)->render();
+    
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            return $dompdf->stream('Invoice.pdf', ['Attachment' => false]);
+        }
+
+        // If pdf not gennrate then return into Invoice list
+        return redirect('/salesInvoice/list');
+    }
+    public function salesDeliveryInvoicePdf($salesInvoiceId)
+    {
+        $numberToWords = new NumberToWords();
+        $converter = $numberToWords->getNumberTransformer('en');
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+       // $options->set('isRemoteEnabled', true); // Enable remote content
+        $options->set('isHtml5ParserEnabled', true); // Enable HTML5 support
+        $dompdf = new Dompdf($options);
+
+        // $salesInvoice = SalesInvoice::find($id);
+        $salesInvoice = SalesInvoice::where('salesInvoice_id', $salesInvoiceId)
+            ->where('action_type', '!=', 'DELETE')
+            ->first();
+        
+        if (!is_null($salesInvoice)) {
+            $salesInvoice->invoice_date = date('d-m-Y', strtotime($salesInvoice->invoice_date));
+            $customer = Customer::where('customer_id', $salesInvoice->customer_id)
+            ->where('action_type', '!=', 'DELETE')
+            ->first();
+
+  
+            $salesInvoiceProduct = DB::table('sales_invoice_products')
+                ->join('products', 'sales_invoice_products.product_id', '=', 'products.product_id')
+                // ->join('customers', 'batches.customer_id', '=', 'customers.customer_id')
+                ->where('sales_invoice_products.salesInvoice_id', '=', $salesInvoice->salesInvoice_id)
+                ->where('sales_invoice_products.action_type', '!=', 'DELETE')
+                ->select('sales_invoice_products.*', 'products.product_name')
+                ->get();
+
+            $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
+
+            $html = view('templateForPdf.salesDeliveryInvoice')->with($data)->render();
     
             $dompdf->loadHtml($html);
             $dompdf->setPaper('A4', 'portrait');
