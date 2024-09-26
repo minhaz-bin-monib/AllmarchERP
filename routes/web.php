@@ -7,6 +7,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\SalesInvoiceController;
+use App\Http\Controllers\SampleInvoiceController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -72,7 +73,7 @@ Route::group(['prefix' => 'batch'], function () {
     Route::get('getBatchByCustomerAndProductId/{cid}/{pid}', [BatchController::class, 'getBatchByCustomerAndProductId']);
 });
 
-// ------------------------- SalesInvoice Routes ------------------------
+// ------------------------- Sales Invoice Routes ------------------------
 
 Route::group(['prefix' => 'salesInvoice'], function () {
     Route::get('list', [SalesInvoiceController::class, 'show']);
@@ -87,5 +88,23 @@ Route::group(['prefix' => 'salesInvoice'], function () {
     // APIs
     Route::get('salesCustomerInvoicePdf/{salesInvoiceId}', [SalesInvoiceController::class, 'salesCustomerInvoicePdf']);
     Route::get('salesDeliveryInvoicePdf/{salesInvoiceId}', [SalesInvoiceController::class, 'salesDeliveryInvoicePdf']);
+    
+});
+
+// ------------------------- Sample Invoice Routes ------------------------
+
+Route::group(['prefix' => 'sampleInvoice'], function () {
+    //Route::get('list', [SampleInvoiceController::class, 'show']);
+    Route::get('create', [SampleInvoiceController::class, 'create']);
+    Route::post('create', [SampleInvoiceController::class, 'store']);
+    //Route::get('delete/{id}', [SampleInvoiceController::class, 'delete']);
+    Route::get('productDelete/{invoiceId}/{invoiceProductid}', [SampleInvoiceController::class, 'invoiceProductDelete']);
+    Route::get('productStickar/{invoiceId}/{invoiceProductid}', [SampleInvoiceController::class, 'invoiceProductStickar']);
+    Route::get('edit/{id}', [SampleInvoiceController::class, 'edit']);
+    Route::post('update/{id}', [SampleInvoiceController::class, 'update']);
+    
+    // APIs
+    Route::get('sampleCustomerInvoicePdf/{salesInvoiceId}', [SampleInvoiceController::class, 'sampleCustomerInvoicePdf']);
+    Route::get('sampleDeliveryInvoicePdf/{salesInvoiceId}', [SampleInvoiceController::class, 'sampleDeliveryInvoicePdf']);
     
 });

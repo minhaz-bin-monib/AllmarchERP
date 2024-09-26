@@ -129,7 +129,7 @@ class ProductController extends Controller
 
         $product = Product::find($id);
 
-        $product->registration_date = $request['registration_date'];  
+        //$product->registration_date = $request['registration_date'];  
         $product->product_name = $request['product_name'];  
         $product->product_code = $request['product_code'] ; 
         $product->product_unit_type = $request['product_unit_type'];  

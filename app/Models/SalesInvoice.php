@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class SalesInvoice extends Model
 {
     use HasFactory;
-    protected $table = 'sales_invoices';
+    protected $table = 'invoices';
     protected $primaryKey = 'salesInvoice_id';
 }

@@ -79,6 +79,7 @@ class SalesInvoiceController extends Controller
             $salesInvoice->discount = $request['discount'];
             $salesInvoice->enable_discount = $request['enable_discount'];
             $salesInvoice->invoice_type = 'Statement';
+            $salesInvoice->invoice_type_category = 'Sales';
             $salesInvoice->action_type = 'INSERT';
             $salesInvoice->user_id = 'sys-user';
             $salesInvoice->action_date = now();
@@ -135,12 +136,12 @@ class SalesInvoiceController extends Controller
             // salesInvoice not found
             return redirect('/salesInvoice/list');
         } else {
-            $salesInvoiceProduct = DB::table('sales_invoice_products')
-                ->join('products', 'sales_invoice_products.product_id', '=', 'products.product_id')
+            $salesInvoiceProduct = DB::table('invoice_products')
+                ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
                 // ->join('customers', 'batches.customer_id', '=', 'customers.customer_id')
-                ->where('sales_invoice_products.salesInvoice_id', '=', $salesInvoice->salesInvoice_id)
-                ->where('sales_invoice_products.action_type', '!=', 'DELETE')
-                ->select('sales_invoice_products.*', 'products.product_name')
+                ->where('invoice_products.salesInvoice_id', '=', $salesInvoice->salesInvoice_id)
+                ->where('invoice_products.action_type', '!=', 'DELETE')
+                ->select('invoice_products.*', 'products.product_name')
                 ->get();
 
 
@@ -180,7 +181,7 @@ class SalesInvoiceController extends Controller
                 ->first();
             if (!is_null($salesInvoice)) {
 
-                $salesInvoice->registration_date = $request['registration_date'];
+               // $salesInvoice->registration_date = $request['registration_date'];
                 $salesInvoice->customer_id = $request['customer_id'];
                 $salesInvoice->batch_id = $request['batch_id'];
                 $salesInvoice->product_id = $request['product_id'];
@@ -248,7 +249,7 @@ class SalesInvoiceController extends Controller
                 $salesInvoice->save();
 
                 // Update all child Invoice Producs 
-                DB::table('sales_invoice_products')
+                DB::table('invoice_products')
                     ->where('salesInvoice_id', $id)
                     ->update(['action_type' => 'DELETE', 'action_date' => now()]);
 
@@ -335,12 +336,12 @@ class SalesInvoiceController extends Controller
             ->first();
 
   
-            $salesInvoiceProduct = DB::table('sales_invoice_products')
-                ->join('products', 'sales_invoice_products.product_id', '=', 'products.product_id')
+            $salesInvoiceProduct = DB::table('invoice_products')
+                ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
                 // ->join('customers', 'batches.customer_id', '=', 'customers.customer_id')
-                ->where('sales_invoice_products.salesInvoice_id', '=', $salesInvoice->salesInvoice_id)
-                ->where('sales_invoice_products.action_type', '!=', 'DELETE')
-                ->select('sales_invoice_products.*', 'products.product_name')
+                ->where('invoice_products.salesInvoice_id', '=', $salesInvoice->salesInvoice_id)
+                ->where('invoice_products.action_type', '!=', 'DELETE')
+                ->select('invoice_products.*', 'products.product_name')
                 ->get();
 
             $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
@@ -378,12 +379,12 @@ class SalesInvoiceController extends Controller
             ->first();
 
   
-            $salesInvoiceProduct = DB::table('sales_invoice_products')
-                ->join('products', 'sales_invoice_products.product_id', '=', 'products.product_id')
+            $salesInvoiceProduct = DB::table('invoice_products')
+                ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
                 // ->join('customers', 'batches.customer_id', '=', 'customers.customer_id')
-                ->where('sales_invoice_products.salesInvoice_id', '=', $salesInvoice->salesInvoice_id)
-                ->where('sales_invoice_products.action_type', '!=', 'DELETE')
-                ->select('sales_invoice_products.*', 'products.product_name')
+                ->where('invoice_products.salesInvoice_id', '=', $salesInvoice->salesInvoice_id)
+                ->where('invoice_products.action_type', '!=', 'DELETE')
+                ->select('invoice_products.*', 'products.product_name')
                 ->get();
 
             $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 

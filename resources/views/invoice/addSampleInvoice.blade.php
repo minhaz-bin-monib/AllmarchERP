@@ -248,9 +248,9 @@
                             </td>
                             <td>
                                 <a class=""
-                                    href="{{ url('/salesInvoice/productStickar') }}/{{ $salesInvProd->salesInvoice_id }}/{{ $salesInvProd->salesInvoiceProduct_id }}">Special</a>
+                                    href="{{ url('/sampleInvoice/productStickar') }}/{{ $salesInvProd->salesInvoice_id }}/{{ $salesInvProd->salesInvoiceProduct_id }}">Special</a>
                                     <a class="btn btn-sm btn-danger" 
-                                        onClick="confirmDelete('{{ url('/salesInvoice/productDelete') }}/{{ $salesInvProd->salesInvoice_id }}/{{ $salesInvProd->salesInvoiceProduct_id }}')">
+                                        onClick="confirmDelete('{{ url('/sampleInvoice/productDelete') }}/{{ $salesInvProd->salesInvoice_id }}/{{ $salesInvProd->salesInvoiceProduct_id }}')">
                                         <i class="fa fa-trash"></i>
                                     </a>    
                              </td>
@@ -283,7 +283,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td>Discount Cash Purchase [ {{$totalCost != 0 ? number_format($salesInvoice->discount ?? 0.00, 2): 0.00}} %]</td>
+                        <td>Discount Cash Purchase [  {{$totalCost != 0 ? number_format($salesInvoice->discount ?? 0.00, 2): 0.00}} %]</td>
                         <td>{{$discountAmount == 0 ? '' : '-'}}{{number_format($discountAmount,2)}} Tk</td>
 
                     </tr>
@@ -327,10 +327,10 @@
             </div>
             <div class="row">
                 <div class="col-2">
-                    <a class="btn btn-sm btn-primary" href="{{ url('/salesInvoice/salesCustomerInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}" target="_blank">Customer Invoice</a>
+                    <a class="btn btn-sm btn-primary" href="{{ url('/sampleInvoice/sampleCustomerInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}" target="_blank">Customer Invoice</a>
                 </div>
                 <div class="col-2">
-                    <a class="btn btn-sm btn-primary" href="{{ url('/salesInvoice/salesDeliveryInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}" target="_blank">Customer Delivery</a>
+                    <a class="btn btn-sm btn-primary" href="{{ url('/sampleInvoice/sampleDeliveryInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}" target="_blank">Customer Delivery</a>
                 </div>
                 <div class="col-2">
                     <button class="btn btn-sm btn-primary">Small</button>

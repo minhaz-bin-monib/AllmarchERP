@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sales_invoice_products', function (Blueprint $table) {
+        Schema::create('invoice_products', function (Blueprint $table) {
             $table->id('salesInvoiceProduct_id');
             $table->date('registration_date');
             $table->integer('salesInvoice_id');

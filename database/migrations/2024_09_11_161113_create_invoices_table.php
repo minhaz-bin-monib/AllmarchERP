@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sales_invoices', function (Blueprint $table) {
+        Schema::create('invoices', function (Blueprint $table) {
             $table->id('salesInvoice_id');
             $table->date('registration_date');
             $table->integer('customer_id');
@@ -31,6 +31,7 @@ return new class extends Migration
             $table->float('discount')->nullable();
             $table->boolean('enable_discount')->nullable();
             $table->string('invoice_type',150)->nullable();
+            $table->string('invoice_type_category',150)->nullable();
             $table->string('action_type',50)->nullable();
             $table->string('user_id',200)->nullable();
             $table->date('action_date')->nullable();

@@ -59,7 +59,10 @@
                                 <a href="{{ url('/salesInvoice/create') }}">Add Sales Invoice</a>
                             </li>
                             <li>
-                                <a href="{{ url('/salesInvoice/list') }}">Sales Invoice List</a>
+                                <a href="{{ url('/sampleInvoice/create') }}">Add Sample Invoice</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('/salesInvoice/list') }}">Invoice List</a>
                             </li>
                         </ul>
                     </li>

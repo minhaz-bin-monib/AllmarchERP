@@ -35,8 +35,15 @@
                 <tr>
                     <td>{{$slesInv->salesInvoice_id}}</td>
                     <td> 
-                       <a class="" href="{{url('/salesInvoice/edit')}}/{{$slesInv->salesInvoice_id}}"><i class="fa fa-edit"></i></a> 
-                       {{-- <a class="btn btn-danger" href="{{url('/salesInvoice/delete')}}/{{$slesInv->salesInvoice_id}}">Delete</a>  --}}
+                     @if($slesInv->invoice_type_category == 'Sales')
+                    
+                            <a class="" href="{{url('/salesInvoice/edit')}}/{{$slesInv->salesInvoice_id}}"><i class="fa fa-edit"></i></a> 
+                       
+                       @elseif($slesInv->invoice_type_category == 'Sample')
+                            <a class="" href="{{url('/sampleInvoice/edit')}}/{{$slesInv->salesInvoice_id}}"><i class="fa fa-edit"></i></a> 
+                       
+                       @endif
+
                     </td>
                     <td>{{$slesInv->discount}} %</td>
                     <td>{{$slesInv->invoice_type}}</td>
