@@ -102,7 +102,7 @@
 
                 <div class="form-group col-md-3">
                     <label for="packing">Packing <span class="text-danger"><b>*</b></span></label>
-                    <input type="number" name="packing" min="0"
+                    <input type="number" name="packing" min="0" step="0.01" 
                         value="{{ old('packing', $salesInvoice->packing) }}" class="form-control" id="packing">
                     <span class="text-danger">
                         @error('packing')
@@ -112,7 +112,7 @@
                 </div>
                 <div class="form-group col-md-3">
                     <label for="no_of_packing">No of Packing <span class="text-danger"><b>*</b></span></label>
-                    <input type="number" name="no_of_packing" min="0"
+                    <input type="number" name="no_of_packing" min="0" step="0.01" 
                         value="{{ old('no_of_packing', $salesInvoice->no_of_packing) }}" class="form-control"
                         id="no_of_packing">
                     <span class="text-danger">
@@ -123,7 +123,7 @@
                 </div>
                 <div class="form-group col-md-3">
                     <label for="unit_price">Unit price<span class="text-danger"><b>*</b></span></label>
-                    <input type="number" name="unit_price" min="0.0"
+                    <input type="number" name="unit_price" min="0.0" step="0.01" 
                         value="{{ old('unit_price', $salesInvoice->unit_price) }}" class="form-control" id="unit_price">
                     <span class="text-danger">
                         @error('unit_price')

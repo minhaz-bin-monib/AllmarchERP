@@ -109,7 +109,7 @@ class SampleInvoiceController extends Controller
            $salesInvoiceProduct->save();
 
            // Redirect to the edit page of the newly created invoice
-           return redirect('salesInvoice/edit/' . $salesInvoice->salesInvoice_id)
+           return redirect('sampleInvoice/edit/' . $salesInvoice->salesInvoice_id)
                ->with('success', 'Invoice created successfully.');
        } catch (\Exception $e) {
            // Log the exception if necessary

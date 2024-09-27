@@ -46,7 +46,7 @@
         </div>
         <div class="form-group col-md-4">
             <label for="loyalty_discount">Loyalty Discount (%) </label>
-            <input type="number" name="loyalty_discount" min="0.0" value="{{old('loyalty_discount',$customer->loyalty_discount)}}" class="form-control" id="loyalty_discount">
+            <input type="number" name="loyalty_discount" min="0.0" step="0.01"  value="{{old('loyalty_discount',$customer->loyalty_discount)}}" class="form-control" id="loyalty_discount">
             <span class="text-danger">
                 @error('loyalty_discount')
                     {{$message}}
@@ -225,7 +225,7 @@
         </div>
         <div class="form-group col-md-4">
             <label for="set_reminder_amount">Set Reminder Amount</label>
-            <input type="number" name="set_reminder_amount" min="0" value="{{old('set_reminder_amount',$customer->set_reminder_amount)}}" class="form-control" id="set_reminder_amount">
+            <input type="number" name="set_reminder_amount" min="0" step="0.01"  value="{{old('set_reminder_amount',$customer->set_reminder_amount)}}" class="form-control" id="set_reminder_amount">
             <span class="text-danger">
                 @error('set_reminder_amount')
                     {{$message}}

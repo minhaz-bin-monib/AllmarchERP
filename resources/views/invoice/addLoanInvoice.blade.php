@@ -2,7 +2,7 @@
 
 <!-- Set Title -->
 @push('title')
-    <title>Add Sample Invoice</title>
+    <title>Add Loan Invoice</title>
 @endpush
 
 @section('main-section')
@@ -80,9 +80,14 @@
                     </span>
                 </div>
                 <div class="form-group col-md-3">
-                    <label for="order_ref">Order Ref <span class="text-danger"><b>*</b></span></label>
-                    <input type="text" name="order_ref" value="{{ old('order_ref', $salesInvoice->order_ref) }}"
-                        class="form-control" id="order_ref">
+                    <label for="order_ref">Loan Type <span class="text-danger"><b>*</b></span></label>
+                    {{-- <input type="text" name="order_ref" value="{{ old('order_ref', $salesInvoice->order_ref) }}"
+                        class="form-control" id="order_ref"> --}}
+                        <select id="order_ref" name="order_ref" class="form-control">
+                            <option value="Loan Against L/C" {{ (old('order_ref', $salesInvoice->order_ref) == 'Loan Against L/C') ? 'selected' : '' }}>Loan Against L/C</option>
+                            <option value="Loan Return" {{ (old('order_ref', $salesInvoice->order_ref) == 'Loan Return') ? 'selected' : '' }}>Loan Return</option>
+                            <option value="As Loan" {{ (old('order_ref', $salesInvoice->order_ref) == 'As Loan') ? 'selected' : '' }}>As Loan</option>
+                        </select>
                     <span class="text-danger">
                         @error('order_ref')
                             {{ $message }}
@@ -248,9 +253,9 @@
                             </td>
                             <td>
                                 <a class=""
-                                    href="{{ url('/sampleInvoice/productStickar') }}/{{ $salesInvProd->salesInvoice_id }}/{{ $salesInvProd->salesInvoiceProduct_id }}">Special</a>
+                                    href="{{ url('/loanInvoice/productStickar') }}/{{ $salesInvProd->salesInvoice_id }}/{{ $salesInvProd->salesInvoiceProduct_id }}">Special</a>
                                     <a class="btn btn-sm btn-danger" 
-                                        onClick="confirmDelete('{{ url('/sampleInvoice/productDelete') }}/{{ $salesInvProd->salesInvoice_id }}/{{ $salesInvProd->salesInvoiceProduct_id }}')">
+                                        onClick="confirmDelete('{{ url('/loanInvoice/productDelete') }}/{{ $salesInvProd->salesInvoice_id }}/{{ $salesInvProd->salesInvoiceProduct_id }}')">
                                         <i class="fa fa-trash"></i>
                                     </a>    
                              </td>
@@ -327,10 +332,10 @@
             </div>
             <div class="row">
                 <div class="col-2">
-                    <a class="btn btn-sm btn-primary" href="{{ url('/sampleInvoice/sampleCustomerInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}" target="_blank">Customer Invoice</a>
+                    <a class="btn btn-sm btn-primary" href="{{ url('/loanInvoice/loanCustomerInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}" target="_blank">Customer Invoice</a>
                 </div>
                 <div class="col-2">
-                    <a class="btn btn-sm btn-primary" href="{{ url('/sampleInvoice/sampleDeliveryInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}" target="_blank">Customer Delivery</a>
+                    <a class="btn btn-sm btn-primary" href="{{ url('/loanInvoice/loanDeliveryInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}" target="_blank">Customer Delivery</a>
                 </div>
                 <div class="col-2">
                     <button class="btn btn-sm btn-primary">Small</button>

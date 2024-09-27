@@ -43,24 +43,24 @@
             </div>
             <div class="form-group col-md-4">
                 <label for="product_unit_price">Product Unit Price</label>
-                <input type="number" name="product_unit_price" value="{{old('product_unit_price',$product->product_unit_price)}}" min="0" class="form-control" id="product_unit_price" >
+                <input type="number" name="product_unit_price" step="0.01"  value="{{old('product_unit_price',$product->product_unit_price)}}" min="0" class="form-control" id="product_unit_price" >
             </div>
             <div class="form-group col-md-4">
                 <label for="product_actual_price">Product Actual Price</label>
-                <input type="number" name="product_actual_price" value="{{old('product_actual_price',$product->product_actual_price)}}" min="0" class="form-control" id="product_actual_price" >
+                <input type="number" name="product_actual_price" step="0.01"  value="{{old('product_actual_price',$product->product_actual_price)}}" min="0" class="form-control" id="product_actual_price" >
             </div>
     
             <div class="form-group col-md-4">
                 <label for="product_unit_price_c">Product Unit Price C</label>
-                <input type="number" name="product_unit_price_c" value="{{old('product_unit_price_c',$product->product_unit_price_c)}}" min="0" class="form-control" id="product_unit_price_c" >
+                <input type="number" name="product_unit_price_c" step="0.01"  value="{{old('product_unit_price_c',$product->product_unit_price_c)}}" min="0" class="form-control" id="product_unit_price_c" >
             </div>
             <div class="form-group col-md-4">
                 <label for="product_net_price">Product Net Price</label>
-                <input type="number" name="product_net_price" value="{{old('product_net_price',$product->product_net_price)}}" min="0" class="form-control" id="product_net_price" >
+                <input type="number" name="product_net_price" step="0.01"  value="{{old('product_net_price',$product->product_net_price)}}" min="0" class="form-control" id="product_net_price" >
             </div>
             <div class="form-group col-md-4">
                 <label for="atv_rate">ATV Rate (%)</label>
-                <input type="number" name="atv_rate" value="{{old('atv_rate',$product->atv_rate)}}" class="form-control" min="0" id="atv_rate" placeholder="ATV Rate (%)">
+                <input type="number" name="atv_rate" step="0.01"  value="{{old('atv_rate',$product->atv_rate)}}" class="form-control" min="0" id="atv_rate" placeholder="ATV Rate (%)">
             </div>
     
             <div class="form-group col-md-4">
@@ -77,7 +77,7 @@
             </div>
             <div class="form-group col-md-4">
                 <label for="product_packing">Product Packing</label>
-                <input type="number" name="product_packing" value="{{old('product_packing',$product->product_packing)}}" min="0" class="form-control" id="product_packing" >
+                <input type="number" name="product_packing" step="0.01"  value="{{old('product_packing',$product->product_packing)}}" min="0" class="form-control" id="product_packing" >
             </div>
     
             <div class="form-group col-md-4">
@@ -133,7 +133,7 @@
             </div>
             <div class="form-group col-md-4">
                 <label for="low_stock_alert">Low Stock Alert</label>
-                <input type="number" name="low_stock_alert" value="{{old('low_stock_alert',$product->low_stock_alert)}}" min="0" class="form-control" id="low_stock_alert" >
+                <input type="number" name="low_stock_alert" step="0.01"  value="{{old('low_stock_alert',$product->low_stock_alert)}}" min="0" class="form-control" id="low_stock_alert" >
             </div>
             <div class="form-group col-md-4">
                 <label for="product_description">Product Description</label>

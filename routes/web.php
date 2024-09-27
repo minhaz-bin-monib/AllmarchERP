@@ -8,6 +8,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\SalesInvoiceController;
 use App\Http\Controllers\SampleInvoiceController;
+use App\Http\Controllers\LoanInvoiceController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -106,5 +107,22 @@ Route::group(['prefix' => 'sampleInvoice'], function () {
     // APIs
     Route::get('sampleCustomerInvoicePdf/{salesInvoiceId}', [SampleInvoiceController::class, 'sampleCustomerInvoicePdf']);
     Route::get('sampleDeliveryInvoicePdf/{salesInvoiceId}', [SampleInvoiceController::class, 'sampleDeliveryInvoicePdf']);
+    
+});
+// ------------------------- Loan Invoice Routes ------------------------
+
+Route::group(['prefix' => 'loanInvoice'], function () {
+    //Route::get('list', [LoanInvoiceController::class, 'show']);
+    Route::get('create', [LoanInvoiceController::class, 'create']);
+    Route::post('create', [LoanInvoiceController::class, 'store']);
+    //Route::get('delete/{id}', [LoanInvoiceController::class, 'delete']);
+    Route::get('productDelete/{invoiceId}/{invoiceProductid}', [LoanInvoiceController::class, 'invoiceProductDelete']);
+    Route::get('productStickar/{invoiceId}/{invoiceProductid}', [LoanInvoiceController::class, 'invoiceProductStickar']);
+    Route::get('edit/{id}', [LoanInvoiceController::class, 'edit']);
+    Route::post('update/{id}', [LoanInvoiceController::class, 'update']);
+    
+    // APIs
+    Route::get('loanCustomerInvoicePdf/{salesInvoiceId}', [LoanInvoiceController::class, 'loanCustomerInvoicePdf']);
+    Route::get('loanDeliveryInvoicePdf/{salesInvoiceId}', [LoanInvoiceController::class, 'loanDeliveryInvoicePdf']);
     
 });

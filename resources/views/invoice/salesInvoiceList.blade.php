@@ -42,6 +42,9 @@
                        @elseif($slesInv->invoice_type_category == 'Sample')
                             <a class="" href="{{url('/sampleInvoice/edit')}}/{{$slesInv->salesInvoice_id}}"><i class="fa fa-edit"></i></a> 
                        
+                       @elseif($slesInv->invoice_type_category == 'Loan')
+                            <a class="" href="{{url('/loanInvoice/edit')}}/{{$slesInv->salesInvoice_id}}"><i class="fa fa-edit"></i></a> 
+                       
                        @endif
 
                     </td>
