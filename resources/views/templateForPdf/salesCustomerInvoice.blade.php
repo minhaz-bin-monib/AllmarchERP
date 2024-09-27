@@ -161,7 +161,7 @@
             <div class="floatClear"></div>
         </div>
         <div class="row middle textR" style="width: 97%">
-            Order Ref :
+            Order Ref : {{$salesInvoice->order_ref}}
         </div>
         <div class="row middle" style="width: 98%">
             <table style="width: 100%">
@@ -206,15 +206,15 @@
                     </tr>
                     @php
                         // Calculate discount and final total cost
-                        $discount = ($salesInvProd->enable_discount ? $salesInvProd->discount ?? 0.00 : 0.00);
+                        $discount = ($salesInvoice->enable_discount ? $salesInvoice->discount ?? 0.00 : 0.00);
                         $discountAmount = ($totalCost * ($discount/100)) ?? 0.00; // Calculate the discount amount
                         $finalTotalCost = ($totalCost - $discountAmount) ?? 00; // Final cost after discount
                      @endphp
-                    @if ($salesInvProd->enable_discount)
+                    @if ($salesInvoice->enable_discount)
                     <tr>
                         <td colspan="4"></td>
                       
-                        <td align="right">Discount Cash Purchase [ {{ number_format($salesInvProd->discount ?? 0.00, 2)}} %]</td>
+                        <td align="right">Discount Cash Purchase [ {{ number_format($salesInvoice->discount ?? 0.00, 2)}} %]</td>
                         <td align="right">{{$discountAmount == 0 ? '' : '-'}}{{number_format($discountAmount,2)}} Tk</td>
                     </tr>
                     <tr>

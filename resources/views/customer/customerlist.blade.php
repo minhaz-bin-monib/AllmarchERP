@@ -11,7 +11,7 @@
         
         <h5>Customers</h5>
     
-        <table class="table table-striped table-bordered">
+        <table id="myTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
                     <th>#SL</th>
@@ -45,6 +45,8 @@
         </table>
     </div>
     <script type="text/javascript">
+
+        let table = new DataTable('#myTable');
 
         function confirmDelete(url) {
                     if (confirm("Want to delete this item?")) {

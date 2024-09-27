@@ -12,7 +12,7 @@
         <h5>Sales Invoice List</h5>
 
        
-        <table class="table table-striped table-bordered">
+        <table id="myTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
                     <th>Invoice No</th>
@@ -35,18 +35,18 @@
                 <tr>
                     <td>{{$slesInv->salesInvoice_id}}</td>
                     <td> 
-                     @if($slesInv->invoice_type_category == 'Sales')
+                        @php
+                            $type = match($slesInv->invoice_type_category) {
+                                'Sales' => 'sales',
+                                'Sample' => 'sample',
+                                'Loan' => 'loan',
+                                default => null,
+                            };
+                         @endphp
                     
-                            <a class="" href="{{url('/salesInvoice/edit')}}/{{$slesInv->salesInvoice_id}}"><i class="fa fa-edit"></i></a> 
-                       
-                       @elseif($slesInv->invoice_type_category == 'Sample')
-                            <a class="" href="{{url('/sampleInvoice/edit')}}/{{$slesInv->salesInvoice_id}}"><i class="fa fa-edit"></i></a> 
-                       
-                       @elseif($slesInv->invoice_type_category == 'Loan')
-                            <a class="" href="{{url('/loanInvoice/edit')}}/{{$slesInv->salesInvoice_id}}"><i class="fa fa-edit"></i></a> 
-                       
-                       @endif
-
+                        <a class="" href="{{ url("/{$type}Invoice/edit/{$slesInv->salesInvoice_id}") }}">
+                            <i class="fa fa-edit"></i>
+                        </a>
                     </td>
                     <td>{{$slesInv->discount}} %</td>
                     <td>{{$slesInv->invoice_type}}</td>
@@ -56,8 +56,13 @@
                     <td>{{$slesInv->order_ref}}</td>
                     <td>{{$slesInv->remark}}</td>
                     <td>{{$slesInv->Company}}</td>
-                    <td>DO</td>
-                    <td>DO</td>
+                    <td>
+                   
+                        <a class="btn btn-sm btn-primary" href="{{ url("/{$type}Invoice/{$type}CustomerInvoicePdf/{$slesInv->salesInvoice_id}") }}" target="_blank">Invoice</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="{{ url("/{$type}Invoice/{$type}DeliveryInvoicePdf/{$slesInv->salesInvoice_id}") }}" target="_blank">Delivery</a>
+                    </td>
                     <td>
                     <a class="btn btn-sm btn-danger" 
                                         onClick="confirmDelete('{{ url('/salesInvoice/delete') }}/{{ $slesInv->salesInvoice_id }}')">
@@ -72,6 +77,8 @@
     </div>
 
     <script type="text/javascript">
+
+    let table = new DataTable('#myTable');
 
         function confirmDelete(url) {
                     if (confirm("Want to delete this item?")) {

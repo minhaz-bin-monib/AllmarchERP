@@ -11,7 +11,7 @@
         <h5>Batch List</h5>
 
        
-        <table class="table table-striped table-bordered">
+        <table id="myTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
                     <th>#SL</th>
@@ -45,7 +45,11 @@
             </tbody>
         </table>
     </div>
-   
+    <script type="text/javascript">
+
+        let table = new DataTable('#myTable');
+
+    </script>
 
     <!-- END View Content Here -->
 @endsection
