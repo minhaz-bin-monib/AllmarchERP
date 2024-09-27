@@ -15,6 +15,7 @@
             <thead>
                 <tr>
                     <th>#SL</th>
+                    <th>Edit</th>
                     <th>Customer Name</th>
                     <th>Referred By</th>
                     <th>Customer Phone</th>
@@ -26,21 +27,31 @@
             <tbody>
                 @foreach ($customers as $cust)
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
+                        <td style="width: 6%">{{ $loop->iteration }}</td>
+                        <td style="width: 5%">
+                            <a class="" href="{{ url('/customer/edit') }}/{{ $cust->customer_id }}"><i class="fa fa-edit"></i></a>
+                        </td>
                         <td>{{ $cust->customer_name }}</td>
                         <td>{{ $cust->customer_referred_by }}</td>
                         <td>{{ $cust->customer_phone }}</td>
                         <td>{{ $cust->customer_address }}</td>
                         <td>{{ $cust->registration_date }}</td>
-                        <td>
-                            <a class="btn btn-primary" href="{{ url('/customer/edit') }}/{{ $cust->customer_id }}">Edit</a>
-                            <a class="btn btn-danger" href="{{ url('/customer/delete') }}/{{ $cust->customer_id }}">Delete</a>
+                        <td style="width: 10%">
+                            <a class="btn btn-sm btn-danger"onClick="confirmDelete('{{ url('/customer/delete') }}/{{ $cust->customer_id }}')" ><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+    <script type="text/javascript">
+
+        function confirmDelete(url) {
+                    if (confirm("Want to delete this item?")) {
+                        window.location.href = url;
+                    }
+                }
+    </script>
 
 
     <!-- END View Content Here -->

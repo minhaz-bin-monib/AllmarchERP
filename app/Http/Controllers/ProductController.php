@@ -68,6 +68,7 @@ class ProductController extends Controller
         $product->h_s_code = $request['h_s_code'];
         $product->low_stock_alert = $request['low_stock_alert'];  
         $product->product_description = $request['product_description'];  
+        $product->second_material_description = $request['second_material_description'];  
         $product->product_generic = $request['product_generic'];
         $product->product_category = $request['product_category'] ; 
         $product->product_brand = $request['product_brand'];
@@ -139,6 +140,7 @@ class ProductController extends Controller
         $product->product_net_price = $request['product_net_price'];  
         $product->atv_rate = $request['atv_rate'];  
         $product->material_description = $request['material_description'];  
+        $product->second_material_description = $request['second_material_description'];  
         $product->product_packing = $request['product_packing'];  
         $product->import_information = $request['import_information'];  
         $product->h_s_code = $request['h_s_code'];

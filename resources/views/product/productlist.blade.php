@@ -16,6 +16,7 @@
             <thead>
                 <tr>
                     <th>#SL</th>
+                    <th>Edit</th>
                     <th>Name</th>
                     <th>Price</th>
                     <th>Created</th>
@@ -25,13 +26,15 @@
             <tbody>
                 @foreach($products as  $prod)
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
+                    <td style="width: 6%">{{ $loop->iteration }}</td>
+                    <td style="width: 5%">
+                        <a class="" href="{{url('/product/edit')}}/{{$prod->product_id}}"><i class="fa fa-edit"></i></a> 
+                    </td>
                     <td>{{$prod->product_name}}</td>
                     <td>{{$prod->product_unit_price}}</td>
                     <td>{{$prod->registration_date}}</td>
-                    <td> 
-                       <a class="btn btn-primary" href="{{url('/product/edit')}}/{{$prod->product_id}}">Edit</a> 
-                       <a class="btn btn-danger" href="{{url('/product/delete')}}/{{$prod->product_id}}">Delete</a> 
+                    <td style="width: 7%"> 
+                       <a class="btn btn-sm btn-danger"onClick="confirmDelete('{{url('/product/delete')}}/{{$prod->product_id}}')"><i class="fa fa-trash"></i></a> 
                     </td>
                 </tr>
                @endforeach
@@ -39,6 +42,15 @@
         </table>
    
     </div>
+    <script type="text/javascript">
+
+        function confirmDelete(url) {
+                    if (confirm("Want to delete this item?")) {
+                        window.location.href = url;
+                    }
+                }
+    </script>
+
 
     <!-- END View Content Here -->
 @endsection

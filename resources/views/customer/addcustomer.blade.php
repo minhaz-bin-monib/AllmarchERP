@@ -243,12 +243,11 @@
         </div>
         <div class="form-group col-md-4">
         <label for="customer_grade">Customer Status</label>
-            <select name="customer_grade" class="form-control">
-                <option value="" selected="">Select</option>
-                <option value="Active">Active</option>
-                <option value="Inactive">Inactive</option>
-         
-            </select>
+        <select name="customer_grade" class="form-control">
+            <option value="" {{ old('customer_grade', $customer->customer_grade) == '' ? 'selected' : '' }}>Select</option>
+            <option value="Active" {{ old('customer_grade', $customer->customer_grade) == 'Active' ? 'selected' : '' }}>Active</option>
+            <option value="Inactive" {{ old('customer_grade', $customer->customer_grade) == 'Inactive' ? 'selected' : '' }}>Inactive</option>
+        </select>
         </div>
         <div class="form-group col-md-4">
             <label for="customer_image">Customer Image</label>
