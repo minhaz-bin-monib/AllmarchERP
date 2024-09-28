@@ -2,7 +2,7 @@
 
 <!-- Set Title -->
 @push('title')
-    <title>Products</title>
+    <title>Invoice List</title>
 @endpush
 
 @section('main-section')
@@ -15,8 +15,9 @@
         <table id="myTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>Invoice No</th>
+                    <th>Invoice ID</th>
                     <th>Edit</th>
+                    <th>Customer Name</th>
                     <th>Discount(%)</th>
                     <th>Invoice Type</th>
                     <th>Created</th>
@@ -48,6 +49,7 @@
                             <i class="fa fa-edit"></i>
                         </a>
                     </td>
+                    <td>{{$slesInv->customer_name}}</td>
                     <td>{{$slesInv->discount}} %</td>
                     <td>{{$slesInv->invoice_type}}</td>
                     <td>{{$slesInv->registration_date}}</td>
@@ -55,7 +57,8 @@
                     <td>{{$slesInv->delivery_by}}</td>
                     <td>{{$slesInv->order_ref}}</td>
                     <td>{{$slesInv->remark}}</td>
-                    <td>{{$slesInv->Company}}</td>
+                    {{-- <td>{{$slesInv->Company}}</td> --}}
+                    <td>All-March Bangladesh</td>
                     <td>
                    
                         <a class="btn btn-sm btn-primary" href="{{ url("/{$type}Invoice/{$type}CustomerInvoicePdf/{$slesInv->salesInvoice_id}") }}" target="_blank">Invoice</a>
@@ -77,8 +80,13 @@
     </div>
 
     <script type="text/javascript">
-
-    let table = new DataTable('#myTable');
+  
+        let table = new DataTable('#myTable', {
+            perPage: 10, // Number of entries per page
+            sortable: true, // Allow sorting
+            order: [[0, 'desc']], // Maintain initial order based on first column
+        });
+    //let table = new DataTable('#myTable');
 
         function confirmDelete(url) {
                     if (confirm("Want to delete this item?")) {

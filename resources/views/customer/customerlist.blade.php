@@ -14,7 +14,7 @@
         <table id="myTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>#SL</th>
+                    <th>Customer ID</th>
                     <th>Edit</th>
                     <th>Customer Name</th>
                     <th>Referred By</th>
@@ -27,7 +27,7 @@
             <tbody>
                 @foreach ($customers as $cust)
                     <tr>
-                        <td style="width: 6%">{{ $loop->iteration }}</td>
+                        <td style="width: 6%">{{ $cust->customer_id }}</td>
                         <td style="width: 5%">
                             <a class="" href="{{ url('/customer/edit') }}/{{ $cust->customer_id }}"><i class="fa fa-edit"></i></a>
                         </td>
@@ -46,7 +46,12 @@
     </div>
     <script type="text/javascript">
 
-        let table = new DataTable('#myTable');
+        let table = new DataTable('#myTable', {
+            perPage: 10, // Number of entries per page
+            sortable: true, // Allow sorting
+            order: [[0, 'desc']], // Maintain initial order based on first column
+        });
+       // let table = new DataTable('#myTable');
 
         function confirmDelete(url) {
                     if (confirm("Want to delete this item?")) {

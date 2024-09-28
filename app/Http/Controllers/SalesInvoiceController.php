@@ -17,9 +17,16 @@ class SalesInvoiceController extends Controller
     // [httpGet]
     public function show()
     {
-        $salesInvoices = SalesInvoice::where('action_type', '!=', 'DELETE')
-            ->orderBy('salesInvoice_id', 'desc')
-            ->get();
+        // $salesInvoices = SalesInvoice::where('action_type', '!=', 'DELETE')
+        //     ->orderBy('salesInvoice_id', 'desc')
+        //     ->get();
+        $salesInvoices =  DB::table('invoices')
+         ->join('customers', 'invoices.customer_id', '=', 'customers.customer_id')
+        ->where('invoices.action_type', '!=', 'DELETE')
+        ->select('invoices.*', 'customers.customer_name')
+        ->orderBy('invoices.salesInvoice_id', 'desc')
+        ->get();
+
 
         $data = compact('salesInvoices');
 
