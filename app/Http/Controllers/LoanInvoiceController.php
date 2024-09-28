@@ -197,7 +197,7 @@ class LoanInvoiceController extends Controller
                $salesInvoice->remark = $request['remark'];
                $salesInvoice->discount = $request['discount'];
                $salesInvoice->enable_discount = $request['enable_discount'];
-               $salesInvoice->invoice_type = 'Statement';
+               $salesInvoice->invoice_type = 'Loan';
                $salesInvoice->action_type = 'UPDATE';
                $salesInvoice->user_id = 'sys-user';
                $salesInvoice->action_date = now();

@@ -12,7 +12,10 @@
 
         .container {
             margin: 40px;
-            /* border: 1px solid #ddd; */
+            margin: 40px;
+            position: relative;
+            z-index: 1;
+            padding: 20px;
         }
 
         .row {
@@ -121,6 +124,18 @@
             border-top: 1px solid #000;
             padding: 10px 0;
         }
+        .watermark {
+            position: absolute;
+            top: 30%;
+            left: 42%;
+            transform: translate(-50%, -50%) rotate(-27deg);
+            font-size: 10em;
+            color: rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: -1;
+            font-size: 180px;
+        }
     </style>
 </head>
 
@@ -144,7 +159,8 @@
         </div>
         <!-- title row -->
         <div class="row textC" style="margin-bottom: 20px">
-            <h2 style="font-size: 16px;">Delivery Receipt</h2>
+            <h2 style="font-size: 16px;">Sample Delivery</h2>
+            <div class="watermark">Sample</div>
         </div>
 
         <div class="row middle" style="width: 97%">

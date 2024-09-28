@@ -198,7 +198,7 @@ class SampleInvoiceController extends Controller
                $salesInvoice->remark = $request['remark'];
                $salesInvoice->discount = $request['discount'];
                $salesInvoice->enable_discount = $request['enable_discount'];
-               $salesInvoice->invoice_type = 'Statement';
+               $salesInvoice->invoice_type = 'Sample';
                $salesInvoice->action_type = 'UPDATE';
                $salesInvoice->user_id = 'sys-user';
                $salesInvoice->action_date = now();
@@ -317,7 +317,7 @@ class SampleInvoiceController extends Controller
    // [httpGet]
    public function sampleCustomerInvoicePdf($salesInvoiceId)
    {
-    /*
+    
        $numberToWords = new NumberToWords();
        $converter = $numberToWords->getNumberTransformer('en');
        $options = new Options();
@@ -348,20 +348,20 @@ class SampleInvoiceController extends Controller
 
            $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
 
-           $html = view('templateForPdf.salesCustomerInvoice')->with($data)->render();
+           $html = view('templateForPdf.sampleCustomerInvoice')->with($data)->render();
    
            $dompdf->loadHtml($html);
            $dompdf->setPaper('A4', 'portrait');
            $dompdf->render();
            return $dompdf->stream('Invoice.pdf', ['Attachment' => false]);
        }
-    */
+    
        // If pdf not gennrate then return into Invoice list
        return redirect('/salesInvoice/list');
    }
    public function sampleDeliveryInvoicePdf($salesInvoiceId)
    {
-     /*
+     
        $numberToWords = new NumberToWords();
        $converter = $numberToWords->getNumberTransformer('en');
        $options = new Options();
@@ -392,14 +392,14 @@ class SampleInvoiceController extends Controller
 
            $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
 
-           $html = view('templateForPdf.salesDeliveryInvoice')->with($data)->render();
+           $html = view('templateForPdf.sampleDeliveryInvoice')->with($data)->render();
    
            $dompdf->loadHtml($html);
            $dompdf->setPaper('A4', 'portrait');
            $dompdf->render();
            return $dompdf->stream('Invoice.pdf', ['Attachment' => false]);
        }
-        */
+        
        // If pdf not gennrate then return into Invoice list
        return redirect('/salesInvoice/list');
    }
