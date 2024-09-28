@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-4"></div>
                 <div class="col-8">
-                    <select id="existingBatchItems" name="existingBatch" id="existingBatch" class="form-control text-primary">
+                    <select data-live-search="true" id="existingBatchItems" name="existingBatch" id="existingBatch" class="form-control text-primary">
     
                     </select>
                 </div>
@@ -47,7 +47,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="product_id"> Product Name <span class="text-danger"><b>*</b></span></label>
-                            <select id="products" name="product_id" class="form-control">
+                            <select data-live-search="true" id="products" name="product_id" class="form-control">
                                 <option value="" selected="">Select</option>
     
                             </select>
@@ -69,7 +69,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="customer_id"> Customer Name <span class="text-danger"><b>*</b></span></label>
-                            <select id="customers" name="customer_id" class="form-control">
+                            <select data-live-search="true" id="customers" name="customer_id" class="form-control">
                                 <option value="" selected="">Select</option>
                             </select>
                             <span class="text-danger">
@@ -153,8 +153,12 @@
         let productList = [];
         let customerList = [];
         let batchList = [];
-
+        
         $(document).ready(function() {
+         
+
+           $('#customers').selectpicker();
+           $('#products').selectpicker();
             $.ajax({
                 url: "{{ url('/customer/getList') }}",
                 method: 'GET',
@@ -165,37 +169,40 @@
                         $('#customers').append('<option value="' + customer.customer_id + '">' +
                             customer
                             .customer_name + '</option>');
-                    });
-                }
-
-            });
-            $.ajax({
-                url: "{{ url('/product/getList') }}",
-                method: 'GET',
-                success: function(data) {
-                    //console.log(data);
-                    productList = data;
-                    $.each(data, function(key, customer) {
-                        $('#products').append('<option value="' + customer.product_id + '">' +
-                            customer
-                            .product_name + '</option>');
-                    });
-                }
-            });
-
-            $('#products').on('change', function() {
-                var productId = $(this).val();
-                //debugger;
-                let product = productList.find(f => f.product_id == productId);
+                        });
+                        $('#customers').selectpicker('refresh');
+                    }
+                    
+                    
+                });
+                $.ajax({
+                    url: "{{ url('/product/getList') }}",
+                    method: 'GET',
+                    success: function(data) {
+                        //console.log(data);
+                        productList = data;
+                        $.each(data, function(key, customer) {
+                            $('#products').append('<option value="' + customer.product_id + '">' +
+                                customer
+                                .product_name + '</option>');
+                            });
+                            $('#products').selectpicker('refresh');
+                    }
+                });
+                
+                $('#products').on('change', function() {
+                    var productId = $(this).val();
+                    //debugger;
+                    let product = productList.find(f => f.product_id == productId);
                 //console.log(product);
                 $('#batch_title').val(product.product_name.toUpperCase());
                 $('#batch_packing').val(product.product_packing);
                 $('#import_info').val(product.import_information);
-
+                
                 $('#Material_Desc').text(product.material_description);
                 $('#Types_Desc').text('');
                 $('#H_S_Code').text(product.h_s_code);
-
+                
                 if (productId) {
                     $.ajax({
                         url: "{{ url('/batch/getBatchByProductId') }}/" + productId,
@@ -203,16 +210,16 @@
                         dataType: "json",
                         success: function(data) {
                             batchList = data;
-
+                            
                             $('#existingBatchItems').empty();
                             $('#existingBatchItems').append(
                                 '<option value="">Existing Batch List (' + data.length +
-                                ')</option>');
-                            $.each(data, function(key, item) {
+                                    ')</option>');
+                                    $.each(data, function(key, item) {
                                 let customer = customerList.find(f => f.customer_id ==
                                     item.customer_id);
-
-                                $('#existingBatchItems').append('<option value="' + item
+                                    
+                                    $('#existingBatchItems').append('<option value="' + item
                                     .batch_id + '">' +
                                     item.batch_no + ', ' + item.production_date +
                                     ', ' + item.expire_date + ', ' +
@@ -226,15 +233,15 @@
                     $('#existingBatchItems').append('<option value="">Existing Batch List</option>');
                 }
             });
-
+            
             $('#existingBatchItems').on('change', function() {
                 var batchId = $(this).val();
                 //debugger;
                 if (batchId) {
-
+                    
                     let batchProduct = batchList.find(f => f.batch_id == batchId);
                     //console.log(batchProduct);
-
+                    
                     $('#production_date').val(batchProduct.production_date);
                     $('#expire_date').val(batchProduct.expire_date);
                     $('#batch_no').val(batchProduct.batch_no);
@@ -243,10 +250,11 @@
                     $('#remark').val(batchProduct.remark);
                 }
 
-
-
+                
+                
             });
         });
     </script>
     <!-- END View Content Here -->
-@endsection
+    @endsection
+    

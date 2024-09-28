@@ -27,7 +27,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="customer_id"> Select Customer <span class="text-danger"><b>*</b></span></label>
-                    <select id="customers" name="customer_id" class="form-control">
+                    <select data-live-search="true" id="customers" name="customer_id" class="form-control">
                         <option value="" selected="">Select</option>
                     </select>
                     <span class="text-danger">
@@ -57,7 +57,7 @@
                 </div>
                 <div class="form-group col-md-3">
                     <label for="product_id"> Select Product <span class="text-danger"><b>*</b></span></label>
-                    <select id="products" name="product_id" class="form-control">
+                    <select data-live-search="true" id="products" name="product_id" class="form-control">
                         <option value="" selected="">Select</option>
 
                     </select>
@@ -369,6 +369,8 @@
             }
         }
         $(document).ready(function() {
+            $('#customers').selectpicker();
+            $('#products').selectpicker();
             $.ajax({
                 url: "{{ url('/customer/getList') }}",
                 method: 'GET',
@@ -390,6 +392,7 @@
                             isSelected + '>' +
                             customer.customer_name + '</option>');
                     });
+                    $('#customers').selectpicker('refresh');
                 }
             });
 
@@ -413,6 +416,7 @@
                             isSelected + '>' +
                             product.product_name + '</option>');
                     });
+                    $('#products').selectpicker('refresh');
                 }
             });
 

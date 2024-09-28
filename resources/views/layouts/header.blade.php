@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{ asset('bootstrap/css/datatable.css') }}">
     <script src="{{ asset('bootstrap/js/datatable.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bootstrap/css/select.css') }}">
     <link rel="stylesheet" href="{{ asset('bootstrap/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('bootstrap/css/style.css') }}">
 
