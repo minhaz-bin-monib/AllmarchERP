@@ -316,7 +316,7 @@ class LoanInvoiceController extends Controller
    // [httpGet]
    public function loanCustomerInvoicePdf($salesInvoiceId)
    {
-    /*
+    
        $numberToWords = new NumberToWords();
        $converter = $numberToWords->getNumberTransformer('en');
        $options = new Options();
@@ -347,20 +347,20 @@ class LoanInvoiceController extends Controller
 
            $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
 
-           $html = view('templateForPdf.salesCustomerInvoice')->with($data)->render();
+           $html = view('templateForPdf.loanCustomerInvoice')->with($data)->render();
    
            $dompdf->loadHtml($html);
            $dompdf->setPaper('A4', 'portrait');
            $dompdf->render();
            return $dompdf->stream('Invoice.pdf', ['Attachment' => false]);
        }
-    */
+    
        // If pdf not gennrate then return into Invoice list
        return redirect('/salesInvoice/list');
    }
    public function loanDeliveryInvoicePdf($salesInvoiceId)
    {
-     /*
+     
        $numberToWords = new NumberToWords();
        $converter = $numberToWords->getNumberTransformer('en');
        $options = new Options();
@@ -391,14 +391,14 @@ class LoanInvoiceController extends Controller
 
            $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
 
-           $html = view('templateForPdf.salesDeliveryInvoice')->with($data)->render();
+           $html = view('templateForPdf.loanDeliveryInvoice')->with($data)->render();
    
            $dompdf->loadHtml($html);
            $dompdf->setPaper('A4', 'portrait');
            $dompdf->render();
            return $dompdf->stream('Invoice.pdf', ['Attachment' => false]);
        }
-        */
+        
        // If pdf not gennrate then return into Invoice list
        return redirect('/salesInvoice/list');
    }
