@@ -9,6 +9,7 @@ use App\Http\Controllers\BatchController;
 use App\Http\Controllers\SalesInvoiceController;
 use App\Http\Controllers\SampleInvoiceController;
 use App\Http\Controllers\LoanInvoiceController;
+use App\Http\Controllers\TransferInvoiceController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -124,5 +125,24 @@ Route::group(['prefix' => 'loanInvoice'], function () {
     // APIs
     Route::get('loanCustomerInvoicePdf/{salesInvoiceId}', [LoanInvoiceController::class, 'loanCustomerInvoicePdf']);
     Route::get('loanDeliveryInvoicePdf/{salesInvoiceId}', [LoanInvoiceController::class, 'loanDeliveryInvoicePdf']);
+    
+});
+
+
+// ------------------------- Transfer Invoice Routes ------------------------
+
+Route::group(['prefix' => 'transferInvoice'], function () {
+    Route::get('list', [TransferInvoiceController::class, 'show']);
+    Route::get('create', [TransferInvoiceController::class, 'create']);
+    Route::post('create', [TransferInvoiceController::class, 'store']);
+    Route::get('delete/{id}', [TransferInvoiceController::class, 'delete']);
+    Route::get('productDelete/{invoiceId}/{invoiceProductid}', [TransferInvoiceController::class, 'invoiceProductDelete']);
+    Route::get('productStickar/{invoiceId}/{invoiceProductid}', [TransferInvoiceController::class, 'invoiceProductStickar']);
+    Route::get('edit/{id}', [TransferInvoiceController::class, 'edit']);
+    Route::post('update/{id}', [TransferInvoiceController::class, 'update']);
+    
+    // APIs
+   // Route::get('transferCustomerInvoicePdf/{transferInvoiceId}', [TransferInvoiceController::class, 'transferCustomerInvoicePdf']);
+   // Route::get('transferDeliveryInvoicePdf/{transferInvoiceId}', [TransferInvoiceController::class, 'transferDeliveryInvoicePdf']);
     
 });

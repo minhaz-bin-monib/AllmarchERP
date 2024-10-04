@@ -72,6 +72,7 @@
                             </li>
                         </ul>
                     </li>
+                    
                     <li>
                         <a href="#employeeSubmenu" data-bs-toggle="collapse" aria-expanded="false"
                             class="dropdown-toggle">Employee </a>
@@ -117,6 +118,18 @@
                             </li>
                             <li>
                                 <a href="{{ url('/batch/list') }}">Batchs</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#transferSubmenu" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle">Transfer</a>
+                        <ul class="collapse list-unstyled" id="transferSubmenu">
+                            <li>
+                                <a href="{{ url('/transferInvoice/create') }}">Add Transfer Invoice</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('/transferInvoice/list') }}">Transfer List</a>
                             </li>
                         </ul>
                     </li>
