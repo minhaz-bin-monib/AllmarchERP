@@ -19,8 +19,9 @@ class TransferInvoiceController extends Controller
      {
          $transferInvoices =  DB::table('transfer_invoices')
           ->join('customers', 'transfer_invoices.customer_id', '=', 'customers.customer_id')
+          ->join('products', 'transfer_invoices.product_id', '=', 'products.product_id')
          ->where('transfer_invoices.action_type', '!=', 'DELETE')
-         ->select('transfer_invoices.*', 'customers.customer_name')
+         ->select('transfer_invoices.*', 'customers.customer_name', 'products.product_name')
          ->orderBy('transfer_invoices.transferInvoice_id', 'desc')
          ->get();
  

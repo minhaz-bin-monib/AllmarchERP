@@ -17,17 +17,16 @@
                 <tr>
                     <th>Invoice ID</th>
                     <th>Edit</th>
-                    <th>Customer Name</th>
-                    <th>Discount(%)</th>
-                    <th>Invoice Type</th>
-                    <th>Created</th>
                     <th>Invoice Date</th>
-                    <th>Delivery By</th>
-                    <th>Reference</th>
-                    <th>Remark</th>
+                    <th>Delivery Date</th>
                     <th>Company</th>
+                    <th>Customer Name</th>
+                    <th>Product Name</th>
+                    <th>Order No</th>
+                    <th>Amount (USD)</th>
+                    <th>Amount (BDT)</th>
                     <th>Statement</th>
-                    <th>Action</th>
+                    {{-- <th>Action</th> --}}
                 </tr>
             </thead>
             <tbody>
@@ -40,32 +39,35 @@
                                 'Transfer' => 'transfer',
                                 default => null,
                             };
+                            $totalQuntity = $transferInv->packing * $transferInv->no_of_packing;
+                            $totalAmountUSD  = $totalQuntity * $transferInv->unit_price;
+                            $totalAmountBDT = $totalAmountUSD * 120;
                          @endphp
                     
                         <a class="" href="{{ url("/{$type}Invoice/edit/{$transferInv->transferInvoice_id}") }}">
                             <i class="fa fa-edit"></i>
                         </a>
                     </td>
-                    <td>{{$transferInv->customer_name}}</td>
-                    <td>{{$transferInv->discount}} %</td>
-                    <td>{{$transferInv->invoice_type}}</td>
-                    <td>{{$transferInv->registration_date}}</td>
                     <td>{{$transferInv->invoice_date}}</td>
-                    <td>{{$transferInv->delivery_by}}</td>
-                    <td>{{$transferInv->order_ref}}</td>
-                    <td>{{$transferInv->remark}}</td>
+                    <td>{{$transferInv->delivery_date}}</td>
+                    <td>Company DO</td>
+                    <td>{{$transferInv->customer_name}}</td>
+                    <td>{{$transferInv->product_name}} 
+                        ({{$transferInv->packing}}x{{$transferInv->no_of_packing}}={{$totalQuntity}}) 
+                        //{{$transferInv->unit_price}} Tk</td>
+                    <td>{{$transferInv->proforma_invoice}}</td>
+                    <td>{{number_format($totalAmountUSD,2)}}</td>
+                    <td>{{number_format($totalAmountBDT,2)}} DO</td>
                     {{-- <td>{{$transferInv->Company}}</td> --}}
-                    <td>All-March Bangladesh</td>
-                   
                     <td>
                         <a class="btn btn-sm btn-primary" href="{{ url("/{$type}Invoice/customerStatemnetInvoices/{$transferInv->transferInvoice_id}/{$transferInv->customer_id}") }}" target="_blank">Statement</a>
                     </td>
-                    <td>
+                    {{-- <td>
                     <a class="btn btn-sm btn-danger" 
                                         onClick="confirmDelete('{{ url('/transferInvoice/delete') }}/{{ $transferInv->transferInvoice_id }}')">
                                         <i class="fa fa-trash"></i>
                                     </a>   
-                    </td>
+                    </td> --}}
                 </tr>
                @endforeach
             </tbody>
