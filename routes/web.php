@@ -142,7 +142,7 @@ Route::group(['prefix' => 'transferInvoice'], function () {
     Route::post('update/{id}', [TransferInvoiceController::class, 'update']);
     
     // APIs
-   // Route::get('transferCustomerInvoicePdf/{transferInvoiceId}', [TransferInvoiceController::class, 'transferCustomerInvoicePdf']);
-   // Route::get('transferDeliveryInvoicePdf/{transferInvoiceId}', [TransferInvoiceController::class, 'transferDeliveryInvoicePdf']);
+    Route::get('proformaInvoicePdf/{transferInvoiceId}', [TransferInvoiceController::class, 'proformaInvoicePdf']);
+    Route::get('commercialInvoicePdf/{transferInvoiceId}', [TransferInvoiceController::class, 'commercialInvoicePdf']);
     
 });

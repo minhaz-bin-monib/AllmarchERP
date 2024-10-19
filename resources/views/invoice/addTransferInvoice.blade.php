@@ -411,26 +411,24 @@
             <div class="row">
                 <div class="col-2">
                     <a class="btn btn-sm btn-primary"
-                        href="{{ url('/transferInvoice/salesCustomerInvoicePdf') }}/{{ $transferInvoice->transferInvoice_id }}"
-                        target="_blank">Customer Invoice</a>
+                        href="{{ url('/transferInvoice/proformaInvoicePdf') }}/{{ $transferInvoice->transferInvoice_id }}"
+                        target="_blank">Proforma Invoice</a>
                 </div>
                 <div class="col-2">
                     <a class="btn btn-sm btn-primary"
-                        href="{{ url('/transferInvoice/salesDeliveryInvoicePdf') }}/{{ $transferInvoice->transferInvoice_id }}"
-                        target="_blank">Customer Delivery</a>
+                        href="{{ url('/transferInvoice/commercialInvoicePdf') }}/{{ $transferInvoice->transferInvoice_id }}"
+                        target="_blank">Commercial Invoice</a>
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-sm btn-primary">Small</button>
+                    <button class="btn btn-sm btn-primary">Delivery Challan</button>
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-sm btn-primary">Special Invoice</button>
+                    <button class="btn btn-sm btn-primary">Packing List</button>
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-sm btn-primary">Special Delivery</button>
+                    <button class="btn btn-sm btn-primary">Truck Receipt</button>
                 </div>
-                <div class="col-2">
-                    <button class="btn btn-sm btn-primary">Special Calculate</button>
-                </div>
+               
             </div>
         @endif
     </div>
