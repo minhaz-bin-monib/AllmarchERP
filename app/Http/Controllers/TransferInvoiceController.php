@@ -63,6 +63,7 @@ class TransferInvoiceController extends Controller
                  'unit_price' => 'required',
                  'invoice_date' => 'required',
                  'delivery_date' => 'required',
+                 'company' => 'required',
              ]
          );
  
@@ -86,6 +87,7 @@ class TransferInvoiceController extends Controller
              $transferInvoice->delivery_by = $request['delivery_by'];
              $transferInvoice->remark = $request['remark'];
              $transferInvoice->discount = $request['discount'];
+             $transferInvoice->company = $request['company'];
              $transferInvoice->enable_discount = $request['enable_discount'];
              $transferInvoice->invoice_type = 'Statement';
              $transferInvoice->invoice_type_category = 'Transfer';
@@ -182,6 +184,7 @@ class TransferInvoiceController extends Controller
                  'unit_price' => 'required',
                  'invoice_date' => 'required',
                  'delivery_date' => 'required',
+                 'company' => 'required',
              ]
          );
  
@@ -207,6 +210,7 @@ class TransferInvoiceController extends Controller
                  $transferInvoice->delivery_by = $request['delivery_by'];
                  $transferInvoice->remark = $request['remark'];
                  $transferInvoice->discount = $request['discount'];
+                 $transferInvoice->company = $request['company'];
                  $transferInvoice->enable_discount = $request['enable_discount'];
                  $transferInvoice->invoice_type = 'Statement';
                  $transferInvoice->action_type = 'UPDATE';

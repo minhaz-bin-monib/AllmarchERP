@@ -192,7 +192,7 @@
                                 @enderror
                             </span>
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-3">
                             <label for="discount">Discount (%)</label>
                             <input type="text" name="discount"
                                 value="{{ old('discount', $transferInvoice->discount) }}" class="form-control"
@@ -203,13 +203,26 @@
                                 @enderror
                             </span>
                         </div>
-                        <div class="form-group col-md-6 mt-4">
+                        <div class="form-group col-md-3 mt-4">
                             <label for="enable_discount">Enable Discount (%)</label> &nbsp;
                             <input type="hidden" name="enable_discount" value="0">
                             <input type="checkbox" name="enable_discount" value="1"
                                 {{ old('enable_discount', $transferInvoice->enable_discount) ? 'checked' : '' }}
                                 id="enable_discount"> <span class="text-danger">
                                 @error('enable_discount')
+                                    {{ $message }}
+                                @enderror
+                            </span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="company"> Company <span class="text-danger"><b>*</b></span></label>
+                            <select data-live-search="true" id="company" name="company" class="form-control">
+                                <option value="" {{ old('company', $transferInvoice->company) == '' ? 'selected' : '' }}>Select</option>
+                                <option value="Allmarch Bangladesh" {{ old('company', $transferInvoice->company) == 'Allmarch Bangladesh' ? 'selected' : '' }}>All-March Bangladesh Ltd.</option>
+                                <option value="Allmarch International" {{ old('company', $transferInvoice->company) == 'Allmarch International' ? 'selected' : '' }}>M/S. Allmarch International.</option>
+                            </select>
+                            <span class="text-danger">
+                                @error('company')
                                     {{ $message }}
                                 @enderror
                             </span>
@@ -283,15 +296,15 @@
                 <div class="col-4">
                 </div>
                 <div class="col-4">
-                    <input type="checkbox" /> Batch Number &nbsp;
-                    <input type="checkbox" /> Seal Signature
+                    {{-- <input type="checkbox" /> Batch Number &nbsp;
+                    <input type="checkbox" /> Seal Signature --}}
                 </div>
                 <div class="col-4">
-                    <select name="" id="" class="form-control">
+                    {{-- <select name="" id="" class="form-control">
                         <option value="">All-March Bangladesi</option>
                         <option value="">All-March International</option>
                         <option value="">All-March Need to work</option>
-                    </select>
+                    </select> --}}
                 </div>
             </div>
             <table class="table table-striped table-bordered">

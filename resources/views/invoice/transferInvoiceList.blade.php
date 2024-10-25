@@ -50,7 +50,13 @@
                     </td>
                     <td>{{$transferInv->invoice_date}}</td>
                     <td>{{$transferInv->delivery_date}}</td>
-                    <td>Company DO</td>
+                    <td>
+                        @if($transferInv->company == 'Allmarch Bangladesh')
+                            All-March Bangladesh Ltd.
+                        @elseif($transferInv->company == 'Allmarch International')
+                            M/S. Allmarch International.
+                        @endif
+                    </td>
                     <td>{{$transferInv->customer_name}}</td>
                     <td>{{$transferInv->product_name}} 
                         ({{$transferInv->packing}}x{{$transferInv->no_of_packing}}={{$totalQuntity}}) 

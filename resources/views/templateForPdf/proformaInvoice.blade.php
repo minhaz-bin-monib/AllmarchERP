@@ -142,16 +142,40 @@
 <body>
 
     <div class="container">
+        @php
+            $companylogoName = 'local';
+            $companyName = 'All-March Bangladesh Limited';
+            $companySubTitle = 'We are always around you';
+            $buyerNameImg = '';
+            $buyerSignature = '';
+            $footerAddress = '';
 
+            if ($transferInvoice->company == 'Allmarch Bangladesh') {
+                $companylogoName = 'local';
+                $companyName = 'All-March Bangladesh Limited';
+                $companySubTitle = 'We are always around you';
+                $buyerNameImg = 'turankimya';
+                $buyerSignature = 'turansign';
+                $footerAddress = 'local';
+            } elseif ($transferInvoice->company == 'Allmarch International') {
+                $companylogoName = 'international';
+                $companyName = 'M/S. ALLMARCH INTERNATIONAL';
+                $companySubTitle = '';
+                $buyerNameImg = '';
+                $buyerSignature = 'turansignnano';
+                $footerAddress = 'international';
+            }
+        @endphp
         <div class="row w-70 middle ">
             <div class="w-10 floatL" style="margin-top: -9px; margin-left:5px">
-                <img class="img-responsive pull-left"
-                    src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('img/logo.jpg'))) }}"
+                <img class="img-responsive pull-left" width="90px" height="80px"
+                    src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('img/' . $companylogoName . '.jpg'))) }}"
                     alt="User profile picture">
             </div>
             <div class="w-70 floatL">
-                <h1 class="textC" style="font-size: 18px;">M/S. ALLMARCH INTERNATIONAL</h1>
-                <p class="textC" style="color:grey; font: 16px Blackadder ITC, Arial;"><i></i>
+
+                <h1 class="textC" style="font-size: 20px;">{{ $companyName }}</h1>
+                <p class="textC" style="color:grey; font: 16px Blackadder ITC, Arial;"><i>{{ $companySubTitle }}</i>
                 </p>
 
             </div>
@@ -165,15 +189,23 @@
             <h2 style="font-size: 16px;">PROFORMA INVOICE</h2>
         </div>
 
-        <div class="row middle" style="width: 97%">
+        <div class="row middle" style="width: 100%">
             <div class="w-50 floatL">
                 <p>BUYER NAME:</p>
                 <p>
                     <br>
-                    <b style="color:black; font: 16px Arial Narrow, Arial;">Nanoprint Kimya San. A.S</b><br>
-                    <b style="color:black; font: 12px Arial Narrow, Arial;">IDOSB Kazlice§me cad. No:20/A
-                        Aydnili-Tuzla</b><br>
-                    <b style="color:black; font: 12px Arial Narrow, Arial;">34000 Istanbul, TURKEY</b>
+                    @if ($buyerNameImg == '')
+                        
+                        <b style="color:black; font: 16px Arial Narrow, Arial;">Nanoprint Kimya San. A.S</b><br>
+                        <b style="color:black; font: 12px Arial Narrow, Arial;">IDOSB Kazlice§me cad. No:20/A
+                            Aydnili-Tuzla</b><br>
+                        <b style="color:black; font: 12px Arial Narrow, Arial;">34000 Istanbul, TURKEY</b>
+
+                    @elseif($buyerNameImg == 'turankimya')
+                        <img class="img-responsive pull-left" width="" height="100px"
+                            src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('img/' . $buyerNameImg . '.jpg'))) }}"
+                            alt="User profile picture">
+                    @endif
                 </p>
             </div>
             <div class="w-50 floatL textR">
@@ -265,12 +297,12 @@
                             <td class="textR"></td>
                             <td></td>
                             <td class="textR"></td>
-                            <td class="textR">TOTAL:</td>
+                            <td class="textR"><b>TOTAL:</b></td>
                             <td class="textR">{{ number_format($totalPrice) }}</td>
 
                         </tr>
                     @endforeach
-                  
+
                 </tbody>
             </table>
             Payment Method: FTT
@@ -279,21 +311,30 @@
 
         <div class="row  middle" style="margin-top: 150px; width:97%">
             <div class="w-50 textL floatL">
-               <p>With Best Regards,</p>
+                <p>With Best Regards,</p>
             </div>
             <div class="w-50 textC floatL" style="margin-top:10px">
-               Show Image singature 
+                <img class="img-responsive pull-left" width="" height="160px"
+                            src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('img/' .$buyerSignature. '.jpg'))) }}"
+                            alt="User profile picture">
             </div>
             <div class="floatClear"></div>
         </div>
 
 
-        <div class="row w-100 middle" style="margin-top: 100px;width:97%">
-            <p class="textL">M/S. Allmarch International.</p>
+        <div class="row w-100 middle" style="margin-top: 10px;width:97%">
+            <p class="textL">{{$companyName}}</p>
         </div>
         <div class="footer w-100 middle">
-            <p><b>Reg. Address:</b> KA# 142/17, Khilkhet, Dhaka-1229.<br>
+            <p>
+            @if(  $footerAddress = 'local')
+                <b>Reg. Address:</b>  48/A-B, Purana Palton, Baitul Khair building (9TH FLOOR), Dhaka-1000.<br>
                 <b>Sales Address:</b> House# 1/C &amp; 1/D, Level# 2nd, Road# 16, Nikunja-2, Khilkhet, Dhaka-1229.
+                @elseif($footerAddress = 'international')
+                <b>Reg. Address:</b> KA# 142/17, Khilkhet, Dhaka-1229.<br>
+                <b>Sales Address:</b> House# 1/C &amp; 1/D, Level# 2nd, Road# 16, Nikunja-2, Khilkhet, Dhaka-1229.
+                
+                @endIf
             </p>
         </div>
 
