@@ -372,7 +372,7 @@ class TransferInvoiceController extends Controller
         // return redirect('/transferInvoice/list');
      }
      public function commercialInvoicePdf($transferInvoiceId)
-     {/*
+     {
          $numberToWords = new NumberToWords();
          $converter = $numberToWords->getNumberTransformer('en');
          $options = new Options();
@@ -398,21 +398,21 @@ class TransferInvoiceController extends Controller
                  // ->join('customers', 'batches.customer_id', '=', 'customers.customer_id')
                  ->where('transfer_invoice_products.transferInvoice_id', '=', $transferInvoice->transferInvoice_id)
                  ->where('transfer_invoice_products.action_type', '!=', 'DELETE')
-                 ->select('transfer_invoice_products.*', 'products.product_name')
+                 ->select('transfer_invoice_products.*', 'products.product_name','products.material_description', 'products.h_s_code')
                  ->get();
  
              $data = compact('converter', 'transferInvoice', 'transferInvoiceProduct', 'customer'); 
  
-             $html = view('templateForPdf.salesDeliveryInvoice')->with($data)->render();
+             $html = view('templateForPdf.commercialInvoice')->with($data)->render();
      
              $dompdf->loadHtml($html);
              $dompdf->setPaper('A4', 'portrait');
              $dompdf->render();
              return $dompdf->stream('Invoice.pdf', ['Attachment' => false]);
          }
-        */
+        
          // If pdf not gennrate then return into Invoice list
-         return redirect('/transferInvoice/list');
+        // return redirect('/transferInvoice/list');
      }
 
 }

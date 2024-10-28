@@ -186,12 +186,12 @@
             <p style="font-size: 14px;">Date: {{ $transferInvoice->invoice_date }}</p>
         </div>
         <div class="row textC" style="margin-bottom: 20px">
-            <h2 style="font-size: 16px;">PROFORMA INVOICE</h2>
+            <h2 style="font-size: 16px;">COMMERCIAL INVOICE</h2>
         </div>
 
         <div class="row middle" style="width: 100%">
             <div class="w-50 floatL">
-                <p>BUYER NAME:</p>
+                {{-- <p>BUYER NAME:</p>
                 <p>
                     <br>
                     @if ($buyerNameImg == '')
@@ -206,9 +206,10 @@
                             src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('img/' . $buyerNameImg . '.jpg'))) }}"
                             alt="User profile picture">
                     @endif
-                </p>
+                </p> --}}
             </div>
             <div class="w-50 floatL textR">
+                <p> COMMERCIAL INVOICE NO : {{ $transferInvoice->transferInvoice_id }}</p>
                 <p> PROFORMA INVOICE NO : {{ $transferInvoice->transferInvoice_id }}</p>
                 <p> PROFORMA INVOICE DATE : {{ $transferInvoice->invoice_date }} </p>
                 <div class="htable">
@@ -313,11 +314,11 @@
             <div class="w-50 textL floatL">
                 <p>With Best Regards,</p>
             </div>
-            <div class="w-50 textC floatL" style="margin-top:10px">
+            {{-- <div class="w-50 textC floatL" style="margin-top:10px">
                 <img class="img-responsive pull-left" width="" height="160px"
                             src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('img/' .$buyerSignature. '.jpg'))) }}"
                             alt="User profile picture">
-            </div>
+            </div> --}}
             <div class="floatClear"></div>
         </div>
 
