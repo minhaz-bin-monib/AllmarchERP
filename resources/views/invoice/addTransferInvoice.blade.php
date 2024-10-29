@@ -443,7 +443,9 @@
                     target="_blank">Packing List</a>
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-sm btn-primary">Truck Receipt</button>
+                    <a class="btn btn-sm btn-primary"
+                    href="{{ url('/transferInvoice/truckReceiptInvoicePdf') }}/{{ $transferInvoice->transferInvoice_id }}"
+                    target="_blank">Truck Receipt</a>
                 </div>
                
             </div>

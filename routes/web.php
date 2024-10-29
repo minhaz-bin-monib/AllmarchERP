@@ -146,5 +146,6 @@ Route::group(['prefix' => 'transferInvoice'], function () {
     Route::get('commercialInvoicePdf/{transferInvoiceId}', [TransferInvoiceController::class, 'commercialInvoicePdf']);
     Route::get('deliverChalanInvoicePdf/{transferInvoiceId}', [TransferInvoiceController::class, 'deliverChalanInvoicePdf']);
     Route::get('packingListInvoicePdf/{transferInvoiceId}', [TransferInvoiceController::class, 'packingListInvoicePdf']);
+    Route::get('truckReceiptInvoicePdf/{transferInvoiceId}', [TransferInvoiceController::class, 'truckReceiptInvoicePdf']);
     
 });
