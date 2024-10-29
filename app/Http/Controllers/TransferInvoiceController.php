@@ -345,6 +345,7 @@ class TransferInvoiceController extends Controller
          
          if (!is_null($transferInvoice)) {
              $transferInvoice->invoice_date = date('d-m-Y', strtotime($transferInvoice->invoice_date));
+             $transferInvoice->delivery_date = date('d-m-Y', strtotime($transferInvoice->delivery_date));
              $customer = Customer::where('customer_id', $transferInvoice->customer_id)
              ->where('action_type', '!=', 'DELETE')
              ->first();
@@ -360,12 +361,12 @@ class TransferInvoiceController extends Controller
  
              $data = compact('converter', 'transferInvoice', 'transferInvoiceProduct', 'customer'); 
  
-             $html = view('templateForPdf.proformaInvoice')->with($data)->render();
+             $html = view('templateForPdf.transferProformaInvoice')->with($data)->render();
      
              $dompdf->loadHtml($html);
              $dompdf->setPaper('A4', 'portrait');
              $dompdf->render();
-             return $dompdf->stream('proformaInvoice.pdf', ['Attachment' => false]);
+             return $dompdf->stream('proforma Invoice.pdf', ['Attachment' => false]);
          }
         
          // If pdf not gennrate then return into Invoice list
@@ -388,6 +389,7 @@ class TransferInvoiceController extends Controller
          
          if (!is_null($transferInvoice)) {
              $transferInvoice->invoice_date = date('d-m-Y', strtotime($transferInvoice->invoice_date));
+             $transferInvoice->delivery_date = date('d-m-Y', strtotime($transferInvoice->delivery_date));
              $customer = Customer::where('customer_id', $transferInvoice->customer_id)
              ->where('action_type', '!=', 'DELETE')
              ->first();
@@ -403,12 +405,56 @@ class TransferInvoiceController extends Controller
  
              $data = compact('converter', 'transferInvoice', 'transferInvoiceProduct', 'customer'); 
  
-             $html = view('templateForPdf.commercialInvoice')->with($data)->render();
+             $html = view('templateForPdf.transferCommercialInvoice')->with($data)->render();
      
              $dompdf->loadHtml($html);
              $dompdf->setPaper('A4', 'portrait');
              $dompdf->render();
-             return $dompdf->stream('Invoice.pdf', ['Attachment' => false]);
+             return $dompdf->stream('Commercial Invoice.pdf', ['Attachment' => false]);
+         }
+        
+         // If pdf not gennrate then return into Invoice list
+        // return redirect('/transferInvoice/list');
+     }
+     public function deliverChalanInvoicePdf($transferInvoiceId)
+     {
+         $numberToWords = new NumberToWords();
+         $converter = $numberToWords->getNumberTransformer('en');
+         $options = new Options();
+         $options->set('defaultFont', 'Arial');
+        // $options->set('isRemoteEnabled', true); // Enable remote content
+         $options->set('isHtml5ParserEnabled', true); // Enable HTML5 support
+         $dompdf = new Dompdf($options);
+ 
+         // $transferInvoice = TransferInvoice::find($id);
+         $transferInvoice = TransferInvoice::where('transferInvoice_id', $transferInvoiceId)
+             ->where('action_type', '!=', 'DELETE')
+             ->first();
+         
+         if (!is_null($transferInvoice)) {
+             $transferInvoice->invoice_date = date('d-m-Y', strtotime($transferInvoice->invoice_date));
+             $transferInvoice->delivery_date = date('d-m-Y', strtotime($transferInvoice->delivery_date));
+             $customer = Customer::where('customer_id', $transferInvoice->customer_id)
+             ->where('action_type', '!=', 'DELETE')
+             ->first();
+ 
+   
+             $transferInvoiceProduct = DB::table('transfer_invoice_products')
+                 ->join('products', 'transfer_invoice_products.product_id', '=', 'products.product_id')
+                 // ->join('customers', 'batches.customer_id', '=', 'customers.customer_id')
+                 ->where('transfer_invoice_products.transferInvoice_id', '=', $transferInvoice->transferInvoice_id)
+                 ->where('transfer_invoice_products.action_type', '!=', 'DELETE')
+                 ->select('transfer_invoice_products.*', 'products.product_name','products.material_description', 'products.h_s_code')
+                 ->get();
+ 
+             $data = compact('converter', 'transferInvoice', 'transferInvoiceProduct', 'customer'); 
+ 
+             $html = view('templateForPdf.tranferDeliverChalanInvoice')->with($data)->render();
+     
+             $dompdf->loadHtml($html);
+             $dompdf->setPaper('A4', 'portrait');
+             $dompdf->render();
+             return $dompdf->stream('Deliver Chlan Invoice.pdf', ['Attachment' => false]);
          }
         
          // If pdf not gennrate then return into Invoice list

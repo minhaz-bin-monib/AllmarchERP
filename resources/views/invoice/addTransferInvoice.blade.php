@@ -433,7 +433,9 @@
                         target="_blank">Commercial Invoice</a>
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-sm btn-primary">Delivery Challan</button>
+                    <a class="btn btn-sm btn-primary"
+                    href="{{ url('/transferInvoice/deliverChalanInvoicePdf') }}/{{ $transferInvoice->transferInvoice_id }}"
+                    target="_blank">Delivery Challan</a>
                 </div>
                 <div class="col-2">
                     <button class="btn btn-sm btn-primary">Packing List</button>

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>PDF Document</title>
+    <title>Proforma Invoice</title>
     <style>
         * {
             margin: 0px;
@@ -183,7 +183,7 @@
         </div>
         <!-- title row -->
         <div class="row textL" style="border-top: 2px solid rgb(0, 0, 0)">
-            <p style="font-size: 14px;">Date: {{ $transferInvoice->invoice_date }}</p>
+            <p style="font-size: 14px;">Date: {{ $transferInvoice->delivery_date }}</p>
         </div>
         <div class="row textC" style="margin-bottom: 20px">
             <h2 style="font-size: 16px;">PROFORMA INVOICE</h2>

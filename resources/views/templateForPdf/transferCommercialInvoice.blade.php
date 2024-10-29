@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>PDF Document</title>
+    <title>Commercial Invoice</title>
     <style>
         * {
             margin: 0px;
@@ -183,7 +183,7 @@
         </div>
         <!-- title row -->
         <div class="row textL" style="border-top: 2px solid rgb(0, 0, 0)">
-            <p style="font-size: 14px;">Date: {{ $transferInvoice->invoice_date }}</p>
+            <p style="font-size: 14px;">Date: {{ $transferInvoice->delivery_date }}</p>
         </div>
         <div class="row textC" style="margin-bottom: 20px">
             <h2 style="font-size: 16px;">COMMERCIAL INVOICE</h2>
@@ -323,7 +323,7 @@
         </div>
 
 
-        <div class="row w-100 middle" style="margin-top: 10px;width:97%">
+        <div class="row w-100 middle" style="margin-top: 100px;width:97%">
             <p class="textL">{{$companyName}}</p>
         </div>
         <div class="footer w-100 middle">

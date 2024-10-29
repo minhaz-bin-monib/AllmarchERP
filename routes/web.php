@@ -144,5 +144,6 @@ Route::group(['prefix' => 'transferInvoice'], function () {
     // APIs
     Route::get('proformaInvoicePdf/{transferInvoiceId}', [TransferInvoiceController::class, 'proformaInvoicePdf']);
     Route::get('commercialInvoicePdf/{transferInvoiceId}', [TransferInvoiceController::class, 'commercialInvoicePdf']);
+    Route::get('deliverChalanInvoicePdf/{transferInvoiceId}', [TransferInvoiceController::class, 'deliverChalanInvoicePdf']);
     
 });
