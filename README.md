@@ -35,7 +35,24 @@
         => php artisan make:model ModelName
         
         =>php artisan make:model ModelName -m
+     
 
-        
+- 
+
+
+- Steps for run Laravel application downloading from github
+
+        > git clone github repository
+        > change directory to the folder
+        > composer install or composer update
+        > change file name .env.example to .env
+        > Set up .env file
+        > php artisan key:generate
+        > php artisan storage:link
+        > php artisan migrate
+        > php artisan serve 
+
+        tutorial: https://www.youtube.com/watch?v=9qaiY3ycpwY
+     
 
 - 
