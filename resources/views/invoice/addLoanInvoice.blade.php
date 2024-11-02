@@ -16,7 +16,7 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="registration_date">Registration Date <span class="text-danger"><b>*</b></span></label>
-                    <input type="date" name="registration_date"
+                    <input  type="date" name="registration_date"
                         value="{{ old('registration_date', $salesInvoice->registration_date) }}" class="form-control"
                         id="registration_date">
                     <span class="text-danger">
@@ -70,8 +70,11 @@
                 <div class="form-group col-md-3">
                     <label for="manufacturer_id"> Manufacturer </label>
                     <select id="manufacturer_id" name="manufacturer_id" class="form-control">
-                        <option value="" selected="">Select</option>
-
+                        {{-- <option value="" selected="">Select</option> --}}
+                        <option value="1" {{ old('manufacturer_id', $salesInvoice->manufacturer_id) == '1' ? 'selected' : '' }}>Turan Kimya</option>
+                        <option value="2" {{ old('manufacturer_id', $salesInvoice->manufacturer_id) == '2' ? 'selected' : '' }}>Nanoprint</option>
+                        <option value="3" {{ old('manufacturer_id', $salesInvoice->manufacturer_id) == '3' ? 'selected' : '' }}>Impex</option>
+                 
                     </select>
                     <span class="text-danger">
                         @error('manufacturer_id')
@@ -80,7 +83,7 @@
                     </span>
                 </div>
                 <div class="form-group col-md-3">
-                    <label for="order_ref">Loan Type <span class="text-danger"><b>*</b></span></label>
+                    <label for="order_ref">Loan Type <span class="text-danger"><b></b></span></label>
                     {{-- <input type="text" name="order_ref" value="{{ old('order_ref', $salesInvoice->order_ref) }}"
                         class="form-control" id="order_ref"> --}}
                         <select id="order_ref" name="order_ref" class="form-control">
