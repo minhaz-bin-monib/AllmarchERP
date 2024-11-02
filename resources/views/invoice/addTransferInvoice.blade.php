@@ -69,18 +69,7 @@
                                 @enderror
                             </span>
                         </div>
-                        {{-- <div class="form-group col-md-6">
-                            <label for="manufacturer_id"> Manufacturer </label>
-                            <select id="manufacturer_id" name="manufacturer_id" class="form-control">
-                                <option value="" selected="">Select</option>
-        
-                            </select>
-                            <span class="text-danger">
-                                @error('manufacturer_id')
-                                    {{ $message }}
-                                @enderror
-                            </span>
-                        </div> --}}
+                        
                         <div class="form-group col-md-6">
                             <label for="order_ref">Reference No <span class="text-danger"><b></b></span></label>
                             <input type="text" name="order_ref"
@@ -192,7 +181,7 @@
                                 @enderror
                             </span>
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-6">
                             <label for="discount">Discount (%)</label>
                             <input type="text" name="discount"
                                 value="{{ old('discount', $transferInvoice->discount) }}" class="form-control"
@@ -203,7 +192,7 @@
                                 @enderror
                             </span>
                         </div>
-                        <div class="form-group col-md-3 mt-4">
+                        <div class="form-group col-md-6 mt-4">
                             <label for="enable_discount">Enable Discount (%)</label> &nbsp;
                             <input type="hidden" name="enable_discount" value="0">
                             <input type="checkbox" name="enable_discount" value="1"
@@ -215,14 +204,28 @@
                             </span>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="company"> Company <span class="text-danger"><b>*</b></span></label>
+                            <label for="company"> Company <span class="text-danger"><b></b></span></label>
                             <select data-live-search="true" id="company" name="company" class="form-control">
-                                <option value="" {{ old('company', $transferInvoice->company) == '' ? 'selected' : '' }}>Select</option>
+                                {{-- <option value="" {{ old('company', $transferInvoice->company) == '' ? 'selected' : '' }}>Select</option> --}}
                                 <option value="Allmarch Bangladesh" {{ old('company', $transferInvoice->company) == 'Allmarch Bangladesh' ? 'selected' : '' }}>All-March Bangladesh Ltd.</option>
                                 <option value="Allmarch International" {{ old('company', $transferInvoice->company) == 'Allmarch International' ? 'selected' : '' }}>M/S. Allmarch International.</option>
                             </select>
                             <span class="text-danger">
                                 @error('company')
+                                    {{ $message }}
+                                @enderror
+                            </span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="manufacturer_id"> Manufacturer </label>
+                            <select id="manufacturer_id" name="manufacturer_id" class="form-control">
+                                {{-- <option value="" selected="">Select</option> --}}
+                                <option value="1" {{ old('manufacturer_id', $transferInvoice->manufacturer_id) == '1' ? 'selected' : '' }}>Turan Kimya</option>
+                                <option value="2" {{ old('manufacturer_id', $transferInvoice->manufacturer_id) == '2' ? 'selected' : '' }}>Nanoprint</option>
+                                <option value="3" {{ old('manufacturer_id', $transferInvoice->manufacturer_id) == '3' ? 'selected' : '' }}>Impex</option>
+                            </select>
+                            <span class="text-danger">
+                                @error('manufacturer_id')
                                     {{ $message }}
                                 @enderror
                             </span>

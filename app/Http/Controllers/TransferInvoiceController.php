@@ -63,7 +63,7 @@ class TransferInvoiceController extends Controller
                  'unit_price' => 'required',
                  'invoice_date' => 'required',
                  'delivery_date' => 'required',
-                 'company' => 'required',
+                 //'company' => 'required',
              ]
          );
  
@@ -184,7 +184,7 @@ class TransferInvoiceController extends Controller
                  'unit_price' => 'required',
                  'invoice_date' => 'required',
                  'delivery_date' => 'required',
-                 'company' => 'required',
+                 //'company' => 'required',
              ]
          );
  

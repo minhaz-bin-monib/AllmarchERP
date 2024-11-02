@@ -143,29 +143,40 @@
 
     <div class="container">
         @php
+        $companylogoName = 'local';
+        $companyName = 'All-March Bangladesh Limited';
+        $companySubTitle = 'We are always around you';
+        $buyerNameImg = '';
+        $buyerSignature = '';
+        $footerAddress = '';
+
+        if ($transferInvoice->company == 'Allmarch Bangladesh') {
             $companylogoName = 'local';
             $companyName = 'All-March Bangladesh Limited';
             $companySubTitle = 'We are always around you';
-            $buyerNameImg = '';
-            $buyerSignature = '';
-            $footerAddress = '';
+            $footerAddress = 'local';
+        } elseif ($transferInvoice->company == 'Allmarch International') {
+            $companylogoName = 'international';
+            $companyName = 'M/S. ALLMARCH INTERNATIONAL';
+            $companySubTitle = '';
+            $footerAddress = 'international';
+        }
 
-            if ($transferInvoice->company == 'Allmarch Bangladesh') {
-                $companylogoName = 'local';
-                $companyName = 'All-March Bangladesh Limited';
-                $companySubTitle = 'We are always around you';
-                $buyerNameImg = 'turankimya';
-                $buyerSignature = 'turansign';
-                $footerAddress = 'local';
-            } elseif ($transferInvoice->company == 'Allmarch International') {
-                $companylogoName = 'international';
-                $companyName = 'M/S. ALLMARCH INTERNATIONAL';
-                $companySubTitle = '';
-                $buyerNameImg = '';
-                $buyerSignature = 'turansignnano';
-                $footerAddress = 'international';
-            }
-        @endphp
+        // Here which Buye and Signature are define
+        if ($transferInvoice->manufacturer_id == '1') {
+            // 1 for Turan Kimya
+            $buyerNameImg = 'turankimya';
+            $buyerSignature = 'turansign';
+        } elseif ($transferInvoice->manufacturer_id == '2') {
+            // 2 for Nano Print
+            $buyerNameImg = 'NanoPrint';
+            $buyerSignature = 'turansignnano';
+        } elseif ($transferInvoice->manufacturer_id == '3') {
+            // 3 for Impex
+            $buyerNameImg = 'Impex';
+            $buyerSignature = 'impex'; 
+        }
+    @endphp
         <div class="row w-70 middle ">
             <div class="w-10 floatL" style="margin-top: -9px; margin-left:5px">
                 <img class="img-responsive pull-left" width="90px" height="80px"
@@ -194,13 +205,18 @@
                 {{-- <p>BUYER NAME:</p>
                 <p>
                     <br>
-                    @if ($buyerNameImg == '')
-                        
+                    @if ($buyerNameImg == 'Impex')
+                        <b style="color:black; font: 16px Arial Narrow, Arial;">Impex </b><br>
+                        <b style="color:black; font: 12px Arial Narrow, Arial;">IDOSB Kazlice§me cad. No:20/A
+                            Aydnili-Tuzla</b><br>
+                        <b style="color:black; font: 12px Arial Narrow, Arial;">34000 Istanbul, TURKEY</b>
+                   
+                    @elseif($buyerNameImg == 'NanoPrint')
                         <b style="color:black; font: 16px Arial Narrow, Arial;">Nanoprint Kimya San. A.S</b><br>
                         <b style="color:black; font: 12px Arial Narrow, Arial;">IDOSB Kazlice§me cad. No:20/A
                             Aydnili-Tuzla</b><br>
                         <b style="color:black; font: 12px Arial Narrow, Arial;">34000 Istanbul, TURKEY</b>
-
+                    
                     @elseif($buyerNameImg == 'turankimya')
                         <img class="img-responsive pull-left" width="" height="100px"
                             src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('img/' . $buyerNameImg . '.jpg'))) }}"

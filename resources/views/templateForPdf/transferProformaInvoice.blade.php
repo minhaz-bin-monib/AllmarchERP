@@ -154,16 +154,27 @@
                 $companylogoName = 'local';
                 $companyName = 'All-March Bangladesh Limited';
                 $companySubTitle = 'We are always around you';
-                $buyerNameImg = 'turankimya';
-                $buyerSignature = 'turansign';
                 $footerAddress = 'local';
             } elseif ($transferInvoice->company == 'Allmarch International') {
                 $companylogoName = 'international';
                 $companyName = 'M/S. ALLMARCH INTERNATIONAL';
                 $companySubTitle = '';
-                $buyerNameImg = '';
-                $buyerSignature = 'turansignnano';
                 $footerAddress = 'international';
+            }
+
+            // Here which Buye and Signature are define
+            if ($transferInvoice->manufacturer_id == '1') {
+                // 1 for Turan Kimya
+                $buyerNameImg = 'turankimya';
+                $buyerSignature = 'turansign';
+            } elseif ($transferInvoice->manufacturer_id == '2') {
+                // 2 for Nano Print
+                $buyerNameImg = 'NanoPrint';
+                $buyerSignature = 'turansignnano';
+            } elseif ($transferInvoice->manufacturer_id == '3') {
+                // 3 for Impex
+                $buyerNameImg = 'Impex';
+                $buyerSignature = 'impex'; 
             }
         @endphp
         <div class="row w-70 middle ">
@@ -194,13 +205,18 @@
                 <p>BUYER NAME:</p>
                 <p>
                     <br>
-                    @if ($buyerNameImg == '')
-                        
+                    @if ($buyerNameImg == 'Impex')
+                        <b style="color:black; font: 16px Arial Narrow, Arial;">Impex </b><br>
+                        <b style="color:black; font: 12px Arial Narrow, Arial;">IDOSB Kazlice§me cad. No:20/A
+                            Aydnili-Tuzla</b><br>
+                        <b style="color:black; font: 12px Arial Narrow, Arial;">34000 Istanbul, TURKEY</b>
+                   
+                    @elseif($buyerNameImg == 'NanoPrint')
                         <b style="color:black; font: 16px Arial Narrow, Arial;">Nanoprint Kimya San. A.S</b><br>
                         <b style="color:black; font: 12px Arial Narrow, Arial;">IDOSB Kazlice§me cad. No:20/A
                             Aydnili-Tuzla</b><br>
                         <b style="color:black; font: 12px Arial Narrow, Arial;">34000 Istanbul, TURKEY</b>
-
+                    
                     @elseif($buyerNameImg == 'turankimya')
                         <img class="img-responsive pull-left" width="" height="100px"
                             src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('img/' . $buyerNameImg . '.jpg'))) }}"
@@ -315,25 +331,24 @@
             </div>
             <div class="w-50 textC floatL" style="margin-top:10px">
                 <img class="img-responsive pull-left" width="" height="160px"
-                            src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('img/' .$buyerSignature. '.jpg'))) }}"
-                            alt="User profile picture">
+                    src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('img/' . $buyerSignature . '.jpg'))) }}"
+                    alt="User profile picture">
             </div>
             <div class="floatClear"></div>
         </div>
 
 
         <div class="row w-100 middle" style="margin-top: 10px;width:97%">
-            <p class="textL">{{$companyName}}</p>
+            <p class="textL">{{ $companyName }}</p>
         </div>
         <div class="footer w-100 middle">
             <p>
-            @if(  $footerAddress = 'local')
-                <b>Reg. Address:</b>  48/A-B, Purana Palton, Baitul Khair building (9TH FLOOR), Dhaka-1000.<br>
-                <b>Sales Address:</b> House# 1/C &amp; 1/D, Level# 2nd, Road# 16, Nikunja-2, Khilkhet, Dhaka-1229.
+                @if ($footerAddress = 'local')
+                    <b>Reg. Address:</b> 48/A-B, Purana Palton, Baitul Khair building (9TH FLOOR), Dhaka-1000.<br>
+                    <b>Sales Address:</b> House# 1/C &amp; 1/D, Level# 2nd, Road# 16, Nikunja-2, Khilkhet, Dhaka-1229.
                 @elseif($footerAddress = 'international')
-                <b>Reg. Address:</b> KA# 142/17, Khilkhet, Dhaka-1229.<br>
-                <b>Sales Address:</b> House# 1/C &amp; 1/D, Level# 2nd, Road# 16, Nikunja-2, Khilkhet, Dhaka-1229.
-                
+                    <b>Reg. Address:</b> KA# 142/17, Khilkhet, Dhaka-1229.<br>
+                    <b>Sales Address:</b> House# 1/C &amp; 1/D, Level# 2nd, Road# 16, Nikunja-2, Khilkhet, Dhaka-1229.
                 @endIf
             </p>
         </div>
