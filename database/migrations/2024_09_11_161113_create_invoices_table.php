@@ -29,6 +29,7 @@ return new class extends Migration
             $table->integer('delivery_by')->nullable();
             $table->string('remark',350)->nullable();
             $table->float('discount')->nullable();
+            $table->string('company',350)->nullable();
             $table->boolean('enable_discount')->nullable();
             $table->string('invoice_type',150)->nullable();
             $table->string('invoice_type_category',150)->nullable();

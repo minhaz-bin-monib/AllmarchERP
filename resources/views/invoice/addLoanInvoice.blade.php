@@ -193,6 +193,22 @@
                         @enderror
                     </span>
                 </div>
+                <div class="form-group col-md-3">
+                    <label for="company"> Company <span class="text-danger"><b></b></span></label>
+                    <select data-live-search="true" id="company" name="company" class="form-control">
+                        {{-- <option value="" {{ old('company', $transferInvoice->company) == '' ? 'selected' : '' }}>Select</option> --}}
+                        <option value="Allmarch Bangladesh" {{ old('company', $salesInvoice->company) == 'Allmarch Bangladesh' ? 'selected' : '' }}>All-March Bangladesh Ltd.</option>
+                        <option value="Allmarch International" {{ old('company', $salesInvoice->company) == 'Allmarch International' ? 'selected' : '' }}>M/S. Allmarch International.</option>
+                        <option value="Believers International" {{ old('company', $salesInvoice->company) == 'Believers International' ? 'selected' : '' }}>Believers International</option>
+                    </select>
+                    <span class="text-danger">
+                        @error('company')
+                            {{ $message }}
+                        @enderror
+                    </span>
+                </div>
+                <div class="col-9"></div>
+
 
 
                 @if ($salesInvoice->salesInvoice_id > 0)
@@ -209,15 +225,15 @@
                 <div class="col-4">
                 </div>
                 <div class="col-4">
-                    <input type="checkbox" /> Batch Number &nbsp;
-                    <input type="checkbox" /> Seal Signature
+                    {{-- <input type="checkbox" /> Batch Number &nbsp;
+                    <input type="checkbox" /> Seal Signature --}}
                 </div>
                 <div class="col-4">
-                    <select name="" id="" class="form-control">
+                    {{-- <select name="" id="" class="form-control">
                         <option value="">All-March Bangladesi</option>
                         <option value="">All-March International</option>
                         <option value="">All-March Need to work</option>
-                    </select>
+                    </select> --}}
                 </div>
             </div>
             <table class="table table-striped table-bordered">

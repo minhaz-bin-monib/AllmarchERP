@@ -84,6 +84,7 @@ class SalesInvoiceController extends Controller
             $salesInvoice->delivery_by = $request['delivery_by'];
             $salesInvoice->remark = $request['remark'];
             $salesInvoice->discount = $request['discount'];
+            $salesInvoice->company = $request['company'];
             $salesInvoice->enable_discount = $request['enable_discount'];
             $salesInvoice->invoice_type = 'Statement';
             $salesInvoice->invoice_type_category = 'Sales';
@@ -202,6 +203,7 @@ class SalesInvoiceController extends Controller
                 $salesInvoice->delivery_by = $request['delivery_by'];
                 $salesInvoice->remark = $request['remark'];
                 $salesInvoice->discount = $request['discount'];
+                $salesInvoice->company = $request['company'];
                 $salesInvoice->enable_discount = $request['enable_discount'];
                 $salesInvoice->invoice_type = 'Statement';
                 $salesInvoice->action_type = 'UPDATE';

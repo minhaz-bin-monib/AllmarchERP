@@ -78,6 +78,7 @@ class LoanInvoiceController extends Controller
            $salesInvoice->delivery_by = $request['delivery_by'];
            $salesInvoice->remark = $request['remark'];
            $salesInvoice->discount = $request['discount'];
+           $salesInvoice->company = $request['company'];
            $salesInvoice->enable_discount = $request['enable_discount'];
            $salesInvoice->invoice_type = 'Loan';
            $salesInvoice->invoice_type_category = 'Loan';
@@ -196,6 +197,7 @@ class LoanInvoiceController extends Controller
                $salesInvoice->delivery_by = $request['delivery_by'];
                $salesInvoice->remark = $request['remark'];
                $salesInvoice->discount = $request['discount'];
+               $salesInvoice->company = $request['company'];
                $salesInvoice->enable_discount = $request['enable_discount'];
                $salesInvoice->invoice_type = 'Loan';
                $salesInvoice->action_type = 'UPDATE';
