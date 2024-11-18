@@ -10,6 +10,7 @@ use App\Http\Controllers\SalesInvoiceController;
 use App\Http\Controllers\SampleInvoiceController;
 use App\Http\Controllers\LoanInvoiceController;
 use App\Http\Controllers\TransferInvoiceController;
+use App\Http\Controllers\AccountReportController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -148,4 +149,12 @@ Route::group(['prefix' => 'transferInvoice'], function () {
     Route::get('packingListInvoicePdf/{transferInvoiceId}', [TransferInvoiceController::class, 'packingListInvoicePdf']);
     Route::get('truckReceiptInvoicePdf/{transferInvoiceId}', [TransferInvoiceController::class, 'truckReceiptInvoicePdf']);
     
+});
+
+
+Route::group(['prefix' => 'accountReport'], function () {
+    Route::get('lastMonthSales', [AccountReportController::class, 'lastMonthSales']);
+   
+   // Route::get('proformaInvoicePdf/{transferInvoiceId}', [TransferInvoiceController::class, 'proformaInvoicePdf']);
+
 });

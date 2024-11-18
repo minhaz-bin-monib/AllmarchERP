@@ -72,6 +72,16 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="#accountReport" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle">Reports</a>
+                        <ul class="collapse list-unstyled" id="accountReport">
+                            <li>
+                                <a href="{{ url('/accountReport/lastMonthSales') }}">Last Month Sales</a>
+                            </li>
+                           
+                        </ul>
+                    </li>
                     
                     <li>
                         <a href="#employeeSubmenu" data-bs-toggle="collapse" aria-expanded="false"
