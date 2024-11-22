@@ -77,7 +77,7 @@
                             class="dropdown-toggle">Reports</a>
                         <ul class="collapse list-unstyled" id="accountReport">
                             <li>
-                                <a href="{{ url('/accountReport/lastMonthSales') }}">Last Month Sales</a>
+                                <a href="{{ url('/accountReport/lastMonthSales') . '/' . date('Y-m-d') }}" target="_blank">Last Month Sales</a>
                             </li>
                            
                         </ul>
