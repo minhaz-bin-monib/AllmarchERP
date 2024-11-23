@@ -2,7 +2,7 @@
 
 <!-- Set Title -->
 @push('title')
-    <title>Products</title>
+    <title>Products Sales</title>
 @endpush
 
 @section('main-section')
@@ -20,7 +20,7 @@
 
             </div>
             <div class="col-11">
-                <h5 style="margin: 0px 0px" class="text-center">Product Sales this
+                <h5 style="margin: 0px 0px" class="text-center">Product Sales By
                     {{ \Carbon\Carbon::parse($date)->format('F') }} - {{ $date->year }}</h5>
             </div>
             <div class="col-1">

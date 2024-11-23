@@ -79,6 +79,9 @@
                             <li>
                                 <a href="{{ url('/accountReport/lastMonthSales') . '/' . date('Y-m-d') }}" target="_blank">Last Month Sales</a>
                             </li>
+                            <li>
+                                <a href="{{ url('/accountReport/monthlySalesStandard') . '/' . date('Y-m-d') }}" target="_blank">Monthly Sales Standard</a>
+                            </li>
                            
                         </ul>
                     </li>

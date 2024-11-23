@@ -154,6 +154,7 @@ Route::group(['prefix' => 'transferInvoice'], function () {
 
 Route::group(['prefix' => 'accountReport'], function () {
     Route::get('lastMonthSales/{lastMonth}', [AccountReportController::class, 'lastMonthSales']);
+    Route::get('monthlySalesStandard/{monthYear}', [AccountReportController::class, 'monthlySalesStandard']);
    
    // Route::get('proformaInvoicePdf/{transferInvoiceId}', [TransferInvoiceController::class, 'proformaInvoicePdf']);
 
