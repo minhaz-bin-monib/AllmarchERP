@@ -11,7 +11,7 @@
 
 
     <div class="px-4">
-        <div class="row">
+        <div class="row mb-2">
 
             <div class="col-11 d-flex">
                 <img style="width:440px; margin: 0 auto" src="{{ url('/') }}/img/print_logo.png" />
@@ -67,15 +67,54 @@
         </table>
 
     </div>
+    <script>
+        $(document).ready(function() {
+            // Initialize the first DataTable instance
+            let table = $('#myTable').DataTable({
+                paging: false, // Disable pagination
+                sortable: false, // Disable sorting
+                ordering: false, // Disable ordering
+                dom: 'Bfrtip', // Define the table control elements
+                buttons: [{
+                        extend: 'copyHtml5',
+                        text: 'Copy',
+                        className: 'btn  btn-sm  btn-primary'
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Export to Excel',
+                        className: 'btn  btn-sm  btn-success'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        text: 'Export to CSV',
+                        className: 'btn  btn-sm  btn-warning'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        text: 'Export to PDF',
+                        className: 'btn  btn-sm  btn-danger'
+                    },
+                    {
+                        extend: 'print',
+                        text: 'Print',
+                        className: 'btn  btn-sm  btn-info'
+                    }
+                ]
+            });
+
+
+        });
+    </script>
     <script type="text/javascript">
         // let table = new DataTable('#myTable');
-        let table = new DataTable('#myTable', {
-            perPage: 10, // Number of entries per page
-            sortable: true, // Allow sorting
-            order: [
-                [0, 'asc']
-            ], // Maintain initial order based on first column
-        });
+        // let table = new DataTable('#myTable', {
+        //     perPage: 10, // Number of entries per page
+        //     sortable: true, // Allow sorting
+        //     order: [
+        //         [0, 'asc']
+        //     ], // Maintain initial order based on first column
+        // });
 
         function printPage() {
             console.log('print  page');

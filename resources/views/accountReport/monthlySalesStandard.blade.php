@@ -11,7 +11,7 @@
 
 
     <div class="px-4">
-        <div class="row">
+        <div class="row mb-2">
 
             <div class="col-11 d-flex">
                 <img style="width:440px; margin: 0 auto" src="{{ url('/') }}/img/print_logo.png" />
@@ -44,88 +44,84 @@
 
 
         <table id="myTable" class="table-bordered">
-       
+
+            @php
+                $grandTotal = 0;
+                $isFirstTime = true;
+            @endphp
+            @foreach ($InvResults as $salesInv)
                 @php
-                    $grandTotal = 0;
+                    $totalCost = 0;
+                    $totalWeight = 0;
                 @endphp
-                @foreach ($InvResults as $salesInv)
-                    @php
-                        $totalCost = 0;
-                        $totalWeight = 0;
-                    @endphp
-                    <thead> 
-                    <tr style="color:rgb(0, 0, 196)">
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th>{{ $salesInv['Customer'] }}</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr >
-                        <td>SL.</td>
-                        <td>Date</td>
-                        <td>Invoice</td>
-                        <td>Product</td>
-                        <td>Quantity</td>
-                        <td>Rate</td>
-                        <td>Total</td>
-                        <td>Actual Price</td>
-                        <td>Total Cost</td>
-                        <td>Net Price</td>
-                        <td>Net Cost</td>
-    
-                    </tr>
-                    @foreach ($salesInv['InvProducts'] as $productInv)
+                @if ($isFirstTime == true)
+                    <thead>
                         @php
-                            $Weight = $productInv['packing'] * $productInv['no_of_packing'];
-                            $Cost = $Weight * $productInv['unit_price'];
-                            $totalWeight += $Weight;
-                            $totalCost += $Cost;
-                            $grandTotal += $totalCost;
+                            $isFirstTime = false;
                         @endphp
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ \Carbon\Carbon::parse($productInv['invoiceDate'])->format('d-m-Y') }}</td>
-                            <td>{{ $productInv['salesInvoice_id'] }}</td>
-                            <td>{{ $productInv['productName'] }}</td>
-                            <td>{{ $Weight }}</td>
-                            <td>{{ $productInv['unit_price'] }}</td>
-                            <td>{{ $Cost }}</td>
+
+                        <tr style="color:rgb(0, 0, 196)">
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th>{{ $salesInv['Customer'] }}</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @else
+                        {{-- <tbody>    --}}
+                        <tr style="color:rgb(0, 0, 196)">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{ $salesInv['Customer'] }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                    @endforeach
+                @endif
+
+                <tr>
+                    <td>SL.</td>
+                    <td>Date</td>
+                    <td>Invoice</td>
+                    <td>Product</td>
+                    <td>Quantity</td>
+                    <td>Rate</td>
+                    <td>Total</td>
+                    <td>Actual Price</td>
+                    <td>Total Cost</td>
+                    <td>Net Price</td>
+                    <td>Net Cost</td>
+
+                </tr>
+                @foreach ($salesInv['InvProducts'] as $productInv)
+                    @php
+                        $Weight = $productInv['packing'] * $productInv['no_of_packing'];
+                        $Cost = $Weight * $productInv['unit_price'];
+                        $totalWeight += $Weight;
+                        $totalCost += $Cost;
+                        $grandTotal += $totalCost;
+                    @endphp
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>Total: </td>
-                        <td>{{ $totalWeight }}</td>
-                        <td></td>
-                        <td>{{number_format( $totalCost,2) }}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ \Carbon\Carbon::parse($productInv['invoiceDate'])->format('d-m-Y') }}</td>
+                        <td>{{ $productInv['salesInvoice_id'] }}</td>
+                        <td>{{ $productInv['productName'] }}</td>
+                        <td>{{ $Weight }}</td>
+                        <td>{{ $productInv['unit_price'] }}</td>
+                        <td>{{ $Cost }}</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -133,30 +129,89 @@
                     </tr>
                 @endforeach
                 <tr>
-                    <td> </td>
-                    <td><b>Total:</b></td>
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td>Total: </td>
+                    <td>{{ $totalWeight }}</td>
                     <td></td>
-                    <td><b>{{ number_format($grandTotal,2) }}</b></td>
+                    <td>{{ number_format($totalCost, 2) }}</td>
                     <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
                 </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            @endforeach
+            <tr>
+                <td> </td>
+                <td><b>Grand Total:</b></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><b>{{ number_format($grandTotal, 2) }}</b></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
             </tbody>
         </table>
 
     </div>
-    <script type="text/javascript">
-       // let table = new DataTable('#myTable');
-        let table = new DataTable('#myTable', {
-            paging: false, // Show all rows
-            sortable: false, // Allow sorting
-            ordering: false
-        });
+    <script>
+        $(document).ready(function() {
+            // Initialize the first DataTable instance
+            let table = $('#myTable').DataTable({
+                paging: false, // Disable pagination
+                sortable: false, // Disable sorting
+                ordering: false, // Disable ordering
+                dom: 'Bfrtip', // Define the table control elements
+                buttons: [{
+                        extend: 'copyHtml5',
+                        text: 'Copy',
+                        className: 'btn  btn-sm  btn-primary'
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Export to Excel',
+                        className: 'btn  btn-sm  btn-success'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        text: 'Export to CSV',
+                        className: 'btn  btn-sm  btn-warning'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        text: 'Export to PDF',
+                        className: 'btn  btn-sm  btn-danger'
+                    },
+                    {
+                        extend: 'print',
+                        text: 'Print',
+                        className: 'btn  btn-sm  btn-info'
+                    }
+                ]
+            });
 
+
+        });
+    </script>
+    <script type="text/javascript">
         function printPage() {
             console.log('print  page');
             window.print();
@@ -168,7 +223,4 @@
             window.location.href = "{{ url('/accountReport/lastMonthSales') }}/" + date;
         }
     </script>
-
-
-    <!-- END View Content Here -->
 @endsection
