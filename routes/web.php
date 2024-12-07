@@ -11,6 +11,7 @@ use App\Http\Controllers\SampleInvoiceController;
 use App\Http\Controllers\LoanInvoiceController;
 use App\Http\Controllers\TransferInvoiceController;
 use App\Http\Controllers\AccountReportController;
+use App\Http\Controllers\AuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,13 +22,25 @@ use App\Http\Controllers\AccountReportController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', [AuthController::class, 'loginForm'])->middleware('isAlredyLoggedIn');
 
-Route::get('/',[DashboardController::class, 'index']);
+// ---------------------------- Authentication --------------------------------
+
+Route::get('register', [AuthController::class, 'registerForm'])->middleware('isLoggedIn');
+Route::post('register', [AuthController::class, 'register'])->middleware('isLoggedIn');
+Route::get('login', [AuthController::class, 'loginForm'])->middleware('isAlredyLoggedIn');
+Route::post('login', [AuthController::class, 'login'])->middleware('isAlredyLoggedIn');
+Route::get('logout', [AuthController::class, 'logout']);
+
+// ------------------------- Dashboard Routes ------------------------
+
+Route::get('/dashboard',[DashboardController::class, 'index'])->middleware('isLoggedIn');
+Route::get('/unauthorized',[DashboardController::class, 'unauthorized'])->middleware('isLoggedIn');
 
 
 // ------------------------- Product Routes ------------------------
 
-Route::group(['prefix' => 'product'], function () {
+Route::group(['prefix' => 'product','middleware' => ['isLoggedIn','roleCheck:Admin']], function () {
     Route::get('list', [ProductController::class, 'show']);
     Route::get('create', [ProductController::class, 'create']);
     Route::post('create', [ProductController::class, 'store']);
@@ -41,7 +54,7 @@ Route::group(['prefix' => 'product'], function () {
 
 // ------------------------- Employee Routes ------------------------
 
-Route::group(['prefix' => 'employee'], function () {
+Route::group(['prefix' => 'employee','middleware' => ['isLoggedIn','roleCheck:Admin']], function () {
     Route::get('list', [EmployeeController::class, 'show']);
     Route::get('create', [EmployeeController::class, 'create']);
     Route::post('create', [EmployeeController::class, 'store']);
@@ -49,7 +62,7 @@ Route::group(['prefix' => 'employee'], function () {
 
 // ------------------------- Customer Routes ------------------------
 
-Route::group(['prefix' => 'customer'], function () {
+Route::group(['prefix' => 'customer','middleware' => ['isLoggedIn','roleCheck:Admin']], function () {
     Route::get('list', [CustomerController::class, 'show']);
     Route::get('create', [CustomerController::class, 'create']);
     Route::post('create', [CustomerController::class, 'store']);
@@ -63,7 +76,7 @@ Route::group(['prefix' => 'customer'], function () {
 
 // ------------------------- Batch Routes ------------------------
 
-Route::group(['prefix' => 'batch'], function () {
+Route::group(['prefix' => 'batch','middleware' => ['isLoggedIn','roleCheck:Admin']], function () {
     Route::get('list', [BatchController::class, 'show']);
     Route::get('create', [BatchController::class, 'create']);
     Route::post('create', [BatchController::class, 'store']);
@@ -78,7 +91,7 @@ Route::group(['prefix' => 'batch'], function () {
 
 // ------------------------- Sales Invoice Routes ------------------------
 
-Route::group(['prefix' => 'salesInvoice'], function () {
+Route::group(['prefix' => 'salesInvoice','middleware' => ['isLoggedIn','roleCheck:Admin']], function () {
     Route::get('list', [SalesInvoiceController::class, 'show']);
     Route::get('create', [SalesInvoiceController::class, 'create']);
     Route::post('create', [SalesInvoiceController::class, 'store']);
@@ -96,7 +109,7 @@ Route::group(['prefix' => 'salesInvoice'], function () {
 
 // ------------------------- Sample Invoice Routes ------------------------
 
-Route::group(['prefix' => 'sampleInvoice'], function () {
+Route::group(['prefix' => 'sampleInvoice','middleware' => ['isLoggedIn','roleCheck:Admin']], function () {
     //Route::get('list', [SampleInvoiceController::class, 'show']);
     Route::get('create', [SampleInvoiceController::class, 'create']);
     Route::post('create', [SampleInvoiceController::class, 'store']);
@@ -113,7 +126,7 @@ Route::group(['prefix' => 'sampleInvoice'], function () {
 });
 // ------------------------- Loan Invoice Routes ------------------------
 
-Route::group(['prefix' => 'loanInvoice'], function () {
+Route::group(['prefix' => 'loanInvoice','middleware' => ['isLoggedIn','roleCheck:Admin']], function () {
     //Route::get('list', [LoanInvoiceController::class, 'show']);
     Route::get('create', [LoanInvoiceController::class, 'create']);
     Route::post('create', [LoanInvoiceController::class, 'store']);
@@ -132,7 +145,7 @@ Route::group(['prefix' => 'loanInvoice'], function () {
 
 // ------------------------- Transfer Invoice Routes ------------------------
 
-Route::group(['prefix' => 'transferInvoice'], function () {
+Route::group(['prefix' => 'transferInvoice','middleware' => ['isLoggedIn','roleCheck:Admin']], function () {
     Route::get('list', [TransferInvoiceController::class, 'show']);
     Route::get('create', [TransferInvoiceController::class, 'create']);
     Route::post('create', [TransferInvoiceController::class, 'store']);
@@ -152,7 +165,7 @@ Route::group(['prefix' => 'transferInvoice'], function () {
 });
 
 
-Route::group(['prefix' => 'accountReport'], function () {
+Route::group(['prefix' => 'accountReport','middleware' => ['isLoggedIn','roleCheck:Admin,Account']], function () {
     Route::get('lastMonthSales/{lastMonth}', [AccountReportController::class, 'lastMonthSales']);
     Route::get('monthlySalesStandard/{monthYear}', [AccountReportController::class, 'monthlySalesStandard']);
     Route::get('yearSalesStandard/{monthYearForm}/{monthYearTo}', [AccountReportController::class, 'yearSalesStandard']);

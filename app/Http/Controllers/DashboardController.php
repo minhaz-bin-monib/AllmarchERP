@@ -10,4 +10,8 @@ class DashboardController extends Controller
     {
         return view('dashboard');
     }
+    public function unauthorized()
+    {
+        return view('unauthorized');
+    }
 }

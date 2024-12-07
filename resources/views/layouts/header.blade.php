@@ -53,6 +53,7 @@
                             src="{{ url('/img/logo.png') }}">
                         <span class="text-white">All March<span>
                     </a></h5>
+                @if(Session::get('loginRole') == 'Admin' || Session::get('loginRole') == 'Operator')
                 <ul class="list-unstyled components mb-5">
                     <li>
                         <a href="#invoiceSubmenu" data-bs-toggle="collapse" aria-expanded="false"
@@ -71,7 +72,7 @@
                                 <a href="{{ url('/salesInvoice/list') }}">Invoice List</a>
                             </li>
                         </ul>
-                    </li>
+                    </li> 
                     <li>
                         <a href="#accountReport" data-bs-toggle="collapse" aria-expanded="false"
                             class="dropdown-toggle">Reports</a>
@@ -89,8 +90,7 @@
                             </li>
                            
                         </ul>
-                    </li>
-                    
+                    </li>                   
                     <li>
                         <a href="#employeeSubmenu" data-bs-toggle="collapse" aria-expanded="false"
                             class="dropdown-toggle">Employee </a>
@@ -152,9 +152,36 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="/auth/logout">Logout</a>
+                        <a href="{{ url('/logout') }}">Logout</a>
                     </li>
                 </ul>
+                @endif
+                @if(Session::get('loginRole') == 'Account')
+                <ul class="list-unstyled components mb-5">
+                   
+                    <li>
+                        <a href="#accountReport" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle">Reports</a>
+                        <ul class="collapse list-unstyled" id="accountReport">
+                            <li>
+                                <a href="{{ url('/accountReport/lastMonthSales') . '/' . date('Y-m-d') }}" target="_blank">Last Month Sales</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('/accountReport/monthlySalesStandard') . '/' . date('Y-m-d') }}" target="_blank">Monthly Sales Standard</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('/accountReport/yearSalesStandard') . '/' . date('Y-m-d', strtotime('-1 year')) . '/' . date('Y-m-d') }}" target="_blank">
+                                    Financial Year Standard
+                                </a>
+                            </li>
+                           
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{{ url('/logout') }}">Logout</a>
+                    </li>
+                </ul>
+                @endif
 
             </div>
         </nav>
