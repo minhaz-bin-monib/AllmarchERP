@@ -82,6 +82,11 @@
                             <li>
                                 <a href="{{ url('/accountReport/monthlySalesStandard') . '/' . date('Y-m-d') }}" target="_blank">Monthly Sales Standard</a>
                             </li>
+                            <li>
+                                <a href="{{ url('/accountReport/yearSalesStandard') . '/' . date('Y-m-d', strtotime('-1 year')) . '/' . date('Y-m-d') }}" target="_blank">
+                                    Financial Year Standard
+                                </a>
+                            </li>
                            
                         </ul>
                     </li>

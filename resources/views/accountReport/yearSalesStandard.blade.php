@@ -2,7 +2,7 @@
 
 <!-- Set Title -->
 @push('title')
-    <title>Monthly Sales Standard</title>
+    <title>Year Sales Standard</title>
 @endpush
 
 @section('main-section')
@@ -20,20 +20,27 @@
 
             </div>
             <div class="col-11">
-                <h5 style="margin: 0px 0px" class="text-center">Monthly Delivery By Customer
-                    {{ \Carbon\Carbon::parse($date)->format('F') }} - {{ $date->year }}</h5>
+                <h5 style="margin: 0px 0px" class="text-center">Sales Form
+                    {{ $FormDate->day }}-{{ \Carbon\Carbon::parse($FormDate)->format('F') }} - {{ $FormDate->year }} To
+                    {{ $ToDate->day }}-{{ \Carbon\Carbon::parse($ToDate)->format('F') }} - {{ $ToDate->year }}</h5>
             </div>
             <div class="col-1">
                 <a class="btn btn-primary btn-sm" onClick="printPage()"> <i class="fa fa-print"></i> Print</a>
             </div>
             <div class="col-2">
-
-                <input type="date" value="{{ \Carbon\Carbon::parse($date)->format('Y-m-d') }}" id="searchInput"
+                <span>From</span>
+                <input type="date" value="{{ \Carbon\Carbon::parse($FormDate)->format('Y-m-d') }}" id="searchInput1"
                     class="form-control" />
 
             </div>
-            <div class="col-6">
-                <button id="searchButton" onClick="Search()" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>
+            <div class="col-2">
+                <span>To</span>
+                <input type="date" value="{{ \Carbon\Carbon::parse($ToDate)->format('Y-m-d') }}" id="searchInput2"
+                    class="form-control" />
+
+            </div>
+            <div class="col-4">
+                <button id="searchButton" onClick="Search()" class="btn btn-sm btn-primary mt-4"><i class="fa fa-search"></i>
                     Search</button>
 
             </div>
@@ -72,6 +79,7 @@
                             <th></th>
                             <th></th>
                             <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -82,6 +90,7 @@
                             <td></td>
                             <td></td>
                             <td>{{ $salesInv['Customer'] }}</td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -104,6 +113,7 @@
                     <td>Total Cost</td>
                     <td>Net Price</td>
                     <td>Net Cost</td>
+                    <td>Against</td>
 
                 </tr>
                 @foreach ($salesInv['InvProducts'] as $productInv)
@@ -126,6 +136,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td></td>
                     </tr>
                 @endforeach
                 <tr>
@@ -140,8 +151,10 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
                 </tr>
                 <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -167,6 +180,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
             </tr>
             </tbody>
         </table>
@@ -176,10 +190,10 @@
         $(document).ready(function() {
             // Initialize the first DataTable instance
             let table = $('#myTable').DataTable({
-                paging: false, // Disable pagination
-                sortable: false, // Disable sorting
-                ordering: false, // Disable ordering
-                dom: 'Bfrtip', // Define the table control elements
+                paging: false, 
+                sortable: false, 
+                ordering: false, 
+                dom: 'Bfrtip', 
                 buttons: [{
                         extend: 'copyHtml5',
                         text: 'Copy',
@@ -218,9 +232,18 @@
         }
 
         function Search() {
-            let date = document.getElementById('searchInput').value;
-            console.log(date);
-            window.location.href = "{{ url('/accountReport/lastMonthSales') }}/" + date;
+            // Get date values
+            let formDate = document.getElementById('searchInput1').value;
+            let toDate = document.getElementById('searchInput2').value;
+
+            // Validate that FromDate is not greater than ToDate
+            if (new Date(formDate) > new Date(toDate)) {
+                alert('FromDate cannot be greater than ToDate. Please select a valid date range.');
+                return; // Stop execution if the validation fails
+            }
+
+            // Redirect if validation passes
+            window.location.href = "{{ url('/accountReport/lastMonthSales') }}/" + formDate + "/" + toDate;
         }
     </script>
 @endsection

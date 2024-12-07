@@ -119,4 +119,73 @@ class AccountReportController extends Controller
 
         return view('accountReport.monthlySalesStandard')->with($data);
     }
+    public function yearSalesStandard($monthYearForm, $monthYearTo)
+    {
+        $FormDate = Carbon::createFromFormat('Y-m-d', $monthYearForm);
+        $ToDate = Carbon::createFromFormat('Y-m-d', $monthYearTo);
+
+
+        $salesInvoice = DB::table('invoices')
+                    ->join('customers', 'invoices.customer_id', '=', 'customers.customer_id')
+                    ->whereBetween('invoices.invoice_date', [$FormDate, $ToDate]) // Filter between dates
+                    ->where('invoices.action_type', '!=', 'DELETE')
+                    ->select('invoices.*', 'customers.customer_name') 
+                    ->orderBy('invoices.invoice_date', 'ASC') 
+                    ->get();
+
+        $salesInvIds = $salesInvoice->map(function ($invoice) {
+            return $invoice->salesInvoice_id;
+        });
+
+        $salesInvoiceProducts = DB::table('invoice_products')
+            ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
+            // ->join('customers', 'invoices.customer_id', '=', 'customers.customer_id')
+            ->whereIn('invoice_products.salesInvoice_id', $salesInvIds)
+            ->where('invoice_products.action_type', '!=', 'DELETE')
+            ->select('invoice_products.*', 'products.product_name')
+            ->get();
+
+
+        $salesInvoiceUniqCustomers = $salesInvoice->unique('customer_id');
+
+        $InvResults = $salesInvoiceUniqCustomers->map(function ($invUniqCust) use ($salesInvoice, $salesInvoiceProducts) {
+            
+            // Filter all Inv by Customer for the current customer
+            $filterSalesInv = $salesInvoice->filter(function ($saleInv) use ($invUniqCust) {
+                return $saleInv->customer_id == $invUniqCust->customer_id;
+            });
+
+            // Collect products for each invoice under this customer
+            $products = $filterSalesInv->flatMap(function ($saleInv) use ($salesInvoiceProducts) {
+                
+                $productList = $salesInvoiceProducts->filter(function ($saleInvProd) use ($saleInv) {
+                    return $saleInvProd->salesInvoice_id == $saleInv->salesInvoice_id;
+                });
+                 
+                // Map over the collection of products
+                return $productList->map(function ($product) use ($saleInv) {
+                    return [
+                        'invoiceDate' => $saleInv->invoice_date,
+                        'company' => $saleInv->company,
+                        'salesInvoice_id' => $product->salesInvoice_id,
+                        'productName' => $product->product_name,
+                        'packing' => $product->packing,
+                        'no_of_packing' => $product->no_of_packing,
+                        'unit_price' => $product->unit_price,
+                    ];
+                });
+            });
+
+            // Return structured data for each unique customer
+            return [
+                'Customer' => $invUniqCust->customer_name,
+                'InvProducts' => $products
+            ];
+        });
+
+
+        $data = compact('InvResults', 'FormDate', 'ToDate');
+
+        return view('accountReport.yearSalesStandard')->with($data);
+    }
 }
