@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Delivery Invoice {{ $customer->customer_name }}</title>
+    <title>Mushok Delivery Invoice {{ $customer->customer_name }}</title>
     <style>
         * {
             margin: 0px;
@@ -176,7 +176,7 @@
     </div>
         <!-- title row -->
         <div class="row textC" style="margin-bottom: 20px">
-            <h2 style="font-size: 16px;">Loan Delivery</h2>
+            <h2 style="font-size: 16px;">Delivery Receipt</h2>
             <div class="watermark">Loan</div>
         </div>
 
@@ -223,7 +223,7 @@
                      @endphp
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $salesInvProd->product_name }}</td>
+                        <td>{{ $salesInvProd->material_description }}</td>
                         <td>{{ $salesInvProd->batch_no }}</td>
                         <td>{{ number_format($salesInvProd->packing,2) }} kg</td>
                         <td class="textC">{{ number_format($salesInvProd->no_of_packing,2) }}</td>

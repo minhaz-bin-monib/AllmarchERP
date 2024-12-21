@@ -377,24 +377,30 @@
                 <div class="col-2">
                     <a class="btn btn-sm btn-primary"
                         href="{{ url('/loanInvoice/loanCustomerInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}"
-                        target="_blank">Customer Invoice</a>
+                        target="_blank">Loan Invoice</a>
                 </div>
                 <div class="col-2">
                     <a class="btn btn-sm btn-primary"
                         href="{{ url('/loanInvoice/loanDeliveryInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}"
-                        target="_blank">Customer Delivery</a>
+                        target="_blank">Loan Delivery</a>
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-sm btn-primary">Small</button>
+                    {{-- <button class="btn btn-sm btn-primary">Small</button> --}}
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-sm btn-primary">Special Invoice</button>
+                    <a class="btn btn-sm btn-primary"
+                    href="{{ url('/loanInvoice/loanSpecialInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}"
+                    target="_blank">Special Invoice</a>
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-sm btn-primary">Special Delivery</button>
+                    <a class="btn btn-sm btn-primary"
+                    href="{{ url('/loanInvoice/loanSpecialDeliveryInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}"
+                    target="_blank">Special Delivery</a>
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-sm btn-primary">Special Calculate</button>
+                    <a class="btn btn-sm btn-primary"
+                    href="{{ url('/loanInvoice/loanSpeicalCalculateInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}"
+                    target="_blank">Special Calculate</a>
                 </div>
             </div>
         @endif
