@@ -20,7 +20,7 @@
                     <th>Name</th>
                     <th>Price</th>
                     <th>Created</th>
-                    <th>Action</th>
+                    {{-- <th>Action</th> --}}
                 </tr>
             </thead>
             <tbody>
@@ -33,9 +33,9 @@
                     <td>{{$prod->product_name}}</td>
                     <td>{{$prod->product_unit_price}}</td>
                     <td>{{$prod->registration_date}}</td>
-                    <td style="width: 7%"> 
+                    {{-- <td style="width: 7%"> 
                        <a class="btn btn-sm btn-danger"onClick="confirmDelete('{{url('/product/delete')}}/{{$prod->product_id}}')"><i class="fa fa-trash"></i></a> 
-                    </td>
+                    </td> --}}
                 </tr>
                @endforeach
             </tbody>

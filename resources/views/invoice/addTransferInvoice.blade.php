@@ -69,7 +69,7 @@
                                 @enderror
                             </span>
                         </div>
-                        
+
                         <div class="form-group col-md-6">
                             <label for="order_ref">Reference No <span class="text-danger"><b></b></span></label>
                             <input type="text" name="order_ref"
@@ -84,8 +84,8 @@
                         <div class="form-group col-md-6">
                             <label for="proforma_invoice">Proforma Invoice<span class="text-danger"><b></b></span></label>
                             <input type="text" name="proforma_invoice"
-                                value="{{ old('proforma_invoice', $transferInvoice->proforma_invoice) }}" class="form-control"
-                                id="proforma_invoice">
+                                value="{{ old('proforma_invoice', $transferInvoice->proforma_invoice) }}"
+                                class="form-control" id="proforma_invoice">
                             <span class="text-danger">
                                 @error('proforma_invoice')
                                     {{ $message }}
@@ -105,9 +105,8 @@
 
                         <div class="form-group col-md-6">
                             <label for="packing">Packing <span class="text-danger"><b>*</b></span></label>
-                            <input type="text" name="packing" 
-                                value="{{ old('packing', $transferInvoice->packing) }}" class="form-control"
-                                id="packing">
+                            <input type="text" name="packing" value="{{ old('packing', $transferInvoice->packing) }}"
+                                class="form-control" id="packing">
                             <span class="text-danger">
                                 @error('packing')
                                     {{ $message }}
@@ -116,7 +115,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="no_of_packing">No of Packing <span class="text-danger"><b>*</b></span></label>
-                            <input type="text" name="no_of_packing" 
+                            <input type="text" name="no_of_packing"
                                 value="{{ old('no_of_packing', $transferInvoice->no_of_packing) }}" class="form-control"
                                 id="no_of_packing">
                             <span class="text-danger">
@@ -127,7 +126,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="unit_price">Unit price<span class="text-danger"><b>*</b></span></label>
-                            <input type="text" name="unit_price" 
+                            <input type="text" name="unit_price"
                                 value="{{ old('unit_price', $transferInvoice->unit_price) }}" class="form-control"
                                 id="unit_price">
                             <span class="text-danger">
@@ -207,8 +206,12 @@
                             <label for="company"> Company <span class="text-danger"><b></b></span></label>
                             <select data-live-search="true" id="company" name="company" class="form-control">
                                 {{-- <option value="" {{ old('company', $transferInvoice->company) == '' ? 'selected' : '' }}>Select</option> --}}
-                                <option value="Allmarch Bangladesh" {{ old('company', $transferInvoice->company) == 'Allmarch Bangladesh' ? 'selected' : '' }}>All-March Bangladesh Ltd.</option>
-                                <option value="Allmarch International" {{ old('company', $transferInvoice->company) == 'Allmarch International' ? 'selected' : '' }}>M/S. Allmarch International.</option>
+                                <option value="Allmarch Bangladesh"
+                                    {{ old('company', $transferInvoice->company) == 'Allmarch Bangladesh' ? 'selected' : '' }}>
+                                    All-March Bangladesh Ltd.</option>
+                                <option value="Allmarch International"
+                                    {{ old('company', $transferInvoice->company) == 'Allmarch International' ? 'selected' : '' }}>
+                                    M/S. Allmarch International.</option>
                             </select>
                             <span class="text-danger">
                                 @error('company')
@@ -220,9 +223,15 @@
                             <label for="manufacturer_id"> Manufacturer </label>
                             <select id="manufacturer_id" name="manufacturer_id" class="form-control">
                                 {{-- <option value="" selected="">Select</option> --}}
-                                <option value="1" {{ old('manufacturer_id', $transferInvoice->manufacturer_id) == '1' ? 'selected' : '' }}>Turan Kimya</option>
-                                <option value="2" {{ old('manufacturer_id', $transferInvoice->manufacturer_id) == '2' ? 'selected' : '' }}>Nanoprint</option>
-                                <option value="3" {{ old('manufacturer_id', $transferInvoice->manufacturer_id) == '3' ? 'selected' : '' }}>Impex</option>
+                                <option value="1"
+                                    {{ old('manufacturer_id', $transferInvoice->manufacturer_id) == '1' ? 'selected' : '' }}>
+                                    Turan Kimya</option>
+                                <option value="2"
+                                    {{ old('manufacturer_id', $transferInvoice->manufacturer_id) == '2' ? 'selected' : '' }}>
+                                    Nanoprint</option>
+                                <option value="3"
+                                    {{ old('manufacturer_id', $transferInvoice->manufacturer_id) == '3' ? 'selected' : '' }}>
+                                    Impex</option>
                             </select>
                             <span class="text-danger">
                                 @error('manufacturer_id')
@@ -243,16 +252,17 @@
                     </div>
                 </form>
             </div>
-            <div class="col-5" >
+            <div class="col-5">
                 <div class="row">
                     <div class="col-6" style="border: 1px solid #00800042">
                         <p class="text-center"><b>Existing Invoice</b></p>
-                        <hr/>
+                        <hr />
                         <div class="mb-1">
                             <div class="">
                                 <div>
                                     <input class=" fa-th form-control" style="border-radius:15px;" id="totalValue"
-                                        name="totalValue" value="" onchange="calculatePriceAndNumberofPices(); transfer_history();"
+                                        name="totalValue" value=""
+                                        onchange="calculatePriceAndNumberofPices(); transfer_history();"
                                         placeholder="Enter Total Value">
                                 </div>
                             </div>
@@ -261,7 +271,8 @@
                             <div class="">
                                 <div>
                                     <select class="form-control" style="border-radius:15px;" id="packingSize"
-                                        name="packingSize" onchange="calculatePriceAndNumberofPices(); transfer_history();">
+                                        name="packingSize"
+                                        onchange="calculatePriceAndNumberofPices(); transfer_history();">
                                         <option value="40" selected="">40 KG</option>
                                         <option value="30">30 KG</option>
                                         <option value="20">20 KG</option>
@@ -279,9 +290,9 @@
                         </div>
                     </div>
                     <div class="col-6" style="border: 1px solid #0000ff3d">
-                        <p class="text-center"><b>H i s t o r y</b></p>
-                        <hr/>
-                        <div class=""> 
+                        <p class="text-center"><b>History</b></p>
+                        <hr />
+                        <div class="">
                             <div class="">
                                 <div style="font:Tahoma, Geneva, sans-serif; font-size:12px;">
                                     <textarea id="previousHistory" rows="25" style="border-style:none; width:100%;" disabled=""></textarea>
@@ -422,7 +433,12 @@
                 </tbody>
             </table>
             <div class="row">
-                <p>In Word: {{ $converter->toWords($finalTotalCost) }} only</p>
+                @php
+                    $amountParts = explode('.', number_format($finalTotalCost, 2, '.', ''));
+                    $integerPart = $converter->toWords($amountParts[0]);
+                    $decimalPart = isset($amountParts[1]) ? $converter->toWords($amountParts[1]) : 'zero';
+                @endphp
+                <p>In Word: {{ ucwords("{$integerPart} Taka & {$decimalPart} Paisa") }} Only</p>
             </div>
             <div class="row">
                 <div class="col-2">
@@ -437,20 +453,20 @@
                 </div>
                 <div class="col-2">
                     <a class="btn btn-sm btn-primary"
-                    href="{{ url('/transferInvoice/deliverChalanInvoicePdf') }}/{{ $transferInvoice->transferInvoice_id }}"
-                    target="_blank">Delivery Challan</a>
+                        href="{{ url('/transferInvoice/deliverChalanInvoicePdf') }}/{{ $transferInvoice->transferInvoice_id }}"
+                        target="_blank">Delivery Challan</a>
                 </div>
                 <div class="col-2">
                     <a class="btn btn-sm btn-primary"
-                    href="{{ url('/transferInvoice/packingListInvoicePdf') }}/{{ $transferInvoice->transferInvoice_id }}"
-                    target="_blank">Packing List</a>
+                        href="{{ url('/transferInvoice/packingListInvoicePdf') }}/{{ $transferInvoice->transferInvoice_id }}"
+                        target="_blank">Packing List</a>
                 </div>
                 <div class="col-2">
                     <a class="btn btn-sm btn-primary"
-                    href="{{ url('/transferInvoice/truckReceiptInvoicePdf') }}/{{ $transferInvoice->transferInvoice_id }}"
-                    target="_blank">Truck Receipt</a>
+                        href="{{ url('/transferInvoice/truckReceiptInvoicePdf') }}/{{ $transferInvoice->transferInvoice_id }}"
+                        target="_blank">Truck Receipt</a>
                 </div>
-               
+
             </div>
         @endif
     </div>
@@ -640,19 +656,19 @@
 
             var totalValue = $("#totalValue").val();
             var packingSize = $("#packingSize").val();
-         /* Need to Work on History part 
-            $.ajax({
-                url: "http://www.allmarch.groupdecent.com/Admin/transfer_history",
-                type: 'POST',
-                data: {
-                    packingSize: packingSize
-                },
-                dataType: 'JSON',
-                success: function(data) {
-                    $("#previousHistory ").html(data.transferHistory);
-                }
-            });
-          */
+            /* Need to Work on History part 
+               $.ajax({
+                   url: "http://www.allmarch.groupdecent.com/Admin/transfer_history",
+                   type: 'POST',
+                   data: {
+                       packingSize: packingSize
+                   },
+                   dataType: 'JSON',
+                   success: function(data) {
+                       $("#previousHistory ").html(data.transferHistory);
+                   }
+               });
+             */
         }
     </script>
 

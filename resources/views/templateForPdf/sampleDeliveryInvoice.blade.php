@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>PDF Document</title>
+    <title>Delivery Invoice {{ $customer->customer_name }}</title>
     <style>
         * {
             margin: 0px;
@@ -143,20 +143,37 @@
 
     <div class="container">
 
-        <div class="row w-70 middle ">
-            <div class="w-10 floatL" style="margin-top: -9px; margin-left:5px">
-                <img class="img-responsive pull-left"
-                    src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('img/logo.jpg'))) }}"
-                    alt="User profile picture">
-            </div>
-            <div class="w-70 floatL" >
-                <h1 class="textC"  style="font-size: 18px;">All-March Bangladesh Limited</h1>
+        @php
+
+        $companyName = match ($salesInvoice->company) {
+            'Allmarch Bangladesh' => 'All-March Bangladesh Limited',
+            'Allmarch International' => 'M/S. Allmarch International',
+            'Believers International' => 'M/S. Believers International',
+            default => null,
+        };
+        $companyLogo = match ($salesInvoice->company) {
+            'Allmarch Bangladesh' => 'logo',
+            'Allmarch International' => 'international',
+            'Believers International' => 'believers_logo',
+            default => null,
+        };
+    @endphp
+    <div class="row w-70 middle ">
+        <div class="w-10 floatL" style="margin-top: -9px; margin-left:5px">
+            <img class="img-responsive pull-left" width="90px"
+                src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('img/'.$companyLogo.'.jpg'))) }}"
+                alt="User profile picture">
+        </div>
+        <div class="w-70 floatL">
+            <h1 class="textC" style="font-size: 18px;">{{ $companyName }}</h1>
+            @if ($salesInvoice->company == 'Allmarch Bangladesh')
                 <p class="textC" style="color:grey; font: 16px Blackadder ITC, Arial;"><i>We are always around you</i>
                 </p>
+            @endif
 
-            </div>
-            <div class="floatClear"></div>
         </div>
+        <div class="floatClear"></div>
+    </div>
         <!-- title row -->
         <div class="row textC" style="margin-bottom: 20px">
             <h2 style="font-size: 16px;">Sample Delivery</h2>
@@ -210,14 +227,14 @@
                         <td>{{ $salesInvProd->batch_no }}</td>
                         <td>{{ number_format($salesInvProd->packing,2) }} kg</td>
                         <td class="textC">{{ number_format($salesInvProd->no_of_packing,2) }}</td>
-                        <td>{{ number_format($totalWeight,2) }} Kg</td>
+                        <td style="text-align:right;">{{ number_format($totalWeight,2) }} Kg</td>
                        
                     </tr>
                 @endforeach
                     <tr>
                         <td class="textC" colspan="4">Total</td>
                         <td class="textC"><strong>{{number_format($totalPcs,2)}}</strong> pcs</td>
-                        <td align="right"><strong> {{number_format($totalQuantity,2)}}</strong> Kg</td>
+                        <td style="text-align:right;"><strong> {{number_format($totalQuantity,2)}}</strong> Kg</td>
                     </tr>
                    
 
@@ -240,7 +257,7 @@
 
 
         <div class="row w-100 middle" style="margin-top: 100px;width:97%">
-            <p class="textR">Delivery By: {{'Need To Work'}}</p>
+            <p class="textR">Delivery By: {{''}}</p>
         </div>
         <div class="footer w-100 middle">
             <p>House# 1/A, Road# 15, Nikunju-2, Khilkhet, Dhaka-1229, Contact: +8801713221101-10, E-mail:

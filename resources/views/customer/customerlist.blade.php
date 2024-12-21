@@ -21,7 +21,7 @@
                     <th>Customer Phone</th>
                     <th>Customer Address</th>
                     <th>Created</th>
-                    <th>Action</th>
+                    {{-- <th>Action</th> --}}
                 </tr>
             </thead>
             <tbody>
@@ -36,9 +36,9 @@
                         <td>{{ $cust->customer_phone }}</td>
                         <td>{{ $cust->customer_address }}</td>
                         <td>{{ $cust->registration_date }}</td>
-                        <td style="width: 10%">
+                        {{-- <td style="width: 10%">
                             <a class="btn btn-sm btn-danger"onClick="confirmDelete('{{ url('/customer/delete') }}/{{ $cust->customer_id }}')" ><i class="fa fa-trash"></i></a>
-                        </td>
+                        </td> --}}
                     </tr>
                 @endforeach
             </tbody>

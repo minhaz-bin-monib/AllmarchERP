@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>PDF Document</title>
+    <title>Customer Invoice {{ $customer->customer_name }}</title>
     <style>
         * {
             margin: 0px;
@@ -144,16 +144,34 @@
 
     <div class="container">
 
+        @php
+
+            $companyName = match ($salesInvoice->company) {
+                'Allmarch Bangladesh' => 'All-March Bangladesh Limited',
+                'Allmarch International' => 'M/S. Allmarch International',
+                'Believers International' => 'M/S. Believers International',
+                default => null,
+            };
+            $companyLogo = match ($salesInvoice->company) {
+                'Allmarch Bangladesh' => 'logo',
+                'Allmarch International' => 'international',
+                'Believers International' => 'believers_logo',
+                default => null,
+            };
+        @endphp
         <div class="row w-70 middle ">
             <div class="w-10 floatL" style="margin-top: -9px; margin-left:5px">
-                <img class="img-responsive pull-left"
-                    src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('img/logo.jpg'))) }}"
+                <img class="img-responsive pull-left" width="90px"
+                    src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('img/' . $companyLogo . '.jpg'))) }}"
                     alt="User profile picture">
             </div>
             <div class="w-70 floatL">
-                <h1 class="textC" style="font-size: 18px;">All-March Bangladesh Limited</h1>
-                <p class="textC" style="color:grey; font: 16px Blackadder ITC, Arial;"><i>We are always around you</i>
-                </p>
+                <h1 class="textC" style="font-size: 18px;">{{ $companyName }}</h1>
+                @if ($salesInvoice->company == 'Allmarch Bangladesh')
+                    <p class="textC" style="color:grey; font: 16px Blackadder ITC, Arial;"><i>We are always
+                            around you</i>
+                    </p>
+                @endif
 
             </div>
             <div class="floatClear"></div>
@@ -211,7 +229,7 @@
                             <td>{{ $salesInvProd->batch_no }}</td>
                             <td class="textC">{{ number_format($salesInvProd->unit_price, 2) }}</td>
                             <td>{{ number_format($totalWeight, 2) }} kg</td>
-                            <td>{{ number_format($totalPrice, 2) }} Tk</td>
+                            <td style="text-align:right;">{{ number_format($totalPrice, 2) }} Tk</td>
 
                         </tr>
                     @endforeach
@@ -219,7 +237,7 @@
                         <td colspan="3"></td>
                         <td><strong>{{ number_format($totalWeightCount, 2) }}</strong> Kg</td>
                         <td align="right"><strong>Total Amount</strong></td>
-                        <td align="right"><strong> {{ number_format($totalCost, 2) }}</strong> Tk</td>
+                        <td style="text-align:right;"><strong> {{ number_format($totalCost, 2) }}</strong> Tk</td>
                     </tr>
                     @php
                         // Calculate discount and final total cost
@@ -233,32 +251,38 @@
 
                             <td align="right">Discount Cash Purchase [
                                 {{ number_format($salesInvoice->discount ?? 0.0, 2) }} %]</td>
-                            <td align="right">
+                            <td style="text-align:right;">
                                 {{ $discountAmount == 0 ? '' : '-' }}{{ number_format($discountAmount, 2) }} Tk</td>
                         </tr>
                         <tr>
                             <td colspan="4"></td>
 
                             <td align="right">Net Amount</td>
-                            <td align="right">{{ number_format($finalTotalCost, 2) }} Tk</td>
+                            <td style="text-align:right;">{{ number_format($finalTotalCost, 2) }} Tk</td>
                         </tr>
                     @endif
                     <tr>
                         <td colspan="4"></td>
 
                         <td align="right">Paid Amount</td>
-                        <td align="right"> Tk</td>
+                        <td style="text-align:right;"> Tk</td>
                     </tr>
                     <tr>
                         <td colspan="4"></td>
 
                         <td align="right"><strong>Total Payable</strong></td>
-                        <td align="right"><strong>{{ number_format($finalTotalCost, 2) }}</strong> Tk</td>
+                        <td style="text-align:right;"><strong>{{ number_format($finalTotalCost, 2) }}</strong> Tk</td>
                     </tr>
 
                 </tbody>
             </table>
-            In Word: <b>{{ $converter->toWords($totalCost) }}</b> only
+            @php
+                $amountParts = explode('.', number_format($finalTotalCost, 2, '.', ''));
+                $integerPart = $converter->toWords($amountParts[0]);
+                $decimalPart = isset($amountParts[1]) ? $converter->toWords($amountParts[1]) : 'zero';
+            @endphp
+            In Word: <b>{{ ucwords("{$integerPart} Taka & {$decimalPart} Paisa ") }}</b> Only
+            {{-- In Word: <b>{{ $converter->toWords($totalCost) }}</b> only --}}
 
         </div>
 
@@ -276,7 +300,7 @@
 
 
         <div class="row w-100 middle" style="margin-top: 100px;width:97%">
-            <p class="textR">Delivery By: {{ 'Need To Work' }}</p>
+            <p class="textR">Delivery By: {{ '' }}</p>
         </div>
         <div class="footer w-100 middle">
             <p>House# 1/A, Road# 15, Nikunju-2, Khilkhet, Dhaka-1229, Contact: +8801713221101-10, E-mail:

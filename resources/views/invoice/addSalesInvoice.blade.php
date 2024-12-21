@@ -283,7 +283,7 @@
                         <td><b>Gross Amount</b></td>
                         <td>{{$totalCost}} Tk</td>
                         <td rowspan="5" style="vertical-align : middle;text-align:center;">
-                            <button class="btn btn-sm btn-primary">Make Payment</button>
+                            {{-- <button class="btn btn-sm btn-primary">Make Payment</button> --}}
                         </td>
                     </tr>
                     <tr>
@@ -340,7 +340,12 @@
                 </tbody>
             </table>
             <div class="row">
-                <p>In Word: {{$converter->toWords($finalTotalCost)}} only</p>
+              @php
+                        $amountParts = explode('.', number_format($finalTotalCost, 2, '.', ''));
+                        $integerPart = $converter->toWords($amountParts[0]);
+                        $decimalPart = isset($amountParts[1]) ? $converter->toWords($amountParts[1]) : 'zero';
+                @endphp
+                <p>In Word: {{ ucwords("{$integerPart} Taka & {$decimalPart} Paisa") }} Only</p>
             </div>
             <div class="row">
                 <div class="col-2">
@@ -350,16 +355,17 @@
                     <a class="btn btn-sm btn-primary" href="{{ url('/salesInvoice/salesDeliveryInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}" target="_blank">Customer Delivery</a>
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-sm btn-primary">Small</button>
+                    {{-- <button class="btn btn-sm btn-primary">Small</button> --}}
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-sm btn-primary">Special Invoice</button>
+                    <a class="btn btn-sm btn-primary" href="{{ url('/salesInvoice/salesSpecialInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}" target="_blank">Special Invoice</a>
+                  
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-sm btn-primary">Special Delivery</button>
+                    <a class="btn btn-sm btn-primary" href="{{ url('/salesInvoice/salesSpecialDeliveryPdf') }}/{{ $salesInvoice->salesInvoice_id }}" target="_blank">Special Delivery</a>
                 </div>
                 <div class="col-2">
-                    <button class="btn btn-sm btn-primary">Special Calculate</button>
+                    <a class="btn btn-sm btn-primary" href="{{ url('/salesInvoice/salesSpecialCalculateInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}" target="_blank">Special Calculate</a>
                 </div>
             </div>
         @endif

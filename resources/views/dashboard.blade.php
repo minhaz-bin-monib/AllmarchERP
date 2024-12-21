@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="{{ asset('bootstrap/css/dashboard.css') }}">
 
 
+<!--
 <div class="container">
     <h5>Dashboard</h5>
     <div class="row">
@@ -48,11 +49,12 @@
                 <div class="card-block">
                     <h6 class="m-b-20">Sold Figure</h6>
                     <h2 class="text-right"><span>863,968,360.60</span></h2>
-                    <!-- <p class="m-b-0">Completed Orders<span class="f-right">351</span></p> -->
+                  
                 </div>
             </div>
         </div>
     </div>
 </div>
+-->
 <!-- END View Content Here -->
 @endsection

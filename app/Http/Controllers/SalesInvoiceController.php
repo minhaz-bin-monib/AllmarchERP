@@ -27,7 +27,6 @@ class SalesInvoiceController extends Controller
         ->orderBy('invoices.salesInvoice_id', 'desc')
         ->get();
 
-
         $data = compact('salesInvoices');
 
         return view('invoice.salesInvoiceList')->with($data);
@@ -409,4 +408,135 @@ class SalesInvoiceController extends Controller
         // If pdf not gennrate then return into Invoice list
         return redirect('/salesInvoice/list');
     }
+    // [httpGet]
+    public function salesSpecialInvoicePdf($salesInvoiceId)
+    {
+        $numberToWords = new NumberToWords();
+        $converter = $numberToWords->getNumberTransformer('en');
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+       // $options->set('isRemoteEnabled', true); // Enable remote content
+        $options->set('isHtml5ParserEnabled', true); // Enable HTML5 support
+        $dompdf = new Dompdf($options);
+
+        // $salesInvoice = SalesInvoice::find($id);
+        $salesInvoice = SalesInvoice::where('salesInvoice_id', $salesInvoiceId)
+            ->where('action_type', '!=', 'DELETE')
+            ->first();
+        
+        if (!is_null($salesInvoice)) {
+            $salesInvoice->invoice_date = date('d-m-Y', strtotime($salesInvoice->invoice_date));
+            $customer = Customer::where('customer_id', $salesInvoice->customer_id)
+            ->where('action_type', '!=', 'DELETE')
+            ->first();
+
+  
+            $salesInvoiceProduct = DB::table('invoice_products')
+                ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
+                // ->join('customers', 'batches.customer_id', '=', 'customers.customer_id')
+                ->where('invoice_products.salesInvoice_id', '=', $salesInvoice->salesInvoice_id)
+                ->where('invoice_products.action_type', '!=', 'DELETE')
+                ->select('invoice_products.*', 'products.product_name', 'products.product_unit_price_c', 'products.material_description')
+                ->get();
+
+            $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
+
+            $html = view('templateForPdf.salesSpecialInvoice')->with($data)->render();
+    
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            return $dompdf->stream('Invoice.pdf', ['Attachment' => false]);
+        }
+
+        // If pdf not gennrate then return into Invoice list
+        return redirect('/salesInvoice/list');
+    }
+    public function salesSpecialDeliveryPdf($salesInvoiceId)
+    {
+        $numberToWords = new NumberToWords();
+        $converter = $numberToWords->getNumberTransformer('en');
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+       // $options->set('isRemoteEnabled', true); // Enable remote content
+        $options->set('isHtml5ParserEnabled', true); // Enable HTML5 support
+        $dompdf = new Dompdf($options);
+
+        // $salesInvoice = SalesInvoice::find($id);
+        $salesInvoice = SalesInvoice::where('salesInvoice_id', $salesInvoiceId)
+            ->where('action_type', '!=', 'DELETE')
+            ->first();
+        
+        if (!is_null($salesInvoice)) {
+            $salesInvoice->invoice_date = date('d-m-Y', strtotime($salesInvoice->invoice_date));
+            $customer = Customer::where('customer_id', $salesInvoice->customer_id)
+            ->where('action_type', '!=', 'DELETE')
+            ->first();
+
+  
+            $salesInvoiceProduct = DB::table('invoice_products')
+                ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
+                // ->join('customers', 'batches.customer_id', '=', 'customers.customer_id')
+                ->where('invoice_products.salesInvoice_id', '=', $salesInvoice->salesInvoice_id)
+                ->where('invoice_products.action_type', '!=', 'DELETE')
+                ->select('invoice_products.*', 'products.product_name', 'products.material_description')
+                ->get();
+
+            $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
+
+            $html = view('templateForPdf.salesSpecialDeliveryInvoice')->with($data)->render();
+    
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            return $dompdf->stream('Invoice.pdf', ['Attachment' => false]);
+        }
+
+        // If pdf not gennrate then return into Invoice list
+        return redirect('/salesInvoice/list');
+    }
+     // [httpGet]
+     public function salesSpecialCalculateInvoicePdf($salesInvoiceId)
+     {
+         $numberToWords = new NumberToWords();
+         $converter = $numberToWords->getNumberTransformer('en');
+         $options = new Options();
+         $options->set('defaultFont', 'Arial');
+        // $options->set('isRemoteEnabled', true); // Enable remote content
+         $options->set('isHtml5ParserEnabled', true); // Enable HTML5 support
+         $dompdf = new Dompdf($options);
+ 
+         // $salesInvoice = SalesInvoice::find($id);
+         $salesInvoice = SalesInvoice::where('salesInvoice_id', $salesInvoiceId)
+             ->where('action_type', '!=', 'DELETE')
+             ->first();
+         
+         if (!is_null($salesInvoice)) {
+             $salesInvoice->invoice_date = date('d-m-Y', strtotime($salesInvoice->invoice_date));
+             $customer = Customer::where('customer_id', $salesInvoice->customer_id)
+             ->where('action_type', '!=', 'DELETE')
+             ->first();
+ 
+   
+             $salesInvoiceProduct = DB::table('invoice_products')
+                 ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
+                  ->join('batches', 'batches.batch_id', '=', 'invoice_products.batch_id')
+                 ->where('invoice_products.salesInvoice_id', '=', $salesInvoice->salesInvoice_id)
+                 ->where('invoice_products.action_type', '!=', 'DELETE')
+                 ->select('invoice_products.*', 'batches.import_info', 'products.product_name', 'products.product_unit_price_c', 'products.atv_rate', 'products.material_description')
+                 ->get();
+ 
+             $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
+ 
+             $html = view('templateForPdf.salesSpecialCalculateInvoice')->with($data)->render();
+     
+             $dompdf->loadHtml($html);
+             $dompdf->setPaper('A4', 'portrait');
+             $dompdf->render();
+             return $dompdf->stream('Invoice.pdf', ['Attachment' => false]);
+         }
+ 
+         // If pdf not gennrate then return into Invoice list
+         return redirect('/salesInvoice/list');
+     }
 }
