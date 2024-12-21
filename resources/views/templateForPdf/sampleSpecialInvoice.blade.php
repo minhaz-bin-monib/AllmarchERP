@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Sample Invoice {{ $customer->customer_name }}</title>
+    <title>Mushok Sample  Invoice {{ $customer->customer_name }}</title>
     <style>
         * {
             margin: 0px;
@@ -219,16 +219,16 @@
                     @foreach ($salesInvoiceProduct as $salesInvProd)
                         @php
                             $totalWeight = $salesInvProd->packing * $salesInvProd->no_of_packing;
-                            $totalPrice = $totalWeight * $salesInvProd->unit_price;
+                            $totalPrice = $totalWeight * $salesInvProd->product_unit_price_c;
                             $totalWeightCount += $totalWeight;
                             $totalCost += $totalPrice;
                         @endphp
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $salesInvProd->product_name }}</td>
+                            <td>{{ $salesInvProd->material_description }}</td>
                             <td>{{ $salesInvProd->batch_no }}</td>
                             <td>{{ number_format($totalWeight, 2) }} kg</td>
-                            <td class="textC">{{ number_format($salesInvProd->unit_price, 2) }}</td>
+                            <td class="textC">{{ number_format($salesInvProd->product_unit_price_c, 2) }}</td>
                             <td style="text-align:right;">{{ number_format($totalPrice, 2) }} Tk</td>
 
                         </tr>

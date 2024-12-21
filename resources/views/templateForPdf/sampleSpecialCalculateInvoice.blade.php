@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Sample Invoice {{ $customer->customer_name }}</title>
+    <title>Mushok Sample Calculate Invoice {{ $customer->customer_name }}</title>
     <style>
         * {
             margin: 0px;
@@ -11,10 +11,10 @@
         }
 
         .container {
-            margin: 40px;
+            margin: 40px 25px;
             position: relative;
             z-index: 1;
-            padding: 20px;
+            /* padding: 20px; */
         }
 
         .row {
@@ -178,7 +178,7 @@
         </div>
         <!-- title row -->
         <div class="row textC" style="margin-bottom: 20px">
-            <h2 style="font-size: 16px;">Sample Invoice</h2>
+            <h2 style="font-size: 16px;">Special Calculate</h2>
             <div class="watermark">Sample</div>
         </div>
 
@@ -198,90 +198,73 @@
         <div class="row middle textR" style="width: 97%">
             Order Ref : {{ $salesInvoice->order_ref }}
         </div>
-        <div class="row middle" style="width: 98%">
+        <div class="row middle" style="width: 100%">
             <table style="width: 100%">
                 <thead>
                     <tr style="background-color:rgb(240, 240, 240);">
                         <th width="5%" style="text-align:center;">SL.</th>
                         <th width="30%">Product Name</th>
-                        <th width="20%" style="text-align:center;">Batch No.</th>
+                        <th width="20%" style="text-align:center;">Import Info</th>
                         <th width="10%" style="text-align:center;">Quantity</th>
-                        <th width="15%" style="text-align:center;">Unit price(Tk)</th>
+                        <th width="15%" style="text-align:center;">Unit price</th>
+                        <th width="15%" style="text-align:center;">Total Cost</th>
+                        <th width="15%" style="text-align:center;">ATV Amount (%)</th>
                         <th width="20%" style="text-align:center;">Total Price(Tk)</th>
                     </tr>
                 </thead>
                 <tbody>
 
                     @php
-                        $totalCost = 0;
+                        $totalCostSum = 0;
+                        $totalATVAmountSum = 0;
+                        $totalPriceSum = 0;
                         $totalWeightCount = 0;
                     @endphp
                     @foreach ($salesInvoiceProduct as $salesInvProd)
                         @php
                             $totalWeight = $salesInvProd->packing * $salesInvProd->no_of_packing;
-                            $totalPrice = $totalWeight * $salesInvProd->unit_price;
+                            $totalCost = $totalWeight * $salesInvProd->product_unit_price_c;
+                            $totalATVAmount = $totalWeight * $salesInvProd->atv_rate;
+                            $totalPrice = $totalCost + $totalATVAmount;
+
                             $totalWeightCount += $totalWeight;
-                            $totalCost += $totalPrice;
+                            $totalCostSum += $totalCost;
+                            $totalATVAmountSum += $totalATVAmount;
+                            $totalPriceSum += $totalPrice;
+                            
                         @endphp
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $salesInvProd->product_name }}</td>
-                            <td>{{ $salesInvProd->batch_no }}</td>
+                            {{-- <td>{{ $salesInvProd->product_name }}</td> --}}
+                            <td>{{ $salesInvProd->material_description }}</td>
+                            <td>{{ $salesInvProd->import_info }} ({{$salesInvProd->atv_rate}}%)</td>
                             <td>{{ number_format($totalWeight, 2) }} kg</td>
-                            <td class="textC">{{ number_format($salesInvProd->unit_price, 2) }}</td>
+                            {{-- <td class="textC">{{ number_format($salesInvProd->unit_price, 2) }}</td> --}}
+                            <td class="textC">{{ number_format($salesInvProd->product_unit_price_c, 2) }}</td>
+                            <td style="text-align:right;">{{ number_format($totalCost, 2) }} Tk</td>
+                            <td style="text-align:right;">{{ number_format($totalATVAmount, 2) }} Tk</td>
                             <td style="text-align:right;">{{ number_format($totalPrice, 2) }} Tk</td>
 
                         </tr>
                     @endforeach
                     <tr>
-                        <td colspan="3"></td>
+                        <td ></td>
+                        <td colspan="2" style="text-align:right;"><strong>Total Amount: </strong></td>
                         <td><strong>{{ number_format($totalWeightCount, 2) }}</strong> Kg</td>
-                        <td align="right"><strong>Total Amount</strong></td>
-                        <td style="text-align:right;"><strong> {{ number_format($totalCost, 2) }}</strong> Tk</td>
+                        <td ></td>
+                        <td style="text-align:right;"><strong> {{ number_format($totalCostSum, 2) }}</strong> Tk</td>
+                        <td style="text-align:right;"><strong> {{ number_format($totalATVAmountSum, 2) }}</strong> Tk</td>
+                        <td style="text-align:right;"><strong> {{ number_format($totalPriceSum, 2) }}</strong> Tk</td>
                     </tr>
-                    @php
-                        // Calculate discount and final total cost
-                        $discount = $salesInvoice->enable_discount ? $salesInvoice->discount ?? 0.0 : 0.0;
-                        $discountAmount = $totalCost * ($discount / 100) ?? 0.0; // Calculate the discount amount
-                        $finalTotalCost = $totalCost - $discountAmount ?? 00; // Final cost after discount
-                    @endphp
-                    @if ($salesInvoice->enable_discount)
-                        <tr>
-                            <td colspan="4"></td>
-
-                            <td align="right">Discount Cash Purchase [
-                                {{ number_format($salesInvoice->discount ?? 0.0, 2) }} %]</td>
-                            <td style="text-align:right;">
-                                {{ $discountAmount == 0 ? '' : '-' }}{{ number_format($discountAmount, 2) }} Tk</td>
-                        </tr>
-                        <tr>
-                            <td colspan="4"></td>
-
-                            <td align="right">Net Amount</td>
-                            <td style="text-align:right;">{{ number_format($finalTotalCost, 2) }} Tk</td>
-                        </tr>
-                    @endif
-                    <tr>
-                        <td colspan="4"></td>
-
-                        <td align="right">Paid Amount</td>
-                        <td style="text-align:right;"> Tk</td>
-                    </tr>
-                    <tr>
-                        <td colspan="4"></td>
-
-                        <td align="right"><strong>Total Payable</strong></td>
-                        <td style="text-align:right;"><strong>{{ number_format($finalTotalCost, 2) }}</strong> Tk</td>
-                    </tr>
-
                 </tbody>
             </table>
             @php
-                $amountParts = explode('.', number_format($finalTotalCost, 2, '.', ''));
+                $amountParts = explode('.', number_format($totalPriceSum, 2, '.', ''));
                 $integerPart = $converter->toWords($amountParts[0]);
                 $decimalPart = isset($amountParts[1]) ? $converter->toWords($amountParts[1]) : 'zero';
             @endphp
             In Word: <b>{{ ucwords("{$integerPart} Taka & {$decimalPart} Paisa ") }}</b> Only
+            {{-- In Word: <b>{{ $converter->toWords($totalCost) }}</b> only --}}
 
         </div>
 

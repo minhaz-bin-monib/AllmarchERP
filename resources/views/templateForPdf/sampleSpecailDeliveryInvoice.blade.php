@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Sample Delivery Invoice {{ $customer->customer_name }}</title>
+    <title> Mushok Sample Delivery Invoice {{ $customer->customer_name }}</title>
     <style>
         * {
             margin: 0px;
@@ -223,7 +223,7 @@
                      @endphp
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $salesInvProd->product_name }}</td>
+                        <td>{{ $salesInvProd->material_description }}</td>
                         <td>{{ $salesInvProd->batch_no }}</td>
                         <td>{{ number_format($salesInvProd->packing,2) }} kg</td>
                         <td class="textC">{{ number_format($salesInvProd->no_of_packing,2) }}</td>
@@ -234,7 +234,7 @@
                     <tr>
                         <td class="textC" colspan="4">Total</td>
                         <td class="textC"><strong>{{number_format($totalPcs,2)}}</strong> pcs</td>
-                        <td style="text-align:right;"><strong> {{number_format($totalQuantity,2)}}</strong> Kg</td>
+                        <td style="text-align:right;"><strong> {{number_format($totalQuantity,2)}}</strong></td>
                     </tr>
                    
 

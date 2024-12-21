@@ -125,6 +125,9 @@ Route::group(['prefix' => 'sampleInvoice','middleware' => ['isLoggedIn','roleChe
     // APIs
     Route::get('sampleCustomerInvoicePdf/{salesInvoiceId}', [SampleInvoiceController::class, 'sampleCustomerInvoicePdf']);
     Route::get('sampleDeliveryInvoicePdf/{salesInvoiceId}', [SampleInvoiceController::class, 'sampleDeliveryInvoicePdf']);
+    Route::get('sampleSpecialInvoicePdf/{salesInvoiceId}', [SampleInvoiceController::class, 'sampleSpecialInvoicePdf']);
+    Route::get('sampleSpecialDeliveryInvoicePdf/{salesInvoiceId}', [SampleInvoiceController::class, 'sampleSpecialDeliveryInvoicePdf']);
+    Route::get('sampleSpecialCalculateInvoicePdf/{salesInvoiceId}', [SampleInvoiceController::class, 'sampleSpecialCalculateInvoicePdf']);
     
 });
 // ------------------------- Loan Invoice Routes ------------------------
