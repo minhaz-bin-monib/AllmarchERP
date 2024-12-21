@@ -179,7 +179,7 @@
         <!-- title row -->
         <div class="row textC" style="margin-bottom: 20px">
             <h2 style="font-size: 16px;">Sample Invoice</h2>
-            <div class="watermark">Sample</div>
+            {{-- <div class="watermark">Sample</div> --}}
         </div>
 
         <div class="row middle" style="width: 97%">
