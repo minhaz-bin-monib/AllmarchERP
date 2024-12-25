@@ -7,8 +7,8 @@
 
 @section('main-section')
     <!-- START View Content Here -->
-    <div class="container">
-        <h5>Batch List</h5>
+    <div class="container mt-4">
+        {{-- <h5>Batch List</h5> --}}
 
        
         <table id="myTable" class="table table-striped table-bordered">
@@ -48,7 +48,7 @@
     <script type="text/javascript">
 
         let table = new DataTable('#myTable');
-
+        document.getElementById('PageName').innerText = 'Batch List';
     </script>
 
     <!-- END View Content Here -->

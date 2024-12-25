@@ -7,9 +7,9 @@
 
 @section('main-section')
     <!-- START View Content Here -->
-    <div class="container">
+    <div class="container mt-4">
         
-        <h5>Products</h5>
+        {{-- <h5>Products</h5> --}}
 
        
         <table id="myTable" class="table table-striped table-bordered">
@@ -43,7 +43,7 @@
    
     </div>
     <script type="text/javascript">
-    
+    document.getElementById('PageName').innerText = 'Product List';
        // let table = new DataTable('#myTable');
        let table = new DataTable('#myTable', {
             perPage: 10, // Number of entries per page

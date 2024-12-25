@@ -7,9 +7,9 @@
 
 @section('main-section')
     <!-- START View Content Here -->
-    <div class="container">
+    <div class="container mt-4">
         
-        <h5>Customers</h5>
+        {{-- <h5>Customers</h5> --}}
     
         <table id="myTable" class="table table-striped table-bordered">
             <thead>
@@ -46,6 +46,8 @@
     </div>
     <script type="text/javascript">
 
+        document.getElementById('PageName').innerText = 'Customer List';
+        
         let table = new DataTable('#myTable', {
             perPage: 10, // Number of entries per page
             sortable: true, // Allow sorting

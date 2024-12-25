@@ -12,6 +12,7 @@ use App\Http\Controllers\LoanInvoiceController;
 use App\Http\Controllers\TransferInvoiceController;
 use App\Http\Controllers\AccountReportController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AccountDailyController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -181,4 +182,12 @@ Route::group(['prefix' => 'accountReport','middleware' => ['isLoggedIn','roleChe
    
    // Route::get('proformaInvoicePdf/{transferInvoiceId}', [TransferInvoiceController::class, 'proformaInvoicePdf']);
 
+});
+Route::group(['prefix' => 'accountDaily','middleware' => ['isLoggedIn','roleCheck:Admin,Account']], function () {
+    Route::get('expanse', [AccountDailyController::class, 'dailyExpanse']);
+    Route::get('expanseList', [AccountDailyController::class, 'dailyExpanseList']);
+    Route::get('openingDailyExpanse/{date}', [AccountDailyController::class, 'openingDailyExpanse']);
+    Route::get('closingDailyExpanse', [AccountDailyController::class, 'closingDailyExpanse']);
+    
+  
 });

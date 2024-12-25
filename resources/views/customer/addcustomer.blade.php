@@ -7,9 +7,9 @@
 
 @section('main-section')
     <!-- START View Content Here -->
-    <div class="container">
+    <div class="container mt-4">
         
-        <h5>{{$toptitle}}</h5>
+        {{-- <h5>{{$toptitle}}</h5> --}}
 
 <form action="{{$url}}" method="post">
     @csrf
@@ -259,6 +259,8 @@
     <button type="submit" class="btn btn-primary">Save</button>
 </form>
     </div>
-
+    <script>
+        document.getElementById('PageName').innerText = '{{$toptitle}}';
+    </script>
     <!-- END View Content Here -->
 @endsection 

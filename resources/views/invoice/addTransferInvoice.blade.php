@@ -8,8 +8,8 @@
 @section('main-section')
     <!-- START View Content Here -->
 
-    <div class="container">
-        <h5>{{ $toptitle }}</h5>
+    <div class="container mt-4">
+        {{-- <h5>{{ $toptitle }}</h5> --}}
         <div class="row">
             <div class="col-7">
                 <form action="{{ $url }}" method="post">
@@ -481,6 +481,8 @@
         let productIdByOnChange = selectedProductId ?? '';
         let customerIdByOnchange = selectedCustomerId ?? '';
 
+        document.getElementById('PageName').innerText = '{{$toptitle}}';
+        
         function confirmDelete(url) {
             if (confirm("Want to delete this item?")) {
                 window.location.href = url;

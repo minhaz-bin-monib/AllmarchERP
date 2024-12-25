@@ -7,9 +7,9 @@
 
 @section('main-section')
     <!-- START View Content Here -->
-    <div class="container">
-        <h5>{{ $toptitle }}</h5>
-        <form action="{{ $url }}" method="post">
+    <div class="container mt-4">
+        {{-- <h5>{{ $toptitle }}</h5> --}}
+        <form  action="{{ $url }}" method="post">
             @csrf
     
             <div class="row">
@@ -150,10 +150,13 @@
         </form>
     </div>
     <script type="text/javascript">
+
         let productList = [];
         let customerList = [];
         let batchList = [];
-        
+         
+        document.getElementById('PageName').textContent = '{{$toptitle}}';
+
         $(document).ready(function() {
          
 
