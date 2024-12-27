@@ -188,6 +188,7 @@ Route::group(['prefix' => 'accountDaily','middleware' => ['isLoggedIn','roleChec
     Route::get('expanseList', [AccountDailyController::class, 'dailyExpanseList']);
     Route::get('openingDailyExpanse/{date}', [AccountDailyController::class, 'openingDailyExpanse']);
     Route::get('closingDailyExpanse', [AccountDailyController::class, 'closingDailyExpanse']);
-    
+    Route::post('addOpeningDailyDebit', [AccountDailyController::class, 'addOpeningDailyDebit']);
+    Route::post('addOpeningDailyCredit', [AccountDailyController::class, 'addOpeningDailyCredit']);
   
 });
