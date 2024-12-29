@@ -14,7 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('closing_daily_cash_blance_histories', function (Blueprint $table) {
-            $table->id();
+            $table->id('closing_daily_cash_blance_history_id');
+            $table->float('previous_cash_balance');
+            $table->float('current_cash_balance');
+            $table->date('closing_date');
             $table->timestamps();
         });
     }

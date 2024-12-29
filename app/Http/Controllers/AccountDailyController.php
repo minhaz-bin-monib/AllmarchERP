@@ -10,6 +10,11 @@ use App\Models\OpenningDailyCashBlance;
 use App\Models\OpenningDailyDebitExpanse;
 use App\Models\OpenningDailyCredit;
 use App\Models\DailyCreditCategory;
+use App\Models\ClosingDailyExpanse;
+use App\Models\ClosingDailyDebitExpanse;
+use App\Models\ClosingDailyCredit;
+use App\Models\ClosingDailyCreditDetailsExpanse;
+use App\Models\ClosingDailyCashBlanceHistory;
 use Illuminate\Support\Facades\DB;
 class AccountDailyController extends Controller
 {
@@ -40,7 +45,7 @@ class AccountDailyController extends Controller
                                                    ->orderBy('openning_daily_debit_expanses_id')
                                                    ->get();
     $openingCreditDetailsList =  OpenningDailyCreditDetailsExpanse::where('action_type', '!=', 'DELETE')
-                                      ->where('openning_expanses_id', $oppenningExpanse->openning_expanses_id)
+                                    //  ->where('openning_expanses_id', $oppenningExpanse->openning_expanses_id)
                                       ->get();
 
 
@@ -164,27 +169,116 @@ class AccountDailyController extends Controller
     DB::beginTransaction();
 
     try {
-      // Pass all data from the OpenningExpanse table to the ClosingExpanse table
+      $totalCreditBlance = 0;
+      $totalDebitBlance = 0;
+      
+      $closingExpanse = new ClosingDailyExpanse();
+      $closingExpanse->save();
 
-      /*  $openningData = OpenningExpanse::all();
+      // Openning Dabit to ClosingDaily Debit table pass 
+      $openningDailyDebit = OpenningDailyDebitExpanse::where('action_type', '!=', 'DELETE')->get();
 
-       foreach ($openningData as $data) {
-           ClosingExpanse::create([
-               'column1' => $data->column1, // Replace with actual column names
-               'column2' => $data->column2,
-               // Add other columns here
-           ]);
+      foreach ($openningDailyDebit as $debit) {
+
+       $closeDailyDebit =  new ClosingDailyDebitExpanse();
+        
+       $totalDebitBlance += $debit->debit_blance;
+        
+       $closeDailyDebit->blance_type = $debit->blance_type;
+       $closeDailyDebit->debit_blance = $debit->debit_blance;
+       $closeDailyDebit->debit_name = $debit->debit_name;
+       $closeDailyDebit->debit_date = $debit->debit_date;
+       $closeDailyDebit->closing_daily_expense_id = $closingExpanse->closing_daily_expense_id;
+       $closeDailyDebit->action_type = 'INSERT';
+       $closeDailyDebit->user_id = "sys-user";
+       $closeDailyDebit->action_date = now();
+
+       $closeDailyDebit->save();
+
+      }
+
+       // Openning Credit to ClosingDaily Credit table pass
+       $openningDailyCredit = OpenningDailyCredit::where('action_type', '!=', 'DELETE')->get();
+
+       foreach ($openningDailyCredit as $credit) {
+
+         $closeCredit =  new ClosingDailyCredit();
+
+         $closeCredit->credit_category_id = $credit->credit_category_id;
+         $closeCredit->credit_category_name = $credit->credit_category_name;
+         $closeCredit->closing_daily_expense_id = $closingExpanse->closing_daily_expense_id;
+         $closeCredit->action_type = 'INSERT';
+         $closeCredit->user_id = "sys-user";
+         $closeCredit->action_date = now();
+
+         $closeCredit->save();
+        
+         $creditDetails = OpenningDailyCreditDetailsExpanse::where('action_type', '!=', 'DELETE')
+          ->where('openning_expanses_id', $credit->openning_expanses_id)  
+          ->get();
+        
+          foreach ($creditDetails as $crdDetail) {
+
+            $closeCreditDetails = new ClosingDailyCreditDetailsExpanse();
+
+            $closeCreditDetails->closing_daily_credit_id = $credit->closing_daily_credit_id;
+            $closeCreditDetails->credit_category_id = $crdDetail->credit_category_id;
+            $closeCreditDetails->credit_name = $crdDetail->credit_name;
+            $closeCreditDetails->credit_blance = $crdDetail->credit_blance;
+            $closeCreditDetails->credit_date = $crdDetail->credit_date;
+            $closeCreditDetails->closing_daily_expense_id = $closingExpanse->closing_daily_expense_id;
+            $closeCreditDetails->action_type = 'INSERT';
+            $closeCreditDetails->user_id = "sys-user";
+            $closeCreditDetails->action_date = now();
+
+            $closeCreditDetails->save();
+
+            $totalCreditBlance += $crdDetail->credit_blance;
+          }
+  
+
        }
-       */
-
-
-      // Delete all data from  table
-      OpenningDailyCredit::truncate();
-      OpenningDailyDebitExpanse::truncate();
-
+     
+      // Update OpenningExpanse table
       $openningExpanse = OpenningExpanse::where('action_type', '!=', 'DELETE')->first();
       $openningExpanse->closing_status = 0;   // Close 
       $openningExpanse->save();
+
+      // Update ClosingDailyExpanse table 
+      $closingExpanse =  ClosingDailyExpanse::where('action_type', '!=', 'DELETE')
+                      ->where('closing_daily_expanses_id', $closingExpanse->closing_daily_expanses_id)
+                      ->get();
+                      
+       $opnCashBlance  = OpenningDailyCashBlance::where('action_type', '!=', 'DELETE')
+                        ->where('cash_blance_type', '=', 1)     
+                        ->get();
+
+      // update Close Expanse table
+      $closingExpanse->openning_date = $openningExpanse->opening_date;
+      $closingExpanse->closing_blance = now();
+      $closingExpanse->openning_blance = $opnCashBlance->current_cash_blance;
+      $closingExpanse->closing_blance = ($totalCreditBlance - $totalDebitBlance);
+      $closingExpanse->total_debit_blance = $totalDebitBlance;
+      $closingExpanse->total_credit_blance = $totalCreditBlance;
+      $closingExpanse->action_type = 'INSERT';
+      $closingExpanse->action_date = now();
+      $closingExpanse->user_id = 'sys-user';
+
+      $closingExpanse->save();
+
+      // Update CashBlance table
+      $opnCashBlance->previous_cash_blance = $opnCashBlance->current_cash_blance;
+      $opnCashBlance->current_cash_blance = ($totalCreditBlance - $totalDebitBlance);
+      $opnCashBlance->previous_Update_date =$opnCashBlance->current_Update_date;
+      $opnCashBlance->current_Update_date = now();
+
+      $opnCashBlance->save();
+
+       // Delete all data from  table
+       OpenningDailyDebitExpanse::truncate();
+       OpenningDailyCredit::truncate();
+       OpenningDailyCreditDetailsExpanse::truncate();
+ 
 
       DB::commit();
     } catch (\Exception $e) {
