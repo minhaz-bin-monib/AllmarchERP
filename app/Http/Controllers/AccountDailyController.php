@@ -38,22 +38,22 @@ class AccountDailyController extends Controller
     $openningCredit = new OpenningDailyDebitExpanse();
 
     $openingCeditCategoryDDL = OpenningDailyCredit::where('action_type', '!=', 'DELETE')
-                                                  ->orderBy('openning_daily_credits_id')
-                                                  ->get();
+      ->orderBy('openning_daily_credits_id')
+      ->get();
 
     $openingDebitList = OpenningDailyDebitExpanse::where('action_type', '!=', 'DELETE')
-                                                   ->orderBy('openning_daily_debit_expanses_id')
-                                                   ->get();
-    $openingCreditDetailsList =  OpenningDailyCreditDetailsExpanse::where('action_type', '!=', 'DELETE')
-                                    //  ->where('openning_expanses_id', $oppenningExpanse->openning_expanses_id)
-                                      ->get();
+      ->orderBy('openning_daily_debit_expanses_id')
+      ->get();
+    $openingCreditDetailsList = OpenningDailyCreditDetailsExpanse::where('action_type', '!=', 'DELETE')
+      //  ->where('openning_expanses_id', $oppenningExpanse->openning_expanses_id)
+      ->get();
 
 
     $urlOpeningDailyExpanse = url('/accountDaily/openingDailyExpanse');
     $urlAddOpeningDailyDebit = url('/accountDaily/addOpeningDailyDebit');
     $urlAddOpeningDailyCredit = url('/accountDaily/addOpeningDailyCredit');
     $urlClosingDailyExpanse = url('/accountDaily/closingDailyExpanse');
-    $toptitle = 'Daily Expanse';
+    $toptitle = 'Daily Expense';
     $data = compact(
       'oppenningExpanse',
       'isNewDailyExpanse',
@@ -67,25 +67,30 @@ class AccountDailyController extends Controller
       'openningCredit',
       'openingCeditCategoryDDL',
       'openingDebitList',
-      'openingCreditDetailsList'  
+      'openingCreditDetailsList'
     );
 
 
     return view('accountDaily.dailyExpanse')->with($data);
   }
-  public function dailyExpanseList()
+  public function dailyExpanseList($searchDate)
   {
-    /*  
-    //  $product = new Product(); 
-      //$product->registration_date = Carbon::now()->format('Y-m-d');
-      $url = url('/product/create');
-      $toptitle = 'Add Product';
-      $data = compact('url', 'toptitle');
+    
+    $year = date('Y', strtotime($searchDate)); // Extract year from the provided date
+    $month = date('m', strtotime($searchDate)); // Extract month from the provided date
+
+    $closingDailyExpense = ClosingDailyExpanse::where('action_type', '!=', 'DELETE')
+        ->whereYear('openning_date', $year) 
+        ->whereMonth('openning_date', $month) 
+        ->orderBy('openning_date', 'desc') 
+        ->get();
+
+      $searchDate = Carbon::parse($searchDate)->format('Y-m-d');
+      $data = compact('searchDate', 'closingDailyExpense');
      
      
-     return view('accountDaily.dailyExpanse')->with($data);
-     */
-    return "Expanse List DO";
+     return view('accountDaily.dailyExpanseList')->with($data);
+     
   }
   public function openingDailyExpanse($date)
   {
@@ -159,7 +164,7 @@ class AccountDailyController extends Controller
     } catch (\Exception $e) {
       DB::rollBack();
       \Log::error('Transaction failed: ' . $e->getMessage());
-      return redirect('/accountDaily/expanseList')->withErrors('An error occurred. Please try again.');
+      return redirect('/accountDaily/expanseList/'. now())->withErrors('An error occurred. Please try again.');
     }
 
 
@@ -171,7 +176,7 @@ class AccountDailyController extends Controller
     try {
       $totalCreditBlance = 0;
       $totalDebitBlance = 0;
-      
+
       $closingExpanse = new ClosingDailyExpanse();
       $closingExpanse->save();
 
@@ -180,84 +185,85 @@ class AccountDailyController extends Controller
 
       foreach ($openningDailyDebit as $debit) {
 
-       $closeDailyDebit =  new ClosingDailyDebitExpanse();
-        
-       $totalDebitBlance += $debit->debit_blance;
-        
-       $closeDailyDebit->blance_type = $debit->blance_type;
-       $closeDailyDebit->debit_blance = $debit->debit_blance;
-       $closeDailyDebit->debit_name = $debit->debit_name;
-       $closeDailyDebit->debit_date = $debit->debit_date;
-       $closeDailyDebit->closing_daily_expense_id = $closingExpanse->closing_daily_expense_id;
-       $closeDailyDebit->action_type = 'INSERT';
-       $closeDailyDebit->user_id = "sys-user";
-       $closeDailyDebit->action_date = now();
+        $closeDailyDebit = new ClosingDailyDebitExpanse();
 
-       $closeDailyDebit->save();
+        $totalDebitBlance += $debit->debit_blance;
+
+        $closeDailyDebit->blance_type = $debit->blance_type;
+        $closeDailyDebit->debit_blance = $debit->debit_blance;
+        $closeDailyDebit->debit_name = $debit->debit_name;
+        $closeDailyDebit->debit_date = $debit->debit_date;
+        $closeDailyDebit->closing_daily_expense_id = $closingExpanse->closing_daily_expense_id;
+        $closeDailyDebit->action_type = 'INSERT';
+        $closeDailyDebit->user_id = "sys-user";
+        $closeDailyDebit->action_date = now();
+
+        $closeDailyDebit->save();
 
       }
 
-       // Openning Credit to ClosingDaily Credit table pass
-       $openningDailyCredit = OpenningDailyCredit::where('action_type', '!=', 'DELETE')->get();
+      // Openning Credit to ClosingDaily Credit table pass
+      $openningDailyCredit = OpenningDailyCredit::where('action_type', '!=', 'DELETE')->get();
 
-       foreach ($openningDailyCredit as $credit) {
+      foreach ($openningDailyCredit as $opnCredit) {
 
-         $closeCredit =  new ClosingDailyCredit();
+        $closeCredit = new ClosingDailyCredit();
 
-         $closeCredit->credit_category_id = $credit->credit_category_id;
-         $closeCredit->credit_category_name = $credit->credit_category_name;
-         $closeCredit->closing_daily_expense_id = $closingExpanse->closing_daily_expense_id;
-         $closeCredit->action_type = 'INSERT';
-         $closeCredit->user_id = "sys-user";
-         $closeCredit->action_date = now();
+        $closeCredit->credit_category_id = $opnCredit->credit_category_id;
+        $closeCredit->credit_category_name = $opnCredit->credit_category_name;
+        $closeCredit->closing_daily_expense_id = $closingExpanse->closing_daily_expense_id;
+        $closeCredit->action_type = 'INSERT';
+        $closeCredit->user_id = "sys-user";
+        $closeCredit->action_date = now();
 
-         $closeCredit->save();
-        
-         $creditDetails = OpenningDailyCreditDetailsExpanse::where('action_type', '!=', 'DELETE')
-          ->where('openning_expanses_id', $credit->openning_expanses_id)  
+        $closeCredit->save();
+
+        $creditDetails = OpenningDailyCreditDetailsExpanse::where('action_type', '!=', 'DELETE')
+          ->where('openning_daily_credits_id', $opnCredit->openning_daily_credits_id)
           ->get();
-        
-          foreach ($creditDetails as $crdDetail) {
 
-            $closeCreditDetails = new ClosingDailyCreditDetailsExpanse();
+        foreach ($creditDetails as $opnCrdDetail) {
 
-            $closeCreditDetails->closing_daily_credit_id = $credit->closing_daily_credit_id;
-            $closeCreditDetails->credit_category_id = $crdDetail->credit_category_id;
-            $closeCreditDetails->credit_name = $crdDetail->credit_name;
-            $closeCreditDetails->credit_blance = $crdDetail->credit_blance;
-            $closeCreditDetails->credit_date = $crdDetail->credit_date;
-            $closeCreditDetails->closing_daily_expense_id = $closingExpanse->closing_daily_expense_id;
-            $closeCreditDetails->action_type = 'INSERT';
-            $closeCreditDetails->user_id = "sys-user";
-            $closeCreditDetails->action_date = now();
+          $closeCreditDetails = new ClosingDailyCreditDetailsExpanse();
 
-            $closeCreditDetails->save();
+          $closeCreditDetails->closing_daily_credit_id = $closeCredit->closing_daily_credit_id;
+          $closeCreditDetails->credit_category_id = $opnCrdDetail->credit_category_id;
+          $closeCreditDetails->credit_name = $opnCrdDetail->credit_name;
+          $closeCreditDetails->credit_blance = $opnCrdDetail->credit_blance;
+          $closeCreditDetails->credit_date = $opnCrdDetail->credit_date;
+          $closeCreditDetails->closing_daily_expense_id = $closingExpanse->closing_daily_expense_id;
+          $closeCreditDetails->action_type = 'INSERT';
+          $closeCreditDetails->user_id = "sys-user";
+          $closeCreditDetails->action_date = now();
 
-            $totalCreditBlance += $crdDetail->credit_blance;
-          }
-  
+          $closeCreditDetails->save();
 
-       }
-     
+          $totalCreditBlance += $opnCrdDetail->credit_blance;
+        }
+
+
+      }
+
       // Update OpenningExpanse table
       $openningExpanse = OpenningExpanse::where('action_type', '!=', 'DELETE')->first();
-      $openningExpanse->closing_status = 0;   // Close 
-      $openningExpanse->save();
+
+
+      $opnCashBlance = OpenningDailyCashBlance::where('action_type', '!=', 'DELETE')
+        ->where('cash_blance_type', '=', 1)
+        ->first();
 
       // Update ClosingDailyExpanse table 
-      $closingExpanse =  ClosingDailyExpanse::where('action_type', '!=', 'DELETE')
-                      ->where('closing_daily_expanses_id', $closingExpanse->closing_daily_expanses_id)
-                      ->get();
-                      
-       $opnCashBlance  = OpenningDailyCashBlance::where('action_type', '!=', 'DELETE')
-                        ->where('cash_blance_type', '=', 1)     
-                        ->get();
+      // $closingExpanse->refresh();
+      // $closingExpanse =  ClosingDailyExpanse::where('action_type', '!=', 'DELETE')
+      //                 ->where('closing_daily_expense_id',  $closingExpanse->closing_daily_expense_id)
+      //                 ->first();
+
 
       // update Close Expanse table
       $closingExpanse->openning_date = $openningExpanse->opening_date;
-      $closingExpanse->closing_blance = now();
+      $closingExpanse->closing_date = now();
       $closingExpanse->openning_blance = $opnCashBlance->current_cash_blance;
-      $closingExpanse->closing_blance = ($totalCreditBlance - $totalDebitBlance);
+      $closingExpanse->closing_blance = ($totalDebitBlance - $totalCreditBlance);
       $closingExpanse->total_debit_blance = $totalDebitBlance;
       $closingExpanse->total_credit_blance = $totalCreditBlance;
       $closingExpanse->action_type = 'INSERT';
@@ -268,26 +274,33 @@ class AccountDailyController extends Controller
 
       // Update CashBlance table
       $opnCashBlance->previous_cash_blance = $opnCashBlance->current_cash_blance;
-      $opnCashBlance->current_cash_blance = ($totalCreditBlance - $totalDebitBlance);
-      $opnCashBlance->previous_Update_date =$opnCashBlance->current_Update_date;
+      $opnCashBlance->current_cash_blance = ($totalDebitBlance - $totalCreditBlance);
+      $opnCashBlance->previous_Update_date = $opnCashBlance->current_Update_date;
       $opnCashBlance->current_Update_date = now();
 
       $opnCashBlance->save();
 
-       // Delete all data from  table
-       OpenningDailyDebitExpanse::truncate();
-       OpenningDailyCredit::truncate();
-       OpenningDailyCreditDetailsExpanse::truncate();
- 
+      // Update OpenningExpanse table status to 0 
+      $openningExpanse->closing_status = 0;   // Close 
+      $openningExpanse->save();
+
+      // Delete all data from  table
+      //  OpenningDailyDebitExpanse::truncate();
+      //  OpenningDailyCredit::truncate();
+      //  OpenningDailyCreditDetailsExpanse::truncate();
+      // Delete data with delete() instead of truncate()
+      OpenningDailyDebitExpanse::where('action_type', '!=', 'DELETE')->delete();
+      OpenningDailyCredit::where('action_type', '!=', 'DELETE')->delete();
+      OpenningDailyCreditDetailsExpanse::where('action_type', '!=', 'DELETE')->delete();
 
       DB::commit();
     } catch (\Exception $e) {
       DB::rollBack();
       \Log::error('Transaction failed: ' . $e->getMessage());
-      return redirect('/accountDaily/expanseList')->withErrors('An error occurred. Please try again.');
+      return redirect('/accountDaily/expanseList/'. now())->withErrors('An error occurred. Please try again.');
     }
 
-    return redirect('/accountDaily/expanseList')->with('success', 'Daily expanse closed successfully.');
+    return redirect('/accountDaily/expanseList/'. now())->with('success', 'Daily expanse closed successfully.');
   }
 
   public function addOpeningDailyDebit(Request $request)
@@ -336,10 +349,14 @@ class AccountDailyController extends Controller
 
     try {
       $openningExpanse = OpenningExpanse::where('action_type', '!=', 'DELETE')->first();
-     
+      
+      $opnDailyCredit = OpenningDailyCredit::where('action_type', '!=', 'DELETE')
+                        ->where('openning_daily_credits_id', $request['openning_daily_credits_id'])
+                        ->first();
+
       $credit = new OpenningDailyCreditDetailsExpanse();
 
-      $credit->openning_daily_credits_id = $request['openning_daily_credits_id'];
+      $credit->openning_daily_credits_id = $opnDailyCredit->openning_daily_credits_id;
       $credit->credit_category_id = $request['openning_daily_credits_id'];
       $credit->credit_name = $request['credit_name'];
       $credit->credit_blance = $request['credit_blance'];
@@ -350,7 +367,7 @@ class AccountDailyController extends Controller
       $credit->action_date = now();
 
       $credit->save();
-     
+
       DB::commit();
       return redirect('accountDaily/expanse');
     } catch (\Exception $e) {
@@ -358,7 +375,38 @@ class AccountDailyController extends Controller
       \Log::error('Transaction failed: ' . $e->getMessage());
       return redirect('accountDaily/expanse');
     }
-   
+
 
   }
+
+  public function DailyExpenseByClosedExpId($clsExpanseId)
+  {
+    $closingExpanse = ClosingDailyExpanse::where('action_type', '!=', 'DELETE')
+    ->where('closing_daily_expense_id', '=', $clsExpanseId)
+    ->first();
+
+    $closingCeditCategoryDDL = ClosingDailyCredit::where('action_type', '!=', 'DELETE')
+    ->where('closing_daily_expense_id', '=', $clsExpanseId)
+      ->orderBy('closing_daily_credit_id')
+      ->get();
+
+    $closingDebitList = ClosingDailyDebitExpanse::where('action_type', '!=', 'DELETE')
+    ->where('closing_daily_expense_id', '=', $clsExpanseId)
+      ->orderBy('closing_daily_debit_expense_id')
+      ->get();
+    $closingCreditDetailsList = ClosingDailyCreditDetailsExpanse::where('action_type', '!=', 'DELETE')
+    ->where('closing_daily_expense_id', '=', $clsExpanseId)
+      ->get();
+     
+    $data = compact(
+      'closingExpanse',
+      'closingCeditCategoryDDL',
+      'closingDebitList',
+      'closingCreditDetailsList'
+    );
+
+
+    return view('accountDaily.dailyExpenseReport')->with($data);
+  }
+
 }

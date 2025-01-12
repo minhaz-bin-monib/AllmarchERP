@@ -117,7 +117,7 @@
                                     <select name="openning_daily_credits_id" id="openning_daily_credits_id"
                                         class="form-control">
                                         @foreach ($openingCeditCategoryDDL as $category)
-                                            <option value="{{ $category->credit_category_id }}">
+                                            <option value="{{ $category->openning_daily_credits_id }}">
                                                 {{ $category->credit_category_name }}</option>
                                         @endforeach
                                     </select>
@@ -191,7 +191,7 @@
                                 <tr>
                                     <td>
                                         @if (isset($openingDebitList[$indexOfDebitPrint]))
-                                            {{ $openingDebitList[$indexOfDebitPrint]->debit_date }}
+                                            {{ \Carbon\Carbon::parse($openingDebitList[$indexOfDebitPrint]->debit_date)->format('d-m-Y') }}
                                         @endif
                                     </td>
                                     <td>
@@ -199,7 +199,7 @@
                                             {{ $openingDebitList[$indexOfDebitPrint]->debit_name }}
                                         @endif
                                     </td>
-                                    <td>
+                                    <td class="text-end">
                                         @if (isset($openingDebitList[$indexOfDebitPrint]))
                                             {{ $openingDebitList[$indexOfDebitPrint]->debit_blance }}
                                             @php
@@ -229,7 +229,7 @@
                                     <tr>
                                         <td>
                                             @if (isset($openingDebitList[$indexOfDebitPrint]))
-                                                {{ $openingDebitList[$indexOfDebitPrint]->debit_date }}
+                                                {{\Carbon\Carbon::parse($openingDebitList[$indexOfDebitPrint]->debit_date)->format('d-m-Y')  }}
                                             @endif
                                         </td>
                                         <td>
@@ -237,7 +237,7 @@
                                                 {{ $openingDebitList[$indexOfDebitPrint]->debit_name }}
                                             @endif
                                         </td>
-                                        <td>
+                                        <td class="text-end">
                                             @if (isset($openingDebitList[$indexOfDebitPrint]))
                                                 {{ $openingDebitList[$indexOfDebitPrint]->debit_blance }}
                                                 @php
@@ -247,12 +247,12 @@
                                             @endif
                                         </td>
                                         <td>
-                                            {{ $objSubCredit->credit_date }}
+                                            {{ \Carbon\Carbon::parse( $objSubCredit->credit_date)->format('d-m-Y') }}
                                         </td>
                                         <td>
                                             {{ $objSubCredit->credit_name }}
                                         </td>
-                                        <td>
+                                        <td class="text-end">
                                             {{ $objSubCredit->credit_blance }}
                                             @php
                                                 $creditSubTotal += $objSubCredit->credit_blance;
@@ -268,7 +268,7 @@
                                 <tr>
                                     <td>
                                         @if (isset($openingDebitList[$indexOfDebitPrint]))
-                                            {{ $openingDebitList[$indexOfDebitPrint]->debit_date }}
+                                            {{\Carbon\Carbon::parse($openingDebitList[$indexOfDebitPrint]->debit_date)->format('d-m-Y')  }}
                                         @endif
                                     </td>
                                     <td>
@@ -276,7 +276,7 @@
                                             {{ $openingDebitList[$indexOfDebitPrint]->debit_name }}
                                         @endif
                                     </td>
-                                    <td>
+                                    <td class="text-end">
                                         @if (isset($openingDebitList[$indexOfDebitPrint]))
                                             {{ $openingDebitList[$indexOfDebitPrint]->debit_blance }}
                                             @php
@@ -287,7 +287,7 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td>{{$creditSubTotal}}</td>
+                                    <td class="text-end">{{$creditSubTotal}}</td>
                                 </tr>
                             @endforeach
                             {{-- Final Summery  --}}
@@ -297,8 +297,8 @@
                                 <td></td>
                                 <td></td>
                                 <td class="text-end text-info">Today Total Debit:</td>
-                                <td>{{$creditTotalSum}}</td>
-                                <td>{{$creditTotalSum}}</td>
+                                <td class="text-end">{{$creditTotalSum}}</td>
+                                <td class="text-end">{{$creditTotalSum}}</td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -306,15 +306,15 @@
                                 <td></td>
                                 <td></td>
                                 <td class="text-end text-primary">Closing Cash Balance:</td>
-                                <td>{{$debitTotalSum - $creditTotalSum}}</td>
+                                <td class="text-end">{{$debitTotalSum - $creditTotalSum}}</td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td colspan="2" class="text-start">Today Total Credit:</td>
                                
-                                <td>{{ $debitTotalSum}}</td>
+                                <td class="text-end">{{ $debitTotalSum}}</td>
                                 <td colspan="2" class="text-end">Total balance:</td>
-                                <td>{{$debitTotalSum}}</td>
+                                <td class="text-end">{{$debitTotalSum}}</td>
                                 <td></td>
                             </tr>
                         </tbody>
@@ -324,6 +324,7 @@
         </div>
     </div>
     <script>
+      
         document.getElementById('PageName').innerText = '{{ $toptitle }}';
 
         function confirmAction(isEnabled) {

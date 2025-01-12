@@ -103,6 +103,18 @@
                             </ul>
                         </li>
                         <li>
+                            <a href="#accountDaily" data-bs-toggle="collapse" aria-expanded="false"
+                                class="dropdown-toggle">Daily Expense</a>
+                            <ul class="collapse list-unstyled" id="accountDaily">
+                                <li>
+                                    <a href="{{ url('/accountDaily/expanse') }}">Add Daily Expense</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('/accountDaily/expanseList') . '/' . date('Y-m-d') }}">Close Daily Expense List</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
                             <a href="#employeeSubmenu" data-bs-toggle="collapse" aria-expanded="false"
                                 class="dropdown-toggle">Employee </a>
                             <ul class="collapse list-unstyled" id="employeeSubmenu">
@@ -193,13 +205,13 @@
                         </li>
                         <li>
                             <a href="#accountDaily" data-bs-toggle="collapse" aria-expanded="false"
-                                class="dropdown-toggle">Daily Expanse</a>
+                                class="dropdown-toggle">Daily Expense</a>
                             <ul class="collapse list-unstyled" id="accountDaily">
                                 <li>
-                                    <a href="{{ url('/accountDaily/expanse') }}">Add Daily Expanse</a>
+                                    <a href="{{ url('/accountDaily/expanse') }}">Add Daily Expense</a>
                                 </li>
                                 <li>
-                                    <a href="{{ url('/accountDaily/expanseList') }}">Close Daily Expanse List</a>
+                                    <a href="{{ url('/accountDaily/expanseList'). '/' . date('Y-m-d')  }}">Close Daily Expense List</a>
                                 </li>
                             </ul>
                         </li>
@@ -234,7 +246,7 @@
                 const dayOfWeek = daysOfWeek[now.getDay()];
 
                 // Format the date and day
-                const dateString = `${month}-${day}-${year}`;
+                const dateString = `${day}-${month}-${year}`;
                 const dayString = `${dayOfWeek}`;
 
                 // Display the formatted date, time, and day
