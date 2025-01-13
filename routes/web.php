@@ -191,5 +191,6 @@ Route::group(['prefix' => 'accountDaily','middleware' => ['isLoggedIn','roleChec
     Route::post('addOpeningDailyDebit', [AccountDailyController::class, 'addOpeningDailyDebit']);
     Route::post('addOpeningDailyCredit', [AccountDailyController::class, 'addOpeningDailyCredit']);
     Route::get('dailyExpenseDetails/{clsExpanseId}', [AccountDailyController::class, 'DailyExpenseByClosedExpId']);
+    Route::get('deleteDebitOrCredit/{credOrDebitId}/{typeOf}', [AccountDailyController::class, 'deleteDebitOrCredit']);
   
 });

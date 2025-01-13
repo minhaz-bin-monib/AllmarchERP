@@ -379,6 +379,34 @@ class AccountDailyController extends Controller
 
   }
 
+  public function deleteDebitOrCredit($credOrDebitId, $typeOf)
+  {
+    DB::beginTransaction();
+    try{
+
+      if($typeOf == 'debit')
+      {
+        OpenningDailyDebitExpanse::where('action_type', '!=', 'DELETE')
+        ->where('openning_daily_debit_expanses_id', '=', $credOrDebitId)
+        ->delete();
+  
+      }
+      else if($typeOf == 'credit')
+      {
+        OpenningDailyCreditDetailsExpanse::where('action_type', '!=', 'DELETE')
+        ->where('openning_daily_credit_details_expanses_id', '=', $credOrDebitId)
+        ->delete();
+      }
+
+      DB::commit();
+      return redirect('accountDaily/expanse');
+    } catch (\Exception $e) {
+      DB::rollBack();
+      \Log::error('Transaction failed: ' . $e->getMessage());
+      return redirect('accountDaily/expanse');
+    }
+  
+  }
   public function DailyExpenseByClosedExpId($clsExpanseId)
   {
     $closingExpanse = ClosingDailyExpanse::where('action_type', '!=', 'DELETE')

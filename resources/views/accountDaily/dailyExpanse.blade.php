@@ -8,7 +8,12 @@
 
 @section('main-section')
     <!-- START View Content Here -->
-
+    <style>
+        .link {
+            cursor: pointer;
+            padding: 3px;
+        }
+    </style>
     <div class="container">
         {{-- <h5>{{$toptitle}}</h5> --}}
         <div class="card  mb-2 mt-3 p-2">
@@ -74,7 +79,7 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="debit_blance">Debit Blance</label>
-                                    <input id="debit_blance" type="number" name="debit_blance"
+                                    <input id="debit_blance" type="number" step="0.01" name="debit_blance"
                                         value="{{ old('debit_blance', $openningDebit->debit_blance) }}" min="0"
                                         required class="form-control">
 
@@ -137,7 +142,7 @@
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="credit_blance">Credit Blance</label>
-                                    <input id="credit_blance" type="number" name="credit_blance"
+                                    <input id="credit_blance" type="number" step="0.01" name="credit_blance"
                                         value="{{ old('credit_blance', $openningCredit->credit_blance) }}" min="0"
                                         required class="form-control">
 
@@ -173,7 +178,9 @@
                     <table id="myTable" class="table table-sm table-bordered table-hover">
                         <thead>
                             <tr>
+                                <th></th>
                                 <th colspan="3" class="text-center">Debit</th>
+                                <th></th>
                                 <th colspan="3" class="text-center">Credit</th>
                                 <th class="text-center">Sub Total</th>
                             </tr>
@@ -189,7 +196,15 @@
                             @foreach ($openingCeditCategoryDDL as $objCrediCategory)
                                 {{-- First Category Print --}}
                                 <tr>
-                                    <td>
+                                    <td style="width: 4%">
+                                        @if (isset($openingDebitList[$indexOfDebitPrint]))
+                                            <a class="link"
+                                                onClick="confirmDelete('{{ url('/accountDaily/deleteDebitOrCredit') }}/{{ $openingDebitList[$indexOfDebitPrint]->openning_daily_debit_expanses_id }}/debit')">
+                                                <i class="fa fa-trash text-danger"></i>
+                                            </a>
+                                        @endif
+                                    </td>
+                                    <td style="width: 100px;">
                                         @if (isset($openingDebitList[$indexOfDebitPrint]))
                                             {{ \Carbon\Carbon::parse($openingDebitList[$indexOfDebitPrint]->debit_date)->format('d-m-Y') }}
                                         @endif
@@ -221,15 +236,23 @@
                                             $objCrediCategory->openning_daily_credits_id;
                                     });
                                 @endphp
-                                {{-- First All Sub Category Print --}}
+                                {{-- Second All Sub Category Print --}}
                                 @foreach ($filterSubCreditList as $objSubCredit)
                                     @php
                                         $indexOfDebitPrint++;
                                     @endphp
                                     <tr>
+                                        <td style="width: 4%">
+                                            @if (isset($openingDebitList[$indexOfDebitPrint]))
+                                                <a class="link"
+                                                    onClick="confirmDelete('{{ url('/accountDaily/deleteDebitOrCredit') }}/{{ $openingDebitList[$indexOfDebitPrint]->openning_daily_debit_expanses_id }}/debit')">
+                                                    <i class="fa fa-trash text-danger"></i>
+                                                </a>
+                                            @endif
+                                        </td>
                                         <td>
                                             @if (isset($openingDebitList[$indexOfDebitPrint]))
-                                                {{\Carbon\Carbon::parse($openingDebitList[$indexOfDebitPrint]->debit_date)->format('d-m-Y')  }}
+                                                {{ \Carbon\Carbon::parse($openingDebitList[$indexOfDebitPrint]->debit_date)->format('d-m-Y') }}
                                             @endif
                                         </td>
                                         <td>
@@ -246,8 +269,16 @@
                                                 @endphp
                                             @endif
                                         </td>
-                                        <td>
-                                            {{ \Carbon\Carbon::parse( $objSubCredit->credit_date)->format('d-m-Y') }}
+                                        <td style="width: 4%">
+
+                                            <a class="link"
+                                                onClick="confirmDelete('{{ url('/accountDaily/deleteDebitOrCredit') }}/{{ $objSubCredit->openning_daily_credit_details_expanses_id }}/credit')">
+                                                <i class="fa fa-trash text-danger"></i>
+                                            </a>
+
+                                        </td>
+                                        <td style="width: 100px;">
+                                            {{ \Carbon\Carbon::parse($objSubCredit->credit_date)->format('d-m-Y') }}
                                         </td>
                                         <td>
                                             {{ $objSubCredit->credit_name }}
@@ -266,9 +297,17 @@
                                 @endphp
                                 {{-- Third After Category Print Empty row Print --}}
                                 <tr>
+                                    <td style="width: 4%">
+                                        @if (isset($openingDebitList[$indexOfDebitPrint]))
+                                            <a class="link"
+                                                onClick="confirmDelete('{{ url('/accountDaily/deleteDebitOrCredit') }}/{{ $openingDebitList[$indexOfDebitPrint]->openning_daily_debit_expanses_id }}/debit')">
+                                                <i class="fa fa-trash text-danger"></i>
+                                            </a>
+                                        @endif
+                                    </td>
                                     <td>
                                         @if (isset($openingDebitList[$indexOfDebitPrint]))
-                                            {{\Carbon\Carbon::parse($openingDebitList[$indexOfDebitPrint]->debit_date)->format('d-m-Y')  }}
+                                            {{ \Carbon\Carbon::parse($openingDebitList[$indexOfDebitPrint]->debit_date)->format('d-m-Y') }}
                                         @endif
                                     </td>
                                     <td>
@@ -287,34 +326,83 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td class="text-end">{{$creditSubTotal}}</td>
+                                    <td></td>
+                                    <td class="text-end">{{ $creditSubTotal }}</td>
                                 </tr>
+                                @php
+                                    $indexOfDebitPrint++;
+                                @endphp
                             @endforeach
+                            {{-- Fourth If Debit remain --}}
+                            @if (!empty($openingDebitList) && count($openingDebitList) > $indexOfDebitPrint)
+                                @foreach ($openingDebitList as $index => $debit)
+                                    @if ($index >= $indexOfDebitPrint)
+                                        <tr>
+                                            <td style="width: 4%">
+                                                @if (isset($openingDebitList[$indexOfDebitPrint]))
+                                                    <a class="link"
+                                                        onClick="confirmDelete('{{ url('/accountDaily/deleteDebitOrCredit') }}/{{ $openingDebitList[$indexOfDebitPrint]->openning_daily_debit_expanses_id }}/debit')">
+                                                        <i class="fa fa-trash text-danger"></i>
+                                                    </a>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if (isset($openingDebitList[$index]))
+                                                    {{ \Carbon\Carbon::parse($openingDebitList[$index]->debit_date)->format('d-m-Y') }}
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if (isset($openingDebitList[$index]))
+                                                    {{ $openingDebitList[$index]->debit_name }}
+                                                @endif
+                                            </td>
+                                            <td class="text-end">
+                                                @if (isset($openingDebitList[$index]))
+                                                    {{ $openingDebitList[$index]->debit_blance }}
+                                                    @php
+                                                        $debitTotalSum += $openingDebitList[$index]->debit_blance;
+                                                    @endphp
+                                                @endif
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+                            @endif
                             {{-- Final Summery  --}}
                             <tr>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
+                                <td></td>
                                 <td class="text-end text-info">Today Total Debit:</td>
-                                <td class="text-end">{{$creditTotalSum}}</td>
-                                <td class="text-end">{{$creditTotalSum}}</td>
+                                <td class="text-end">{{ $creditTotalSum }}</td>
+                                <td class="text-end">{{ $creditTotalSum }}</td>
                             </tr>
                             <tr>
+                                <td></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td class="text-end text-primary">Closing Cash Balance:</td>
-                                <td class="text-end">{{$debitTotalSum - $creditTotalSum}}</td>
+                                <td class="text-end">{{ $debitTotalSum - $creditTotalSum }}</td>
                                 <td></td>
                             </tr>
                             <tr>
+                                <td></td>
                                 <td colspan="2" class="text-start">Today Total Credit:</td>
-                               
-                                <td class="text-end">{{ $debitTotalSum}}</td>
+
+                                <td class="text-end">{{ $debitTotalSum }}</td>
+                                <td></td>
                                 <td colspan="2" class="text-end">Total balance:</td>
-                                <td class="text-end">{{$debitTotalSum}}</td>
+                                <td class="text-end">{{ $debitTotalSum }}</td>
                                 <td></td>
                             </tr>
                         </tbody>
@@ -324,7 +412,6 @@
         </div>
     </div>
     <script>
-      
         document.getElementById('PageName').innerText = '{{ $toptitle }}';
 
         function confirmAction(isEnabled) {
@@ -338,6 +425,12 @@
             let date = document.getElementById('searchInput').value;
             console.log(date);
             window.location.href = "{{ $urlOpeningDailyExpanse }}/" + date;
+        }
+
+        function confirmDelete(url) {
+            if (confirm("Want to delete this item?")) {
+                window.location.href = url;
+            }
         }
     </script>
     <!-- END View Content Here -->

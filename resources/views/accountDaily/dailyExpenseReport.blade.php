@@ -8,7 +8,7 @@
 @section('main-section')
     <!-- START View Content Here -->
 
-   
+
 
 
     <div class="px-4">
@@ -24,11 +24,11 @@
             <div class="col-2">
                 <a class="btn btn-primary btn-sm" onClick="printPage()"> <i class="fa fa-print"></i> Print</a>
                 <p style="margin: 0px 0px" class="text-end"><b>Print Date: {{ date('d-m-Y') }}</b></p>
-         
+
             </div>
-           
+
         </div>
-      
+
         <table id="myTable" class="table-bordered">
             <thead>
                 <tr>
@@ -54,7 +54,7 @@
                     <tr>
                         <td>
                             @if (isset($closingDebitList[$indexOfDebitPrint]))
-                                {{\Carbon\Carbon::parse($closingDebitList[$indexOfDebitPrint]->debit_date)->format('d-m-Y')  }}
+                                {{ \Carbon\Carbon::parse($closingDebitList[$indexOfDebitPrint]->debit_date)->format('d-m-Y') }}
                             @endif
                         </td>
                         <td>
@@ -71,7 +71,7 @@
                             @endif
                         </td>
                         <td></td>
-                        <td  class="text-center">
+                        <td class="text-center">
                             <b>{{ $objCrediCategory->credit_category_name }}</b>
                         </td>
                         <td></td>
@@ -79,17 +79,13 @@
                     </tr>
                     @php
                         $creditSubTotal = 0;
-                      
-                        $filterSubCreditList = $closingCreditDetailsList->filter(function ($f) use (
-                            $objCrediCategory,
-                        ) {
-                            return $f->closing_daily_credit_id ==
-                                $objCrediCategory->closing_daily_credit_id;
+
+                        $filterSubCreditList = $closingCreditDetailsList->filter(function ($f) use ($objCrediCategory) {
+                            return $f->closing_daily_credit_id == $objCrediCategory->closing_daily_credit_id;
                         });
-                     
-                       
+
                     @endphp
-                    {{-- First All Sub Category Print --}}
+                    {{-- Second All Sub Category Print --}}
                     @foreach ($filterSubCreditList as $objSubCredit)
                         @php
                             $indexOfDebitPrint++;
@@ -97,7 +93,7 @@
                         <tr>
                             <td>
                                 @if (isset($closingDebitList[$indexOfDebitPrint]))
-                                    {{\Carbon\Carbon::parse($closingDebitList[$indexOfDebitPrint]->debit_date)->format('d-m-Y')  }}
+                                    {{ \Carbon\Carbon::parse($closingDebitList[$indexOfDebitPrint]->debit_date)->format('d-m-Y') }}
                                 @endif
                             </td>
                             <td>
@@ -109,8 +105,7 @@
                                 @if (isset($closingDebitList[$indexOfDebitPrint]))
                                     {{ $closingDebitList[$indexOfDebitPrint]->debit_blance }}
                                     @php
-                                        $debitTotalSum +=
-                                            $closingDebitList[$indexOfDebitPrint]->debit_blance;
+                                        $debitTotalSum += $closingDebitList[$indexOfDebitPrint]->debit_blance;
                                     @endphp
                                 @endif
                             </td>
@@ -136,7 +131,7 @@
                     <tr>
                         <td>
                             @if (isset($closingDebitList[$indexOfDebitPrint]))
-                                {{\Carbon\Carbon::parse($closingDebitList[$indexOfDebitPrint]->debit_date)->format('d-m-Y')  }}
+                                {{ \Carbon\Carbon::parse($closingDebitList[$indexOfDebitPrint]->debit_date)->format('d-m-Y') }}
                             @endif
                         </td>
                         <td>
@@ -155,9 +150,43 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-end">{{$creditSubTotal}}</td>
+                        <td class="text-end">{{ $creditSubTotal }}</td>
                     </tr>
+                    @php
+                        $indexOfDebitPrint++;
+                    @endphp
                 @endforeach
+                {{-- Fourth If Debit remain --}}
+                @if (!empty($closingDebitList) && count($closingDebitList) > $indexOfDebitPrint)
+                    @foreach ($closingDebitList as $index => $debit)
+                        @if ($index >= $indexOfDebitPrint)
+                            <tr>
+                                <td>
+                                    @if (isset($closingDebitList[$index]))
+                                        {{ \Carbon\Carbon::parse($closingDebitList[$index]->debit_date)->format('d-m-Y') }}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if (isset($closingDebitList[$index]))
+                                        {{ $closingDebitList[$index]->debit_name }}
+                                    @endif
+                                </td>
+                                <td class="text-end">
+                                    @if (isset($closingDebitList[$index]))
+                                        {{ $closingDebitList[$index]->debit_blance }}
+                                        @php
+                                            $debitTotalSum += $closingDebitList[$index]->debit_blance;
+                                        @endphp
+                                    @endif
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        @endif
+                    @endforeach
+                @endif
                 {{-- Final Summery  --}}
                 <tr>
                     <td></td>
@@ -165,8 +194,8 @@
                     <td style="border-right: 2px solid #0025a2;"></td>
                     <td></td>
                     <td class="text-end text-info">Today Total Debit:</td>
-                    <td class="text-end">{{$creditTotalSum}}</td>
-                    <td class="text-end">{{$creditTotalSum}}</td>
+                    <td class="text-end">{{ $creditTotalSum }}</td>
+                    <td class="text-end">{{ $creditTotalSum }}</td>
                 </tr>
                 <tr>
                     <td></td>
@@ -174,17 +203,17 @@
                     <td style="border-right: 2px solid #0025a2;"></td>
                     <td></td>
                     <td class="text-end text-primary">Closing Cash Balance:</td>
-                    <td class="text-end">{{$debitTotalSum - $creditTotalSum}}</td>
+                    <td class="text-end">{{ $debitTotalSum - $creditTotalSum }}</td>
                     <td></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td  class="text-start">Today Total Credit:</td>
-                   
-                    <td class="text-end" style="border-right: 2px solid #0025a2;">{{ $debitTotalSum}}</td>
+                    <td class="text-start">Today Total Credit:</td>
+
+                    <td class="text-end" style="border-right: 2px solid #0025a2;">{{ $debitTotalSum }}</td>
                     <td></td>
-                    <td  class="text-end">Total balance:</td>
-                    <td class="text-end">{{$debitTotalSum}}</td>
+                    <td class="text-end">Total balance:</td>
+                    <td class="text-end">{{ $debitTotalSum }}</td>
                     <td></td>
                 </tr>
             </tbody>
@@ -244,8 +273,6 @@
             console.log('print  page');
             window.print();
         }
-
-    
     </script>
 
 
