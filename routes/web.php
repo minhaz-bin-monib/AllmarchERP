@@ -59,6 +59,8 @@ Route::group(['prefix' => 'employee','middleware' => ['isLoggedIn','roleCheck:Ad
     Route::get('list', [EmployeeController::class, 'show']);
     Route::get('create', [EmployeeController::class, 'create']);
     Route::post('create', [EmployeeController::class, 'store']);
+    Route::get('edit/{id}', [EmployeeController::class, 'edit']);
+    Route::post('update/{id}', [EmployeeController::class, 'update']);
 });
 
 // ------------------------- Customer Routes ------------------------
