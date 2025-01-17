@@ -81,27 +81,12 @@
                 <div class="form-group col-md-4">
                     <label for="material_description">Material Description</label>
                     <select name="material_description" class="form-control">
-                        <option value=""
-                            {{ old('material_description', $product->material_description) == '' ? 'selected' : '' }}>
-                            Select</option>
-                        <option value="SYNTHETIC ORGANIC COLORING MATTER"
-                            {{ old('material_description', $product->material_description) == 'SYNTHETIC ORGANIC COLORING MATTER' ? 'selected' : '' }}>
-                            SYNTHETIC ORGANIC COLORING MATTER</option>
-                        <option value="ACRYLIC POLYMER IN PRIMARY FORMS"
-                            {{ old('material_description', $product->material_description) == 'ACRYLIC POLYMER IN PRIMARY FORMS' ? 'selected' : '' }}>
-                            ACRYLIC POLYMER IN PRIMARY FORMS</option>
-                        <option value="OTHER MINERAL SUBSTANCES"
-                            {{ old('material_description', $product->material_description) == 'OTHER MINERAL SUBSTANCES' ? 'selected' : '' }}>
-                            OTHER MINERAL SUBSTANCES</option>
-                        <option value="FIXING AGENT"
-                            {{ old('material_description', $product->material_description) == 'FIXING AGENT' ? 'selected' : '' }}>
-                            FIXING AGENT</option>
-                        <option value="PIGMENT / PREPARATIONS BASED ON TITANIUM DIOXIDE CONT. <80% TITANIUM DIOXIDE"
-                            {{ old('material_description', $product->material_description) == 'PIGMENT / PREPARATIONS BASED ON TITANIUM DIOXIDE CONT. <80% TITANIUM DIOXIDE' ? 'selected' : '' }}>
-                            PIGMENT / PREPARATIONS BASED ON TITANIUM DIOXIDE CONT. <80% TITANIUM DIOXIDE</option>
-                        <option value="N/A"
-                            {{ old('material_description', $product->material_description) == 'N/A' ? 'selected' : '' }}>
-                            N/A</option>
+                        @foreach ($material as $mat)
+                            <option value="{{ $mat['material_name'] }}"
+                                {{ old('material_description', $product->material_description) == $mat['material_name'] ? 'selected' : '' }}>
+                                {{$mat['material_name'] }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="form-group col-md-4">
@@ -120,120 +105,13 @@
                 <div class="form-group col-md-4">
                     <label for="second_material_description">Second Material Description</label>
                     <select name="second_material_description" class="form-control">
-                        <option value=""
-                            {{ old('second_material_description', $product->second_material_description) == '' ? 'selected' : '' }}>
-                            Select</option>
-                        <option value="ECHODISCHARGE ULTRA WHITE"
-                            {{ old('second_material_description', $product->second_material_description) == 'ECHODISCHARGE ULTRA WHITE' ? 'selected' : '' }}>
-                            ECHODISCHARGE ULTRA WHITE</option>
-                        <option value="ECHODISCHARGE BASE"
-                            {{ old('second_material_description', $product->second_material_description) == 'ECHODISCHARGE BASE' ? 'selected' : '' }}>
-                            ECHODISCHARGE BASE</option>
-                        <option value="PRINTEX BASE G"
-                            {{ old('second_material_description', $product->second_material_description) == 'PRINTEX BASE G' ? 'selected' : '' }}>
-                            PRINTEX BASE G</option>
-                        <option value="TX WHITE"
-                            {{ old('second_material_description', $product->second_material_description) == 'TX WHITE' ? 'selected' : '' }}>
-                            TX WHITE</option>
-                        <option value="PRINTEX FLOCK BASE"
-                            {{ old('second_material_description', $product->second_material_description) == 'PRINTEX FLOCK BASE' ? 'selected' : '' }}>
-                            PRINTEX FLOCK BASE</option>
-                        <option value="PIGMENT PASTE"
-                            {{ old('second_material_description', $product->second_material_description) == 'PIGMENT PASTE' ? 'selected' : '' }}>
-                            PIGMENT PASTE</option>
-                        <option value="ELASTIC WHITE"
-                            {{ old('second_material_description', $product->second_material_description) == 'ELASTIC WHITE' ? 'selected' : '' }}>
-                            ELASTIC WHITE</option>
-                        <option value="ELASTIC BASE"
-                            {{ old('second_material_description', $product->second_material_description) == 'ELASTIC BASE' ? 'selected' : '' }}>
-                            ELASTIC BASE</option>
-                        <option value="PIGMENT REDY PASTE"
-                            {{ old('second_material_description', $product->second_material_description) == 'PIGMENT REDY PASTE' ? 'selected' : '' }}>
-                            PIGMENT REDY PASTE</option>
-                        <option value="PIGMENT WHITE"
-                            {{ old('second_material_description', $product->second_material_description) == 'PIGMENT WHITE' ? 'selected' : '' }}>
-                            PIGMENT WHITE</option>
-                        <option value="FIXING AGENT"
-                            {{ old('second_material_description', $product->second_material_description) == 'FIXING AGENT' ? 'selected' : '' }}>
-                            FIXING AGENT</option>
-                        <option value="PVC-PHTHALATE FREE PLASTISOL"
-                            {{ old('second_material_description', $product->second_material_description) == 'PVC-PHTHALATE FREE PLASTISOL' ? 'selected' : '' }}>
-                            PVC-PHTHALATE FREE PLASTISOL</option>
-                        <option value="PHTHALATE FREE PLASTISOL"
-                            {{ old('second_material_description', $product->second_material_description) == 'PHTHALATE FREE PLASTISOL' ? 'selected' : '' }}>
-                            PHTHALATE FREE PLASTISOL</option>
-                        <option value="PIGMENT BASE"
-                            {{ old('second_material_description', $product->second_material_description) == 'PIGMENT BASE' ? 'selected' : '' }}>
-                            PIGMENT BASE</option>
-                        <option value="TMN COLORS"
-                            {{ old('second_material_description', $product->second_material_description) == 'TMN COLORS' ? 'selected' : '' }}>
-                            TMN COLORS</option>
-                        <option value="BINDER"
-                            {{ old('second_material_description', $product->second_material_description) == 'BINDER' ? 'selected' : '' }}>
-                            BINDER</option>
-                        <option value="TABLE GUM"
-                            {{ old('second_material_description', $product->second_material_description) == 'TABLE GUM' ? 'selected' : '' }}>
-                            TABLE GUM</option>
-                        <option value="GOTS CERTIFIED ELASTIC WHITE"
-                            {{ old('second_material_description', $product->second_material_description) == 'GOTS CERTIFIED ELASTIC WHITE' ? 'selected' : '' }}>
-                            GOTS CERTIFIED ELASTIC WHITE</option>
-                        <option value="WATER BASE PUFF"
-                            {{ old('second_material_description', $product->second_material_description) == 'WATER BASE PUFF' ? 'selected' : '' }}>
-                            WATER BASE PUFF</option>
-                        <option value="WATER BASED HIGH CONC FOAM (PUFF)"
-                            {{ old('second_material_description', $product->second_material_description) == 'WATER BASED HIGH CONC FOAM (PUFF)' ? 'selected' : '' }}>
-                            WATER BASED HIGH CONC FOAM (PUFF)</option>
-                        <option value="PIGMENT FLUORESCENT COLOR"
-                            {{ old('second_material_description', $product->second_material_description) == 'PIGMENT FLUORESCENT COLOR' ? 'selected' : '' }}>
-                            PIGMENT FLUORESCENT COLOR</option>
-                        <option value="ECOPLAST DEEP GREEN"
-                            {{ old('second_material_description', $product->second_material_description) == 'ECOPLAST DEEP GREEN' ? 'selected' : '' }}>
-                            ECOPLAST DEEP GREEN</option>
-                        <option value="ECOPLAST FUSCHIA"
-                            {{ old('second_material_description', $product->second_material_description) == 'ECOPLAST FUSCHIA' ? 'selected' : '' }}>
-                            ECOPLAST FUSCHIA</option>
-                        <option value="ECOPLAST GOLDEN YELLOW"
-                            {{ old('second_material_description', $product->second_material_description) == 'ECOPLAST GOLDEN YELLOW' ? 'selected' : '' }}>
-                            ECOPLAST GOLDEN YELLOW</option>
-                        <option value="ECOPLAST VIOLET"
-                            {{ old('second_material_description', $product->second_material_description) == 'ECOPLAST VIOLET' ? 'selected' : '' }}>
-                            ECOPLAST VIOLET</option>
-                        <option value="ECOPLAST LIGHT ORANGE"
-                            {{ old('second_material_description', $product->second_material_description) == 'ECOPLAST LIGHT ORANGE' ? 'selected' : '' }}>
-                            ECOPLAST LIGHT ORANGE</option>
-                        <option value="ECOPLAST LIGHT YELLOW"
-                            {{ old('second_material_description', $product->second_material_description) == 'ECOPLAST LIGHT YELLOW' ? 'selected' : '' }}>
-                            ECOPLAST LIGHT YELLOW</option>
-                        <option value="ECOPLAST FLUO MAGENTA"
-                            {{ old('second_material_description', $product->second_material_description) == 'ECOPLAST FLUO MAGENTA' ? 'selected' : '' }}>
-                            ECOPLAST FLUO MAGENTA</option>
-                        <option value="ECOPLAST SCARLET"
-                            {{ old('second_material_description', $product->second_material_description) == 'ECOPLAST SCARLET' ? 'selected' : '' }}>
-                            ECOPLAST SCARLET</option>
-                        <option value="ECOPLAST WHITE"
-                            {{ old('second_material_description', $product->second_material_description) == 'ECOPLAST WHITE' ? 'selected' : '' }}>
-                            ECOPLAST WHITE</option>
-                        <option value="ECOPLAST FOAM CONC"
-                            {{ old('second_material_description', $product->second_material_description) == 'ECOPLAST FOAM CONC' ? 'selected' : '' }}>
-                            ECOPLAST FOAM CONC</option>
-                        <option value="ECOPLAST HIGH DENSITY GEL"
-                            {{ old('second_material_description', $product->second_material_description) == 'ECOPLAST HIGH DENSITY GEL' ? 'selected' : '' }}>
-                            ECOPLAST HIGH DENSITY GEL</option>
-                        <option value="ECOPLAST GEL"
-                            {{ old('second_material_description', $product->second_material_description) == 'ECOPLAST GEL' ? 'selected' : '' }}>
-                            ECOPLAST GEL</option>
-                        <option value="ECOPLAST CARMEN"
-                            {{ old('second_material_description', $product->second_material_description) == 'ECOPLAST CARMEN' ? 'selected' : '' }}>
-                            ECOPLAST CARMEN</option>
-                        <option value="ECOPLAST FLUO COLORS"
-                            {{ old('second_material_description', $product->second_material_description) == 'ECOPLAST FLUO COLORS' ? 'selected' : '' }}>
-                            ECOPLAST FLUO COLORS</option>
-                        <option value="ECHOPLAST THINNER"
-                            {{ old('second_material_description', $product->second_material_description) == 'ECHOPLAST THINNER' ? 'selected' : '' }}>
-                            ECHOPLAST THINNER</option>
-                        <option value="N/A"
-                            {{ old('second_material_description', $product->second_material_description) == 'N/A' ? 'selected' : '' }}>
-                            N/A</option>
+                        @foreach ($secondMaterial as $mat)
+                        <option value="{{ $mat['second_material_name'] }}"
+                            {{ old('second_material_description', $product->second_material_description) == $mat['second_material_name'] ? 'selected' : '' }}>
+                            {{ $mat['second_material_name'] }}
+                        </option>
+                    @endforeach
+                    
                     </select>
                 </div>
                 <div class="form-group col-md-4">

@@ -45,7 +45,7 @@
         </div>
         <div class="form-group col-md-4">
             <label for="employee_designation">Employee Designation<span class="text-danger"><b>*</b></span></label>
-            <select name="employee_designation" class="form-control">
+            <select name="employee_designation" {{ $employee->employee_id > 0 && $employee->employee_designation == 'Delivery Man' ? 'disabled' : '' }} class="form-control">
                 @php
                     $roles = [
                         'Office Executive', 

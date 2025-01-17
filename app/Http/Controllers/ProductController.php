@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\MaterialDescription;
+use App\Models\SecondMaterialDescription;
 use Carbon\Carbon;
 
 class ProductController extends Controller
@@ -35,9 +37,13 @@ class ProductController extends Controller
     {
         $product = new Product(); 
         $product->registration_date = Carbon::now()->format('Y-m-d');
+
+        $material = MaterialDescription::get();
+        $secondMaterial = SecondMaterialDescription::get();
+
         $url = url('/product/create');
         $toptitle = 'Add Product';
-        $data = compact('product','url', 'toptitle');
+        $data = compact('product','material', 'secondMaterial','url', 'toptitle');
         return view('product.addproduct')->with($data);
     }
 
@@ -109,9 +115,10 @@ class ProductController extends Controller
         else{
             $url = url('/product/update') ."/". $id;
             $toptitle = 'Edit Product';
-
-            $data = compact('product', 'url', 'toptitle'); // data and dynamic url pass into view
-            
+            $material = MaterialDescription::get();
+            $secondMaterial = SecondMaterialDescription::get();
+            $data = compact('product','material', 'secondMaterial','url', 'toptitle');
+      
             return view('product.addproduct')->with($data);;
          
         }
