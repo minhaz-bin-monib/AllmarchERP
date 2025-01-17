@@ -54,7 +54,7 @@
                         <td>{{ $slesInv->invoice_type }}</td>
                         <td>{{ $slesInv->registration_date }}</td>
                         <td>{{ $slesInv->invoice_date }}</td>
-                        <td>{{ $slesInv->delivery_by }}</td>
+                        <td>{{ $slesInv->nick_name }}</td>
                         <td>{{ $slesInv->order_ref }}</td>
                         <td>{{ $slesInv->remark }}</td>
                        

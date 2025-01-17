@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\SalesInvoice;
 use App\Models\SalesInvoiceProduct;
 use App\Models\Customer;
+use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Dompdf\Dompdf;
@@ -14,19 +15,7 @@ use NumberToWords\NumberToWords;
 
 class LoanInvoiceController extends Controller
 {
-     /*   // [httpGet]
-   public function show()
-   {
-       $salesInvoices = SalesInvoice::where('action_type', '!=', 'DELETE')
-           ->orderBy('salesInvoice_id', 'desc')
-           ->get();
-
-       $data = compact('salesInvoices');
-
-       return view('invoice.salesInvoiceList')->with($data);
-   }
-*/
-   // [httpGet]
+   
    public function create()
    {
        $salesInvoice = new SalesInvoice();
@@ -34,9 +23,14 @@ class LoanInvoiceController extends Controller
        $salesInvoice->invoice_date = Carbon::now()->format('Y-m-d');
        $salesInvoice->order_ref = "Loan";
        $salesInvoice->no_of_packing = 1;
+
+       $employeeslist = Employee::where('action_type', '!=', 'DELETE')
+                        ->where('employee_designation', '=' ,'Delivery Man')
+                        ->orderBy('employee_id')
+                        ->get();
        $url = url('/loanInvoice/create');
        $toptitle = 'Loan Invoice';
-       $data = compact('salesInvoice', 'url', 'toptitle');
+       $data = compact('salesInvoice', 'employeeslist', 'url', 'toptitle');
        return view('invoice.addLoanInvoice')->with($data);
    }
 
@@ -146,11 +140,15 @@ class LoanInvoiceController extends Controller
                ->select('invoice_products.*', 'products.product_name')
                ->get();
 
+               $employeeslist = Employee::where('action_type', '!=', 'DELETE')
+               ->where('employee_designation', '=' ,'Delivery Man')
+               ->orderBy('employee_id')
+               ->get();
 
            $url = url('/loanInvoice/update') . "/" . $id;
            $toptitle = 'Loan Invoice ' . $salesInvoice->salesInvoice_id;
 
-           $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'url', 'toptitle'); // data and dynamic url pass into view
+           $data = compact('converter', 'salesInvoice', 'employeeslist', 'salesInvoiceProduct', 'url', 'toptitle'); // data and dynamic url pass into view
 
            return view('invoice.addLoanInvoice')->with($data);
 
@@ -164,7 +162,7 @@ class LoanInvoiceController extends Controller
        $request->validate(
            [
                'registration_date' => 'required',
-               'customer_id' => 'required',
+              // 'customer_id' => 'required',
                'batch_id' => 'required',
                'product_id' => 'required',
                // 'manufacturer_id' => 'required',
@@ -184,7 +182,7 @@ class LoanInvoiceController extends Controller
            if (!is_null($salesInvoice)) {
 
               // $salesInvoice->registration_date = $request['registration_date'];
-               $salesInvoice->customer_id = $request['customer_id'];
+              // $salesInvoice->customer_id = $request['customer_id'];
                $salesInvoice->batch_id = $request['batch_id'];
                $salesInvoice->product_id = $request['product_id'];
                $salesInvoice->manufacturer_id = $request['manufacturer_id'];
@@ -337,7 +335,9 @@ class LoanInvoiceController extends Controller
            $customer = Customer::where('customer_id', $salesInvoice->customer_id)
            ->where('action_type', '!=', 'DELETE')
            ->first();
-
+           $employee = Employee::where('employee_id', $salesInvoice->delivery_by)
+           ->where('action_type', '!=', 'DELETE')
+           ->first();
  
            $salesInvoiceProduct = DB::table('invoice_products')
                ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
@@ -347,7 +347,7 @@ class LoanInvoiceController extends Controller
                ->select('invoice_products.*', 'products.product_name')
                ->get();
 
-           $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
+           $data = compact('converter', 'employee','salesInvoice', 'salesInvoiceProduct', 'customer'); 
 
            $html = view('templateForPdf.loanCustomerInvoice')->with($data)->render();
    
@@ -381,7 +381,9 @@ class LoanInvoiceController extends Controller
            $customer = Customer::where('customer_id', $salesInvoice->customer_id)
            ->where('action_type', '!=', 'DELETE')
            ->first();
-
+           $employee = Employee::where('employee_id', $salesInvoice->delivery_by)
+           ->where('action_type', '!=', 'DELETE')
+           ->first();
  
            $salesInvoiceProduct = DB::table('invoice_products')
                ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
@@ -391,7 +393,7 @@ class LoanInvoiceController extends Controller
                ->select('invoice_products.*', 'products.product_name')
                ->get();
 
-           $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
+           $data = compact('converter','employee', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
 
            $html = view('templateForPdf.loanDeliveryInvoice')->with($data)->render();
    
@@ -426,7 +428,9 @@ class LoanInvoiceController extends Controller
            $customer = Customer::where('customer_id', $salesInvoice->customer_id)
            ->where('action_type', '!=', 'DELETE')
            ->first();
-
+           $employee = Employee::where('employee_id', $salesInvoice->delivery_by)
+           ->where('action_type', '!=', 'DELETE')
+           ->first();
  
            $salesInvoiceProduct = DB::table('invoice_products')
                ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
@@ -436,7 +440,7 @@ class LoanInvoiceController extends Controller
                ->select('invoice_products.*', 'products.product_name', 'products.product_unit_price_c', 'products.material_description')
                ->get();
 
-           $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
+           $data = compact('converter','employee', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
 
            $html = view('templateForPdf.loanSpecialInvoice')->with($data)->render();
    
@@ -470,7 +474,9 @@ class LoanInvoiceController extends Controller
            $customer = Customer::where('customer_id', $salesInvoice->customer_id)
            ->where('action_type', '!=', 'DELETE')
            ->first();
-
+           $employee = Employee::where('employee_id', $salesInvoice->delivery_by)
+           ->where('action_type', '!=', 'DELETE')
+           ->first();
  
            $salesInvoiceProduct = DB::table('invoice_products')
                ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
@@ -480,7 +486,7 @@ class LoanInvoiceController extends Controller
                ->select('invoice_products.*', 'products.product_name', 'products.material_description')
                ->get();
 
-           $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
+           $data = compact('converter', 'employee','salesInvoice', 'salesInvoiceProduct', 'customer'); 
 
            $html = view('templateForPdf.loanSpecialDeliveryInvoice')->with($data)->render();
    
@@ -515,7 +521,9 @@ class LoanInvoiceController extends Controller
             $customer = Customer::where('customer_id', $salesInvoice->customer_id)
             ->where('action_type', '!=', 'DELETE')
             ->first();
- 
+            $employee = Employee::where('employee_id', $salesInvoice->delivery_by)
+            ->where('action_type', '!=', 'DELETE')
+            ->first();
   
             $salesInvoiceProduct = DB::table('invoice_products')
                 ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
@@ -525,7 +533,7 @@ class LoanInvoiceController extends Controller
                 ->select('invoice_products.*', 'batches.import_info', 'products.product_name', 'products.product_unit_price_c', 'products.atv_rate', 'products.material_description')
                 ->get();
  
-            $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
+            $data = compact('converter', 'employee','salesInvoice', 'salesInvoiceProduct', 'customer'); 
  
             $html = view('templateForPdf.loanSpecialCalculateInvoice')->with($data)->render();
     

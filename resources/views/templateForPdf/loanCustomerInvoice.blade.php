@@ -300,7 +300,7 @@
 
 
         <div class="row w-100 middle" style="margin-top: 100px;width:97%">
-            <p class="textR">Delivery By: {{ '' }}</p>
+            <p class="textR">Delivery By:  {{ $employee->nick_name }}</p>
         </div>
         <div class="footer w-100 middle">
             <p>House# 1/A, Road# 15, Nikunju-2, Khilkhet, Dhaka-1229, Contact: +8801713221101-10, E-mail:

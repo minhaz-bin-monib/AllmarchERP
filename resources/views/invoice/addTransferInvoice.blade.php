@@ -27,7 +27,7 @@
                                 @enderror
                             </span>
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-6" >
                             <label for="customer_id"> Select Customer <span class="text-danger"><b>*</b></span></label>
                             <select data-live-search="true" id="customers" name="customer_id" class="form-control">
                                 <option value="" selected="">Select</option>
@@ -161,7 +161,12 @@
                         <div class="form-group col-md-6">
                             <label for="delivery_by"> Delivery By </label>
                             <select id="delivery_by" name="delivery_by" class="form-control">
-                                <option value="" selected="">Select</option>
+                                @foreach ($employeeslist as $emp)
+                                <option value="{{ $emp['employee_id'] }}"
+                                    {{ old('delivery_by', $transferInvoice->delivery_by) == $emp['employee_id'] ? 'selected' : '' }}>
+                                    {{ $emp['nick_name'] }}
+                                </option>
+                            @endforeach
 
                             </select>
                             <span class="text-danger">

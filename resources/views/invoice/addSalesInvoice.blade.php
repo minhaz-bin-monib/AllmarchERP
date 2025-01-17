@@ -16,7 +16,7 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="registration_date">Registration Date <span class="text-danger"><b>*</b></span></label>
-                    <input  type="date" name="registration_date"
+                    <input type="date" name="registration_date"
                         value="{{ old('registration_date', $salesInvoice->registration_date) }}" class="form-control"
                         id="registration_date">
                     <span class="text-danger">
@@ -25,9 +25,11 @@
                         @enderror
                     </span>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-4"
+                    style="{{ $salesInvoice->salesInvoice_id > 0 ? 'border-bottom: 1px solid #ddd;' : '' }}">
                     <label for="customer_id"> Select Customer <span class="text-danger"><b>*</b></span></label>
-                    <select data-live-search="true" id="customers" name="customer_id" class="form-control">
+                    <select data-live-search="true" id="customers" name="customer_id"
+                        {{ $salesInvoice->salesInvoice_id > 0 ? 'disabled' : '' }} class="form-control">
                         <option value="" selected="">Select</option>
                     </select>
                     <span class="text-danger">
@@ -71,9 +73,15 @@
                     <label for="manufacturer_id"> Manufacturer </label>
                     <select id="manufacturer_id" name="manufacturer_id" class="form-control">
                         {{-- <option value="" selected="">Select</option> --}}
-                        <option value="1" {{ old('manufacturer_id', $salesInvoice->manufacturer_id) == '1' ? 'selected' : '' }}>Turan Kimya</option>
-                        <option value="2" {{ old('manufacturer_id', $salesInvoice->manufacturer_id) == '2' ? 'selected' : '' }}>Nanoprint</option>
-                        <option value="3" {{ old('manufacturer_id', $salesInvoice->manufacturer_id) == '3' ? 'selected' : '' }}>Impex</option>
+                        <option value="1"
+                            {{ old('manufacturer_id', $salesInvoice->manufacturer_id) == '1' ? 'selected' : '' }}>Turan
+                            Kimya</option>
+                        <option value="2"
+                            {{ old('manufacturer_id', $salesInvoice->manufacturer_id) == '2' ? 'selected' : '' }}>Nanoprint
+                        </option>
+                        <option value="3"
+                            {{ old('manufacturer_id', $salesInvoice->manufacturer_id) == '3' ? 'selected' : '' }}>Impex
+                        </option>
                     </select>
                     <span class="text-danger">
                         @error('manufacturer_id')
@@ -104,7 +112,7 @@
 
                 <div class="form-group col-md-3">
                     <label for="packing">Packing <span class="text-danger"><b>*</b></span></label>
-                    <input type="number" name="packing" min="0" step="0.01" 
+                    <input type="number" name="packing" min="0" step="0.01"
                         value="{{ old('packing', $salesInvoice->packing) }}" class="form-control" id="packing">
                     <span class="text-danger">
                         @error('packing')
@@ -114,7 +122,7 @@
                 </div>
                 <div class="form-group col-md-3">
                     <label for="no_of_packing">No of Packing <span class="text-danger"><b>*</b></span></label>
-                    <input type="number" name="no_of_packing" min="0" step="0.01" 
+                    <input type="number" name="no_of_packing" min="0" step="0.01"
                         value="{{ old('no_of_packing', $salesInvoice->no_of_packing) }}" class="form-control"
                         id="no_of_packing">
                     <span class="text-danger">
@@ -125,7 +133,7 @@
                 </div>
                 <div class="form-group col-md-3">
                     <label for="unit_price">Unit price<span class="text-danger"><b>*</b></span></label>
-                    <input type="number" name="unit_price" min="0.0" step="0.01" 
+                    <input type="number" name="unit_price" min="0.0" step="0.01"
                         value="{{ old('unit_price', $salesInvoice->unit_price) }}" class="form-control" id="unit_price">
                     <span class="text-danger">
                         @error('unit_price')
@@ -147,7 +155,12 @@
                 <div class="form-group col-md-3">
                     <label for="delivery_by"> Delivery By </label>
                     <select id="delivery_by" name="delivery_by" class="form-control">
-                        <option value="" selected="">Select</option>
+                        @foreach ($employeeslist as $emp)
+                            <option value="{{ $emp['employee_id'] }}"
+                                {{ old('delivery_by', $salesInvoice->delivery_by) == $emp['employee_id'] ? 'selected' : '' }}>
+                                {{ $emp['nick_name'] }}
+                            </option>
+                        @endforeach
 
                     </select>
                     <span class="text-danger">
@@ -191,9 +204,15 @@
                     <label for="company"> Company <span class="text-danger"><b></b></span></label>
                     <select data-live-search="true" id="company" name="company" class="form-control">
                         {{-- <option value="" {{ old('company', $transferInvoice->company) == '' ? 'selected' : '' }}>Select</option> --}}
-                        <option value="Allmarch Bangladesh" {{ old('company', $salesInvoice->company) == 'Allmarch Bangladesh' ? 'selected' : '' }}>All-March Bangladesh Ltd.</option>
-                        <option value="Allmarch International" {{ old('company', $salesInvoice->company) == 'Allmarch International' ? 'selected' : '' }}>M/S. Allmarch International.</option>
-                        <option value="Believers International" {{ old('company', $salesInvoice->company) == 'Believers International' ? 'selected' : '' }}>Believers International</option>
+                        <option value="Allmarch Bangladesh"
+                            {{ old('company', $salesInvoice->company) == 'Allmarch Bangladesh' ? 'selected' : '' }}>
+                            All-March Bangladesh Ltd.</option>
+                        <option value="Allmarch International"
+                            {{ old('company', $salesInvoice->company) == 'Allmarch International' ? 'selected' : '' }}>M/S.
+                            Allmarch International.</option>
+                        <option value="Believers International"
+                            {{ old('company', $salesInvoice->company) == 'Believers International' ? 'selected' : '' }}>
+                            Believers International</option>
                     </select>
                     <span class="text-danger">
                         @error('company')
@@ -208,7 +227,7 @@
                     <button type="submit" class="btn btn-sm btn-primary mx-2">Add Product</button>
                     {{-- <button type="submit" class="btn btn-sm btn-primary">Update Invoice</button> --}}
                 @else
-                     <button type="submit" class="btn btn-sm btn-primary">Create Invoice with Product</button>
+                    <button type="submit" class="btn btn-sm btn-primary">Create Invoice with Product</button>
                 @endif
             </div>
         </form>
@@ -245,14 +264,14 @@
                 </thead>
                 <tbody>
                     @php
-                        $totalCost = 0; 
+                        $totalCost = 0;
                     @endphp
                     @foreach ($salesInvoiceProduct as $salesInvProd)
                         @php
                             $totalWeight = $salesInvProd->packing * $salesInvProd->no_of_packing;
                             $totalPrice = $totalWeight * $salesInvProd->unit_price;
                             $totalCost += $totalPrice;
-                         @endphp
+                        @endphp
                         <tr>
                             <td>{{ $salesInvProd->salesInvoiceProduct_id }}</td>
                             <td>{{ $salesInvProd->product_name }}</td>
@@ -266,11 +285,11 @@
                             <td>
                                 <a class=""
                                     href="{{ url('/salesInvoice/productStickar') }}/{{ $salesInvProd->salesInvoice_id }}/{{ $salesInvProd->salesInvoiceProduct_id }}">Special</a>
-                                    <a class="btn btn-sm btn-danger" 
-                                        onClick="confirmDelete('{{ url('/salesInvoice/productDelete') }}/{{ $salesInvProd->salesInvoice_id }}/{{ $salesInvProd->salesInvoiceProduct_id }}')">
-                                        <i class="fa fa-trash"></i>
-                                    </a>    
-                             </td>
+                                <a class="btn btn-sm btn-danger"
+                                    onClick="confirmDelete('{{ url('/salesInvoice/productDelete') }}/{{ $salesInvProd->salesInvoice_id }}/{{ $salesInvProd->salesInvoiceProduct_id }}')">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
                         </tr>
                     @endforeach
                     <tr>
@@ -281,27 +300,28 @@
                         <td></td>
                         <td></td>
                         <td><b>Gross Amount</b></td>
-                        <td>{{$totalCost}} Tk</td>
+                        <td>{{ $totalCost }} Tk</td>
                         <td rowspan="5" style="vertical-align : middle;text-align:center;">
                             {{-- <button class="btn btn-sm btn-primary">Make Payment</button> --}}
                         </td>
                     </tr>
                     <tr>
-                    @php
-                        // Calculate discount and final total cost
-                    
-                        $discount = ($salesInvoice->enable_discount ? $salesInvoice->discount ?? 0.00 : 0.00);
-                        $discountAmount = ($totalCost * ($discount/100)) ?? 0.00; // Calculate the discount amount
-                        $finalTotalCost = ($totalCost - $discountAmount) ?? 00; // Final cost after discount
-                    @endphp
+                        @php
+                            // Calculate discount and final total cost
+
+                            $discount = $salesInvoice->enable_discount ? $salesInvoice->discount ?? 0.0 : 0.0;
+                            $discountAmount = $totalCost * ($discount / 100) ?? 0.0; // Calculate the discount amount
+                            $finalTotalCost = $totalCost - $discountAmount ?? 00; // Final cost after discount
+                        @endphp
                         <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td>Discount Cash Purchase [ {{$totalCost != 0 ? number_format($salesInvoice->discount ?? 0.00, 2): 0.00}} %]</td>
-                        <td>{{$discountAmount == 0 ? '' : '-'}}{{number_format($discountAmount,2)}} Tk</td>
+                        <td>Discount Cash Purchase [
+                            {{ $totalCost != 0 ? number_format($salesInvoice->discount ?? 0.0, 2) : 0.0 }} %]</td>
+                        <td>{{ $discountAmount == 0 ? '' : '-' }}{{ number_format($discountAmount, 2) }} Tk</td>
 
                     </tr>
                     <tr>
@@ -312,7 +332,7 @@
                         <td></td>
                         <td></td>
                         <td>Net Amount</td>
-                        <td>{{number_format($finalTotalCost,2)}} Tk</td>
+                        <td>{{ number_format($finalTotalCost, 2) }} Tk</td>
 
                     </tr>
                     <tr>
@@ -334,38 +354,48 @@
                         <td></td>
                         <td></td>
                         <td>Total Payable</td>
-                        <td>{{number_format($finalTotalCost,2)}} Tk</td>
+                        <td>{{ number_format($finalTotalCost, 2) }} Tk</td>
 
                     </tr>
                 </tbody>
             </table>
             <div class="row">
-              @php
-                        $amountParts = explode('.', number_format($finalTotalCost, 2, '.', ''));
-                        $integerPart = $converter->toWords($amountParts[0]);
-                        $decimalPart = isset($amountParts[1]) ? $converter->toWords($amountParts[1]) : 'zero';
+                @php
+                    $amountParts = explode('.', number_format($finalTotalCost, 2, '.', ''));
+                    $integerPart = $converter->toWords($amountParts[0]);
+                    $decimalPart = isset($amountParts[1]) ? $converter->toWords($amountParts[1]) : 'zero';
                 @endphp
                 <p>In Word: {{ ucwords("{$integerPart} Taka & {$decimalPart} Paisa") }} Only</p>
             </div>
             <div class="row">
                 <div class="col-2">
-                    <a class="btn btn-sm btn-primary" href="{{ url('/salesInvoice/salesCustomerInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}" target="_blank">Customer Invoice</a>
+                    <a class="btn btn-sm btn-primary"
+                        href="{{ url('/salesInvoice/salesCustomerInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}"
+                        target="_blank">Customer Invoice</a>
                 </div>
                 <div class="col-2">
-                    <a class="btn btn-sm btn-primary" href="{{ url('/salesInvoice/salesDeliveryInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}" target="_blank">Customer Delivery</a>
+                    <a class="btn btn-sm btn-primary"
+                        href="{{ url('/salesInvoice/salesDeliveryInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}"
+                        target="_blank">Customer Delivery</a>
                 </div>
                 <div class="col-2">
                     {{-- <button class="btn btn-sm btn-primary">Small</button> --}}
                 </div>
                 <div class="col-2">
-                    <a class="btn btn-sm btn-primary" href="{{ url('/salesInvoice/salesSpecialInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}" target="_blank">Special Invoice</a>
-                  
+                    <a class="btn btn-sm btn-primary"
+                        href="{{ url('/salesInvoice/salesSpecialInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}"
+                        target="_blank">Special Invoice</a>
+
                 </div>
                 <div class="col-2">
-                    <a class="btn btn-sm btn-primary" href="{{ url('/salesInvoice/salesSpecialDeliveryPdf') }}/{{ $salesInvoice->salesInvoice_id }}" target="_blank">Special Delivery</a>
+                    <a class="btn btn-sm btn-primary"
+                        href="{{ url('/salesInvoice/salesSpecialDeliveryPdf') }}/{{ $salesInvoice->salesInvoice_id }}"
+                        target="_blank">Special Delivery</a>
                 </div>
                 <div class="col-2">
-                    <a class="btn btn-sm btn-primary" href="{{ url('/salesInvoice/salesSpecialCalculateInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}" target="_blank">Special Calculate</a>
+                    <a class="btn btn-sm btn-primary"
+                        href="{{ url('/salesInvoice/salesSpecialCalculateInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}"
+                        target="_blank">Special Calculate</a>
                 </div>
             </div>
         @endif
@@ -380,8 +410,8 @@
         let selectedBatchId = "{{ old('batch_id', $salesInvoice->batch_id ?? '') }}";
         let productIdByOnChange = selectedProductId ?? '';
         let customerIdByOnchange = selectedCustomerId ?? '';
-        
-        document.getElementById('PageName').innerText = '{{$toptitle}}';
+
+        document.getElementById('PageName').innerText = '{{ $toptitle }}';
 
         function confirmDelete(url) {
             if (confirm("Want to delete this item?")) {

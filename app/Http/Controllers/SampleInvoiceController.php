@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\SalesInvoice;
 use App\Models\SalesInvoiceProduct;
 use App\Models\Customer;
+use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Dompdf\Dompdf;
@@ -35,9 +36,14 @@ class SampleInvoiceController extends Controller
        $salesInvoice->invoice_date = Carbon::now()->format('Y-m-d');
        $salesInvoice->order_ref = "Sample";
        $salesInvoice->no_of_packing = 1;
+
+       $employeeslist = Employee::where('action_type', '!=', 'DELETE')
+                        ->where('employee_designation', '=' ,'Delivery Man')
+                        ->orderBy('employee_id')
+                        ->get();
        $url = url('/sampleInvoice/create');
        $toptitle = 'Sample Invoice';
-       $data = compact('salesInvoice', 'url', 'toptitle');
+       $data = compact('salesInvoice', 'employeeslist', 'url', 'toptitle');
        return view('invoice.addSampleInvoice')->with($data);
    }
 
@@ -146,12 +152,16 @@ class SampleInvoiceController extends Controller
                ->where('invoice_products.action_type', '!=', 'DELETE')
                ->select('invoice_products.*', 'products.product_name')
                ->get();
-
+              
+               $employeeslist = Employee::where('action_type', '!=', 'DELETE')
+                            ->where('employee_designation', '=' ,'Delivery Man')
+                            ->orderBy('employee_id')
+                            ->get();
 
            $url = url('/sampleInvoice/update') . "/" . $id;
            $toptitle = 'Sample Invoice ' . $salesInvoice->salesInvoice_id;
 
-           $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'url', 'toptitle'); // data and dynamic url pass into view
+           $data = compact('converter', 'salesInvoice', 'employeeslist', 'salesInvoiceProduct', 'url', 'toptitle'); // data and dynamic url pass into view
 
            return view('invoice.addSampleInvoice')->with($data);
 
@@ -165,7 +175,7 @@ class SampleInvoiceController extends Controller
        $request->validate(
            [
                'registration_date' => 'required',
-               'customer_id' => 'required',
+               //'customer_id' => 'required',
                'batch_id' => 'required',
                'product_id' => 'required',
                // 'manufacturer_id' => 'required',
@@ -185,7 +195,7 @@ class SampleInvoiceController extends Controller
            if (!is_null($salesInvoice)) {
 
               // $salesInvoice->registration_date = $request['registration_date'];
-               $salesInvoice->customer_id = $request['customer_id'];
+              // $salesInvoice->customer_id = $request['customer_id'];
                $salesInvoice->batch_id = $request['batch_id'];
                $salesInvoice->product_id = $request['product_id'];
                $salesInvoice->manufacturer_id = $request['manufacturer_id'];
@@ -338,6 +348,9 @@ class SampleInvoiceController extends Controller
            $customer = Customer::where('customer_id', $salesInvoice->customer_id)
            ->where('action_type', '!=', 'DELETE')
            ->first();
+           $employee = Employee::where('employee_id', $salesInvoice->delivery_by)
+           ->where('action_type', '!=', 'DELETE')
+           ->first();
 
  
            $salesInvoiceProduct = DB::table('invoice_products')
@@ -348,7 +361,7 @@ class SampleInvoiceController extends Controller
                ->select('invoice_products.*', 'products.product_name')
                ->get();
 
-           $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
+           $data = compact('converter','employee', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
 
            $html = view('templateForPdf.sampleCustomerInvoice')->with($data)->render();
    
@@ -382,7 +395,9 @@ class SampleInvoiceController extends Controller
            $customer = Customer::where('customer_id', $salesInvoice->customer_id)
            ->where('action_type', '!=', 'DELETE')
            ->first();
-
+           $employee = Employee::where('employee_id', $salesInvoice->delivery_by)
+           ->where('action_type', '!=', 'DELETE')
+           ->first();
  
            $salesInvoiceProduct = DB::table('invoice_products')
                ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
@@ -392,7 +407,7 @@ class SampleInvoiceController extends Controller
                ->select('invoice_products.*', 'products.product_name')
                ->get();
 
-           $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
+           $data = compact('converter', 'employee','salesInvoice', 'salesInvoiceProduct', 'customer'); 
 
            $html = view('templateForPdf.sampleDeliveryInvoice')->with($data)->render();
    
@@ -427,7 +442,9 @@ class SampleInvoiceController extends Controller
            $customer = Customer::where('customer_id', $salesInvoice->customer_id)
            ->where('action_type', '!=', 'DELETE')
            ->first();
-
+           $employee = Employee::where('employee_id', $salesInvoice->delivery_by)
+           ->where('action_type', '!=', 'DELETE')
+           ->first();
  
            $salesInvoiceProduct = DB::table('invoice_products')
                ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
@@ -437,7 +454,7 @@ class SampleInvoiceController extends Controller
                ->select('invoice_products.*', 'products.product_name', 'products.product_unit_price_c', 'products.material_description')
                ->get();
 
-           $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
+           $data = compact('converter', 'employee','salesInvoice', 'salesInvoiceProduct', 'customer'); 
 
            $html = view('templateForPdf.sampleSpecialInvoice')->with($data)->render();
    
@@ -471,7 +488,9 @@ class SampleInvoiceController extends Controller
            $customer = Customer::where('customer_id', $salesInvoice->customer_id)
            ->where('action_type', '!=', 'DELETE')
            ->first();
-
+           $employee = Employee::where('employee_id', $salesInvoice->delivery_by)
+           ->where('action_type', '!=', 'DELETE')
+           ->first();
  
            $salesInvoiceProduct = DB::table('invoice_products')
                ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
@@ -481,7 +500,7 @@ class SampleInvoiceController extends Controller
                ->select('invoice_products.*', 'products.product_name', 'products.material_description')
                ->get();
 
-           $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
+           $data = compact('converter','employee', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
 
            $html = view('templateForPdf.sampleSpecailDeliveryInvoice')->with($data)->render();
    
@@ -516,7 +535,9 @@ class SampleInvoiceController extends Controller
            $customer = Customer::where('customer_id', $salesInvoice->customer_id)
            ->where('action_type', '!=', 'DELETE')
            ->first();
-
+           $employee = Employee::where('employee_id', $salesInvoice->delivery_by)
+           ->where('action_type', '!=', 'DELETE')
+           ->first();
  
            $salesInvoiceProduct = DB::table('invoice_products')
                ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
@@ -527,7 +548,7 @@ class SampleInvoiceController extends Controller
                                     'products.product_name', 'products.product_unit_price_c', 'products.atv_rate', 'products.material_description')
                ->get();
 
-           $data = compact('converter', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
+           $data = compact('converter','employee', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
 
            $html = view('templateForPdf.sampleSpecialCalculateInvoice')->with($data)->render();
    

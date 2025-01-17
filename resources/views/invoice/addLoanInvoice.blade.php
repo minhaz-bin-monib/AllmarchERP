@@ -25,9 +25,11 @@
                         @enderror
                     </span>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-4"
+                    style="{{ $salesInvoice->salesInvoice_id > 0 ? 'border-bottom: 1px solid #ddd;' : '' }}">
                     <label for="customer_id"> Select Customer <span class="text-danger"><b>*</b></span></label>
-                    <select data-live-search="true" id="customers" name="customer_id" class="form-control">
+                    <select data-live-search="true" id="customers" name="customer_id"
+                        {{ $salesInvoice->salesInvoice_id > 0 ? 'disabled' : '' }} class="form-control">
                         <option value="" selected="">Select</option>
                     </select>
                     <span class="text-danger">
@@ -165,8 +167,12 @@
                 <div class="form-group col-md-3">
                     <label for="delivery_by"> Delivery By </label>
                     <select id="delivery_by" name="delivery_by" class="form-control">
-                        <option value="" selected="">Select</option>
-
+                        @foreach ($employeeslist as $emp)
+                            <option value="{{ $emp['employee_id'] }}"
+                                {{ old('delivery_by', $salesInvoice->delivery_by) == $emp['employee_id'] ? 'selected' : '' }}>
+                                {{ $emp['nick_name'] }}
+                            </option>
+                        @endforeach
                     </select>
                     <span class="text-danger">
                         @error('delivery_by')
@@ -367,9 +373,9 @@
             </table>
             <div class="row">
                 @php
-                        $amountParts = explode('.', number_format($finalTotalCost, 2, '.', ''));
-                        $integerPart = $converter->toWords($amountParts[0]);
-                        $decimalPart = isset($amountParts[1]) ? $converter->toWords($amountParts[1]) : 'zero';
+                    $amountParts = explode('.', number_format($finalTotalCost, 2, '.', ''));
+                    $integerPart = $converter->toWords($amountParts[0]);
+                    $decimalPart = isset($amountParts[1]) ? $converter->toWords($amountParts[1]) : 'zero';
                 @endphp
                 <p>In Word: {{ ucwords("{$integerPart} Taka & {$decimalPart} Paisa ") }} Only</p>
             </div>
@@ -389,18 +395,18 @@
                 </div>
                 <div class="col-2">
                     <a class="btn btn-sm btn-primary"
-                    href="{{ url('/loanInvoice/loanSpecialInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}"
-                    target="_blank">Special Invoice</a>
+                        href="{{ url('/loanInvoice/loanSpecialInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}"
+                        target="_blank">Special Invoice</a>
                 </div>
                 <div class="col-2">
                     <a class="btn btn-sm btn-primary"
-                    href="{{ url('/loanInvoice/loanSpecialDeliveryInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}"
-                    target="_blank">Special Delivery</a>
+                        href="{{ url('/loanInvoice/loanSpecialDeliveryInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}"
+                        target="_blank">Special Delivery</a>
                 </div>
                 <div class="col-2">
                     <a class="btn btn-sm btn-primary"
-                    href="{{ url('/loanInvoice/loanSpeicalCalculateInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}"
-                    target="_blank">Special Calculate</a>
+                        href="{{ url('/loanInvoice/loanSpeicalCalculateInvoicePdf') }}/{{ $salesInvoice->salesInvoice_id }}"
+                        target="_blank">Special Calculate</a>
                 </div>
             </div>
         @endif
@@ -416,8 +422,8 @@
         let productIdByOnChange = selectedProductId ?? '';
         let customerIdByOnchange = selectedCustomerId ?? '';
 
-        document.getElementById('PageName').innerText = '{{$toptitle}}';
-        
+        document.getElementById('PageName').innerText = '{{ $toptitle }}';
+
         function confirmDelete(url) {
             if (confirm("Want to delete this item?")) {
                 window.location.href = url;

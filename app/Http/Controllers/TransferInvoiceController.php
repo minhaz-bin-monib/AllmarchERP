@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\TransferInvoice;
 use App\Models\TransferInvoiceProduct;
 use App\Models\Customer;
+use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Dompdf\Dompdf;
@@ -39,9 +40,13 @@ class TransferInvoiceController extends Controller
          $transferInvoice->invoice_date = Carbon::now()->format('Y-m-d');
          $transferInvoice->proforma_invoice = 'CIT-'.Carbon::now()->format('Y').'-';
          $transferInvoice->no_of_packing = 1;
+         $employeeslist = Employee::where('action_type', '!=', 'DELETE')
+         ->where('employee_designation', '=' ,'Delivery Man')
+         ->orderBy('employee_id')
+         ->get();
          $url = url('/transferInvoice/create');
          $toptitle = 'Transfer Invoice';
-         $data = compact('transferInvoice', 'url', 'toptitle');
+         $data = compact('transferInvoice', 'employeeslist', 'url', 'toptitle');
          return view('invoice.addTransferInvoice')->with($data);
      }
  
@@ -154,12 +159,15 @@ class TransferInvoiceController extends Controller
                  ->where('transfer_invoice_products.action_type', '!=', 'DELETE')
                  ->select('transfer_invoice_products.*', 'products.product_name')
                  ->get();
- 
+                 $employeeslist = Employee::where('action_type', '!=', 'DELETE')
+                 ->where('employee_designation', '=' ,'Delivery Man')
+                 ->orderBy('employee_id')
+                 ->get();
  
              $url = url('/transferInvoice/update') . "/" . $id;
              $toptitle = 'Transfer Invoice ' . $transferInvoice->transferInvoice_id;
  
-             $data = compact('converter', 'transferInvoice', 'transferInvoiceProduct', 'url', 'toptitle'); // data and dynamic url pass into view
+             $data = compact('converter', 'transferInvoice', 'employeeslist', 'transferInvoiceProduct', 'url', 'toptitle'); // data and dynamic url pass into view
  
              return view('invoice.addTransferInvoice')->with($data);
  
@@ -173,7 +181,7 @@ class TransferInvoiceController extends Controller
          $request->validate(
              [
                  'registration_date' => 'required',
-                 'customer_id' => 'required',
+                // 'customer_id' => 'required',
                 // 'batch_id' => 'required',
                  'product_id' => 'required',
                  // 'manufacturer_id' => 'required',
@@ -195,7 +203,7 @@ class TransferInvoiceController extends Controller
              if (!is_null($transferInvoice)) {
  
                 // $transferInvoice->registration_date = $request['registration_date'];
-                 $transferInvoice->customer_id = $request['customer_id'];
+                 //$transferInvoice->customer_id = $request['customer_id'];
                  $transferInvoice->batch_id = $request['batch_id'];
                  $transferInvoice->product_id = $request['product_id'];
                  $transferInvoice->manufacturer_id = $request['manufacturer_id'];
