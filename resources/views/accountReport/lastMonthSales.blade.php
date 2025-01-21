@@ -60,7 +60,7 @@
                         <td>{{ $salesInv->customer_name }}</td>
                         <td>{{ $salesInv->totalSales }}</td>
 
-                        <td>{{ 0 }}</td>
+                        <td>{{ '' }}</td>
                     </tr>
                 @endforeach
             </tbody>

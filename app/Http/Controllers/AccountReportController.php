@@ -24,6 +24,7 @@ class AccountReportController extends Controller
             ->join('customers', 'invoices.customer_id', '=', 'customers.customer_id')
             ->whereYear('invoices.invoice_date', $year)
             ->whereMonth('invoices.invoice_date', $month)
+            ->where('invoices.invoice_type', '=', 'Statement')
             ->where('invoices.action_type', '!=', 'DELETE')
             ->select('invoices.*', 'customers.customer_name')
             ->get();
@@ -37,7 +38,7 @@ class AccountReportController extends Controller
         // I hope you understand 
 
         $salesInvoice = $salesInvoice->map(function ($invoice) {
-            $invoice->totalSales = '1000-DO'; // Static value
+            $invoice->totalSales = ''; // Static value
             return $invoice;
         });
 
@@ -60,6 +61,7 @@ class AccountReportController extends Controller
             ->join('customers', 'invoices.customer_id', '=', 'customers.customer_id')
             ->whereYear('invoices.invoice_date', $year)
             ->whereMonth('invoices.invoice_date', $month)
+            ->where('invoices.invoice_type', '=', 'Statement')
             ->where('invoices.action_type', '!=', 'DELETE')
             ->select('invoices.*', 'customers.customer_name')
             ->orderBy('invoices.invoice_date', 'ASC')
@@ -128,6 +130,7 @@ class AccountReportController extends Controller
         $salesInvoice = DB::table('invoices')
                     ->join('customers', 'invoices.customer_id', '=', 'customers.customer_id')
                     ->whereBetween('invoices.invoice_date', [$FormDate, $ToDate]) // Filter between dates
+                    ->where('invoices.invoice_type', '=', 'Statement')
                     ->where('invoices.action_type', '!=', 'DELETE')
                     ->select('invoices.*', 'customers.customer_name') 
                     ->orderBy('invoices.invoice_date', 'ASC') 

@@ -155,7 +155,7 @@
                     <td></td>
                 </tr>
             @endforeach
-            <tr>
+            @if($InvResults->count() > 0)<tr>
                 <td> </td>
                 <td><b>Grand Total:</b></td>
                 <td></td>
@@ -168,6 +168,9 @@
                 <td></td>
                 <td></td>
             </tr>
+            @else
+            <p class="text-center">No data available in table</p>
+        @endif
             </tbody>
         </table>
 
@@ -179,6 +182,7 @@
                 paging: false, // Disable pagination
                 sortable: false, // Disable sorting
                 ordering: false, // Disable ordering
+                searching: false,
                 dom: 'Bfrtip', // Define the table control elements
                 buttons: [{
                         extend: 'copyHtml5',
@@ -220,7 +224,7 @@
         function Search() {
             let date = document.getElementById('searchInput').value;
             console.log(date);
-            window.location.href = "{{ url('/accountReport/lastMonthSales') }}/" + date;
+            window.location.href = "{{ url('/accountReport/monthlySalesStandard') }}/" + date;
         }
     </script>
 @endsection

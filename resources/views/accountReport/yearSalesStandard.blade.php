@@ -243,7 +243,7 @@
             }
 
             // Redirect if validation passes
-            window.location.href = "{{ url('/accountReport/lastMonthSales') }}/" + formDate + "/" + toDate;
+            window.location.href = "{{ url('/accountReport/yearSalesStandard') }}/" + formDate + "/" + toDate;
         }
     </script>
 @endsection
