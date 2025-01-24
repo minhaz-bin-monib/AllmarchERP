@@ -13,6 +13,7 @@ use App\Http\Controllers\TransferInvoiceController;
 use App\Http\Controllers\AccountReportController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountDailyController;
+use App\Http\Controllers\CustomerPaymentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -176,6 +177,7 @@ Route::group(['prefix' => 'transferInvoice','middleware' => ['isLoggedIn','roleC
     
 });
 
+// ------------------------- Account Report  Routes ------------------------
 
 Route::group(['prefix' => 'accountReport','middleware' => ['isLoggedIn','roleCheck:Admin,Account']], function () {
     Route::get('lastMonthSales/{lastMonth}', [AccountReportController::class, 'lastMonthSales']);
@@ -185,6 +187,8 @@ Route::group(['prefix' => 'accountReport','middleware' => ['isLoggedIn','roleChe
    // Route::get('proformaInvoicePdf/{transferInvoiceId}', [TransferInvoiceController::class, 'proformaInvoicePdf']);
 
 });
+
+// ------------------------- Account Daily  Routes ------------------------
 Route::group(['prefix' => 'accountDaily','middleware' => ['isLoggedIn','roleCheck:Admin,Account']], function () {
     Route::get('expanse', [AccountDailyController::class, 'dailyExpanse']);
     Route::get('expanseList/{searchDate}', [AccountDailyController::class, 'dailyExpanseList']);
@@ -195,4 +199,16 @@ Route::group(['prefix' => 'accountDaily','middleware' => ['isLoggedIn','roleChec
     Route::get('dailyExpenseDetails/{clsExpanseId}', [AccountDailyController::class, 'DailyExpenseByClosedExpId']);
     Route::get('deleteDebitOrCredit/{credOrDebitId}/{typeOf}', [AccountDailyController::class, 'deleteDebitOrCredit']);
   
+});
+
+// ------------------------- Account Payment  Routes ------------------------
+
+Route::group(['prefix' => 'customerPayment','middleware' => ['isLoggedIn','roleCheck:Admin,Account']], function () {
+    Route::get('list/{type}', [CustomerPaymentController::class, 'show']);
+    Route::get('create', [CustomerPaymentController::class, 'create']);
+    Route::post('create', [CustomerPaymentController::class, 'store']);
+    Route::get('delete/{id}', [CustomerPaymentController::class, 'delete']);
+    Route::get('edit/{id}', [CustomerPaymentController::class, 'edit']);
+    Route::post('update/{id}', [CustomerPaymentController::class, 'update']);
+   
 });

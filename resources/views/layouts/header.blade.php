@@ -103,6 +103,18 @@
                             </ul>
                         </li>
                         <li>
+                            <a href="#customerPayment" data-bs-toggle="collapse" aria-expanded="false"
+                                class="dropdown-toggle">Customer Payments</a>
+                            <ul class="collapse list-unstyled" id="customerPayment">
+                                <li>
+                                    <a href="{{ url('/customerPayment/create')}}">Make Payment</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('/customerPayment/list/Pending') }}">Payment List</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
                             <a href="#accountDaily" data-bs-toggle="collapse" aria-expanded="false"
                                 class="dropdown-toggle">Daily Expense</a>
                             <ul class="collapse list-unstyled" id="accountDaily">
