@@ -75,6 +75,10 @@
                 <div class="form-group col-md-4">
                     <label for="bank_name_id">Bank Name</label>
                     <select name="bank_name_id" class="form-control">
+                        <option value=""
+                        {{ old('bank_name_id', $customerPayment->bank_name_id) == "" ? 'selected' : '' }}>
+                        Select Bank
+                    </option>
                         @foreach ($bankNames as $mat)
                             <option value="{{ $mat['bank_name_id'] }}"
                                 {{ old('bank_name_id', $customerPayment->bank_name_id) == $mat['bank_name_id'] ? 'selected' : '' }}>
@@ -89,8 +93,8 @@
             @if ($customerPayment->customer_payment_id > 0)
                 @if ($customerPayment->payment_type == 'Pending')
                     <button type="submit" class="btn mx-2 btn-primary">Update</button>
-                    <p  class="btn ml-5 mt-3 btn-success">Honoured</p>
-                    <p  class="btn mx-2  mt-3 btn-danger">Rejected</p>
+                    <p  class="btn ml-5 mt-3 btn-success" onClick="confirmStatusChange1('{{url('/customerPayment/statusChange')}}/{{$customerPayment->customer_payment_id}}/Honoured')" >Honoured</p>
+                    <p  class="btn mx-2  mt-3 btn-danger"onClick="confirmStatusChange2('{{url('/customerPayment/statusChange')}}/{{$customerPayment->customer_payment_id}}/Rejected')">Rejected</p>
                 @endif
             @else
                 <button type="submit" class="btn mx-2 btn-primary">Save</button>
@@ -105,6 +109,16 @@
             $('#customer_id').selectpicker();
             $('#customer_id').selectpicker('refresh');
         });
+        function confirmStatusChange1(url) {
+                    if (confirm("Honoured: Only Customer Payment Status Change. no fileds data change.?")) {
+                        window.location.href = url;
+                    }
+                }
+        function confirmStatusChange2(url) {
+                    if (confirm("Rejected: Only Customer Payment Status Change. no fileds data change.?")) {
+                        window.location.href = url;
+                    }
+                }
     </script>
 
     <!-- END View Content Here -->

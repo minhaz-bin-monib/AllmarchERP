@@ -112,6 +112,13 @@
                                 <li>
                                     <a href="{{ url('/customerPayment/list/Pending') }}">Payment List</a>
                                 </li>
+                                <li>
+                                    <a href="{{ url('/customerPayment/statementReport/0/') . '/' . date('Y-m-d') . '/' . date('Y-m-d').'/InvoiceAndPayment' }}"
+                                    target="_blank">Customer Statement</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('/customerPayment/createForward')}}">Add Forward Customer </a>
+                                </li>
                             </ul>
                         </li>
                         <li>

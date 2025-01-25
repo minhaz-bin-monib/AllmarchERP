@@ -210,5 +210,8 @@ Route::group(['prefix' => 'customerPayment','middleware' => ['isLoggedIn','roleC
     Route::get('delete/{id}', [CustomerPaymentController::class, 'delete']);
     Route::get('edit/{id}', [CustomerPaymentController::class, 'edit']);
     Route::post('update/{id}', [CustomerPaymentController::class, 'update']);
-   
+    Route::get('statusChange/{id}/{status}', [CustomerPaymentController::class, 'statusChange']);
+    Route::get('createForward', [CustomerPaymentController::class, 'createForward']);
+    Route::post('createForward', [CustomerPaymentController::class, 'storeForward']);
+    Route::get('statementReport/{customer_id}/{startDate}/{endDate}/{type}', [CustomerPaymentController::class, 'statementReport']);
 });
