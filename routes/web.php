@@ -66,7 +66,7 @@ Route::group(['prefix' => 'employee','middleware' => ['isLoggedIn','roleCheck:Ad
 
 // ------------------------- Customer Routes ------------------------
 
-Route::group(['prefix' => 'customer','middleware' => ['isLoggedIn','roleCheck:Admin']], function () {
+Route::group(['prefix' => 'customer','middleware' => ['isLoggedIn','roleCheck:Admin,Account']], function () {
     Route::get('list', [CustomerController::class, 'show']);
     Route::get('create', [CustomerController::class, 'create']);
     Route::post('create', [CustomerController::class, 'store']);
@@ -95,7 +95,7 @@ Route::group(['prefix' => 'batch','middleware' => ['isLoggedIn','roleCheck:Admin
 
 // ------------------------- Sales Invoice Routes ------------------------
 
-Route::group(['prefix' => 'salesInvoice','middleware' => ['isLoggedIn','roleCheck:Admin']], function () {
+Route::group(['prefix' => 'salesInvoice','middleware' => ['isLoggedIn','roleCheck:Admin,Account']], function () {
     Route::get('list', [SalesInvoiceController::class, 'show']);
     Route::get('create', [SalesInvoiceController::class, 'create']);
     Route::post('create', [SalesInvoiceController::class, 'store']);
@@ -116,7 +116,7 @@ Route::group(['prefix' => 'salesInvoice','middleware' => ['isLoggedIn','roleChec
 
 // ------------------------- Sample Invoice Routes ------------------------
 
-Route::group(['prefix' => 'sampleInvoice','middleware' => ['isLoggedIn','roleCheck:Admin']], function () {
+Route::group(['prefix' => 'sampleInvoice','middleware' => ['isLoggedIn','roleCheck:Admin,Account']], function () {
     //Route::get('list', [SampleInvoiceController::class, 'show']);
     Route::get('create', [SampleInvoiceController::class, 'create']);
     Route::post('create', [SampleInvoiceController::class, 'store']);
@@ -136,7 +136,7 @@ Route::group(['prefix' => 'sampleInvoice','middleware' => ['isLoggedIn','roleChe
 });
 // ------------------------- Loan Invoice Routes ------------------------
 
-Route::group(['prefix' => 'loanInvoice','middleware' => ['isLoggedIn','roleCheck:Admin']], function () {
+Route::group(['prefix' => 'loanInvoice','middleware' => ['isLoggedIn','roleCheck:Admin,Account']], function () {
     //Route::get('list', [LoanInvoiceController::class, 'show']);
     Route::get('create', [LoanInvoiceController::class, 'create']);
     Route::post('create', [LoanInvoiceController::class, 'store']);

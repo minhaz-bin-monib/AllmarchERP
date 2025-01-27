@@ -200,7 +200,24 @@
                 @endif
                 @if (Session::get('loginRole') == 'Account')
                     <ul class="list-unstyled components mb-5">
-
+                        <li>
+                            <a href="#invoiceSubmenu" data-bs-toggle="collapse" aria-expanded="false"
+                                class="dropdown-toggle">Invoice</a>
+                            <ul class="collapse list-unstyled" id="invoiceSubmenu">
+                                <li>
+                                    <a href="{{ url('/salesInvoice/create') }}">Add Sales Invoice</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('/sampleInvoice/create') }}">Add Sample Invoice</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('/loanInvoice/create') }}">Add Loan Invoice</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('/salesInvoice/list') }}">Invoice List</a>
+                                </li>
+                            </ul>
+                        </li>
                         <li>
                             <a href="#accountReport" data-bs-toggle="collapse" aria-expanded="false"
                                 class="dropdown-toggle">Reports</a>
@@ -231,6 +248,37 @@
                                 </li>
                                 <li>
                                     <a href="{{ url('/accountDaily/expanseList'). '/' . date('Y-m-d')  }}">Close Daily Expense List</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#customerPayment" data-bs-toggle="collapse" aria-expanded="false"
+                                class="dropdown-toggle">Customer Payments</a>
+                            <ul class="collapse list-unstyled" id="customerPayment">
+                                <li>
+                                    <a href="{{ url('/customerPayment/create')}}">Make Payment</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('/customerPayment/list/Pending') }}">Payment List</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('/customerPayment/statementReport/0/') . '/' . date('Y-m-d') . '/' . date('Y-m-d').'/InvoiceAndPayment' }}"
+                                    target="_blank">Customer Statement</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('/customerPayment/createForward')}}">Add Forward Customer </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#customerSubmenu" data-bs-toggle="collapse" aria-expanded="false"
+                                class="dropdown-toggle">Customer </a>
+                            <ul class="collapse list-unstyled" id="customerSubmenu">
+                                <li>
+                                    <a href="{{ url('/customer/create') }}">Add Customer</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('/customer/list') }}">Customers</a>
                                 </li>
                             </ul>
                         </li>

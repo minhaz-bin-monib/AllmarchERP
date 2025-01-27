@@ -269,6 +269,7 @@ class CustomerPaymentController extends Controller
         $openingDipositAmt += DB::table('customer_payments')
             ->where('customer_payments.honour_date', '<', $FormDate1)
             ->where('customer_payments.customer_id', $customer_id)
+            ->where('customer_payments.payment_type', 'Honoured')
             ->where('customer_payments.action_type', '!=', 'DELETE')
             ->sum('customer_payments.diposit_dmount');
 
@@ -359,6 +360,7 @@ class CustomerPaymentController extends Controller
             ->leftJoin('bank_names', 'customer_payments.bank_name_id', '=', 'bank_names.bank_name_id')
             ->whereBetween('customer_payments.honour_date', [$FormDate1, $ToDate1]) // Filter between dates
             ->where('customer_payments.customer_id', $customer_id)
+            ->where('customer_payments.payment_type', 'Honoured')
             ->where('customer_payments.action_type', '!=', 'DELETE')
             ->select(
                 'customer_payments.*',

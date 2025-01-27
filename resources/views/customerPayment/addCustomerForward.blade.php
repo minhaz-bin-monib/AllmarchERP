@@ -33,7 +33,7 @@
                 <div class="form-group col-md-4">
                     <label for="opening_forward_invoice_amount">Forward Invoice Amount <span
                             class="text-danger"><b>*</b></span></label>
-                    <input type="number" name="opening_forward_invoice_amount" step="0.01"
+                    <input type="number" name="opening_forward_invoice_amount" 
                         value="{{ old('opening_forward_invoice_amount', $customerForward->opening_forward_invoice_amount) }}"
                         min="0" class="form-control" id="opening_forward_invoice_amount">
                     <span class="text-danger">
@@ -45,7 +45,7 @@
                 <div class="form-group col-md-4">
                     <label for="opening_forward_given_amount">Forward Balance <span
                             class="text-danger"><b>*</b></span></label>
-                    <input type="number" name="opening_forward_given_amount" step="0.01"
+                    <input type="number" name="opening_forward_given_amount" 
                         value="{{ old('opening_forward_given_amount', $customerForward->opening_forward_given_amount) }}"
                         min="0" class="form-control" id="opening_forward_given_amount">
                     <span class="text-danger">
