@@ -109,7 +109,7 @@
                     <td></td>
                     <td></td>
                     <td class="text-end"><b>{{ $openingInvAmt }}</b></td>
-                    <td class="text-end"><b>{{ $openingDipositAmt }}</b></td>
+                    <td class="text-end"><b>{{ $openingDipositAmt > 0 ? $openingDipositAmt: '' }}</b></td>
                 </tr>
                 @foreach ($finalStatemnetResults as $stm)
                     @php

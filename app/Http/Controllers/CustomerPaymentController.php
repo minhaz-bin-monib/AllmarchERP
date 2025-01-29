@@ -133,7 +133,7 @@ class CustomerPaymentController extends Controller
 
             $data = compact('customerPayment', 'customers', 'dipositMethods', 'bankNames', 'url', 'toptitle');
 
-            return view('customerPayment.addcustomerPayment')->with($data);
+            return view('customerPayment.addCustomerPayment')->with($data);
 
         }
 
@@ -218,7 +218,7 @@ class CustomerPaymentController extends Controller
             [
                 'customer_id' => 'required',
                 'opening_forward_invoice_amount' => 'required',
-                'opening_forward_given_amount' => 'required',
+                //'opening_forward_given_amount' => 'required',
             ]
         );
         $customerExist = CustomerForwardBlance::where('customer_id', '=', $request['customer_id'])->first();
@@ -230,7 +230,7 @@ class CustomerPaymentController extends Controller
 
         $customerPayment->customer_id = $request['customer_id'];
         $customerPayment->opening_forward_invoice_amount = $request['opening_forward_invoice_amount'];
-        $customerPayment->opening_forward_given_amount = $request['opening_forward_given_amount'];
+        $customerPayment->opening_forward_given_amount = 0;//$request['opening_forward_given_amount'];
         $customerPayment->save();
 
         return redirect('/customerPayment/createForward');

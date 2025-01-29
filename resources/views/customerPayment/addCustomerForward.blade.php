@@ -31,7 +31,7 @@
                     </select>
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="opening_forward_invoice_amount">Forward Invoice Amount <span
+                    <label for="opening_forward_invoice_amount">Forward Balance <span
                             class="text-danger"><b>*</b></span></label>
                     <input type="number" name="opening_forward_invoice_amount" 
                         value="{{ old('opening_forward_invoice_amount', $customerForward->opening_forward_invoice_amount) }}"
@@ -42,7 +42,7 @@
                         @enderror
                     </span>
                 </div>
-                <div class="form-group col-md-4">
+                {{-- <div class="form-group col-md-4">
                     <label for="opening_forward_given_amount">Forward Balance <span
                             class="text-danger"><b>*</b></span></label>
                     <input type="number" name="opening_forward_given_amount" 
@@ -53,7 +53,7 @@
                             {{ $message }}
                         @enderror
                     </span>
-                </div>
+                </div> --}}
 
             </div>
             <button type="submit" class="btn mx-2 btn-primary">Save</button>
@@ -66,8 +66,8 @@
                 <tr>
                     <th>ID</th>
                     <th>Customer Name</th>
-                    <th>Forward Invoice Amount</th>
                     <th>Forward Balance</th>
+                    {{-- <th>Forward Balance</th> --}}
                 </tr>
             </thead>
             <tbody>
@@ -77,7 +77,7 @@
 
                         <td>{{ $prod->customer_name }}</td>
                         <td>{{ $prod->opening_forward_invoice_amount }}</td>
-                        <td>{{ $prod->opening_forward_given_amount }}</td>
+                        {{-- <td>{{ $prod->opening_forward_given_amount }}</td> --}}
                     </tr>
                 @endforeach
             </tbody>
