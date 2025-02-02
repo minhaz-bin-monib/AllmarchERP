@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\SalesInvoice;
 use App\Models\SalesInvoiceProduct;
 use App\Models\Customer;
+use App\Models\Product;
+use App\Models\Batch;
 use App\Models\Employee;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -315,17 +317,36 @@ class SalesInvoiceController extends Controller
     // [httpGet]
     public function invoiceProductStickar($invoiceId, $invoiceProductid)
     {
-        /* Delete has the History table 
-        //relation to maintain and all related item mark as delted as well
         
-        $salesInvoice = SalesInvoice::find($id);
+        
+        $salesInvoice = SalesInvoice::where('action_type', '!=', 'DELETE')
+        ->where('salesInvoice_id', $invoiceId)
+        ->first();
+        $salesInvoiceProduct = [];
+        if($salesInvoice)
+        {
+            $salesInvoiceProduct = SalesInvoiceProduct::where('action_type', '!=', 'DELETE')
+            ->where('salesInvoiceProduct_id', $invoiceProductid)
+            ->first();
+          
+             $product = Product::where('action_type', '!=', 'DELETE')
+                ->where('product_id', $salesInvoiceProduct->product_id)
+                ->first();
+             $batch = Batch::where('action_type', '!=', 'DELETE')
+             ->where('batch_id', $salesInvoiceProduct->batch_id)
+             ->first();
+          
 
-        $salesInvoice->action_type = 'DELETE';
-        $salesInvoice->action_date = now();
+            $toptitle = 'Sales Invoice ' . $salesInvoice->salesInvoice_id;
+            $data = compact( 'salesInvoice','product', 'batch', 'salesInvoiceProduct', 'toptitle'); // data and dynamic url pass into view
 
-        $salesInvoice->save();
-        */
-        return redirect('/salesInvoice/list');
+            return view('templateForPdf.stickarSpicialTuran')->with($data);
+        }
+        else{
+            return redirect()->back();
+        }
+       
+       
     }
 
     // [httpGet]
