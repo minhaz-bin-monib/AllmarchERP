@@ -283,7 +283,7 @@
                             <td>{{ $totalPrice }}
                             </td>
                             <td>
-                                <a class=""
+                                <a class="" target="_blank"
                                     href="{{ url('/salesInvoice/productStickar') }}/{{ $salesInvProd->salesInvoice_id }}/{{ $salesInvProd->salesInvoiceProduct_id }}">Special</a>
                                 <a class="btn btn-sm btn-danger"
                                     onClick="confirmDelete('{{ url('/salesInvoice/productDelete') }}/{{ $salesInvProd->salesInvoice_id }}/{{ $salesInvProd->salesInvoiceProduct_id }}')">

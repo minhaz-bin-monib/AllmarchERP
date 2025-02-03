@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use NumberToWords\NumberToWords;
+use Milon\Barcode\DNS1D;
+use Intervention\Image\Facades\Image;
 
 class SalesInvoiceController extends Controller
 {
@@ -336,7 +338,10 @@ class SalesInvoiceController extends Controller
              ->where('batch_id', $salesInvoiceProduct->batch_id)
              ->first();
           
-
+            // $this->BarCodeImageGenerator($batch);
+             $barcodeData = 'Name 2025'; // Change this dynamically as needed
+             $barcode = new DNS1D();
+  
             $toptitle = 'Sales Invoice ' . $salesInvoice->salesInvoice_id;
             $data = compact( 'salesInvoice','product', 'batch', 'salesInvoiceProduct', 'toptitle'); // data and dynamic url pass into view
 
@@ -347,6 +352,27 @@ class SalesInvoiceController extends Controller
         }
        
        
+    }
+    public function BarCodeImageGenerator($batch){
+        $barcodeData = 'Name 2025'; // Change this dynamically as needed
+        $fileName = 'barcode.jpg';  // Always use the same filename
+        $filePath = public_path('img/' . $fileName);
+
+        // Ensure the directory exists
+        if (!file_exists(public_path('img'))) {
+            mkdir(public_path('img'), 0777, true);
+        }
+
+        // Generate Barcode as PNG Base64
+        $barcode = new DNS1D();
+        $barcodeBase64 =$barcode->getBarcodePNG($barcodeData, 'C39', 2, 100);
+        $barcodeBase64 = preg_replace('/^data:image\/\w+;base64,/', '', $barcodeBase64);
+
+        // Convert Base64 to binary data
+        $imageData = base64_decode($barcodeBase64);
+        
+        // Save directly as a JPG file
+        file_put_contents($filePath, $imageData);
     }
 
     // [httpGet]
