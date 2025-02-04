@@ -149,7 +149,7 @@
             $buyerNameImg = '';
             $buyerSignature = '';
             $footerAddress = '';
-
+          
             if ($transferInvoice->company == 'Allmarch Bangladesh') {
                 $companylogoName = 'local';
                 $companyName = 'All-March Bangladesh Limited';
@@ -178,14 +178,14 @@
             }
         @endphp
         <div class="row w-70 middle ">
-            <div class="w-10 floatL" style="margin-top: -9px; margin-left:5px">
+            <div class="w-10 floatL" style="margin-top: -9px; margin-left:20px">
                 <img class="img-responsive pull-left" width="90px" height="80px"
                     src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('img/' . $companylogoName . '.jpg'))) }}"
                     alt="User profile picture">
             </div>
-            <div class="w-70 floatL">
+            <div class="w-80 floatL">
 
-                <h1 class="textC" style="font-size: 20px;">{{ $companyName }}</h1>
+                <h1 class="textC" style="font-size: 20px; margin-left:18px; margin-top: 10px;">{{ $companyName }}</h1>
                 <p class="textC" style="color:grey; font: 16px Blackadder ITC, Arial;"><i>{{ $companySubTitle }}</i>
                 </p>
 
@@ -194,7 +194,7 @@
         </div>
         <!-- title row -->
         <div class="row textL" style="border-top: 2px solid rgb(0, 0, 0)">
-            <p style="font-size: 14px;">Date: {{ $transferInvoice->delivery_date }}</p>
+            <p style="font-size: 14px;">Date: {{\Carbon\Carbon::parse($transferInvoice->delivery_date)->format('d/m/Y')  }}</p>
         </div>
         <div class="row textC" style="margin-bottom: 20px">
             <h2 style="font-size: 16px;">PROFORMA INVOICE</h2>
@@ -225,8 +225,8 @@
                 </p>
             </div>
             <div class="w-50 floatL textR">
-                <p> PROFORMA INVOICE NO : {{ $transferInvoice->transferInvoice_id }}</p>
-                <p> PROFORMA INVOICE DATE : {{ $transferInvoice->invoice_date }} </p>
+                <p> PROFORMA INVOICE NO : {{ $transferInvoice->proforma_invoice }}</p>
+                <p> PROFORMA INVOICE DATE : {{\Carbon\Carbon::parse($transferInvoice->invoice_date)->format('d/m/Y')}} </p>
                 <div class="htable">
                     <p style="border-bottom: none">SEND TO:</p>
                     <p style="border-bottom: none">Name: {{ $customer->customer_name }} (Local Agent)</p>
@@ -302,7 +302,7 @@
                             <td>KG</td>
                             <td class="textR">{{ $totalWeight }}</td>
                             <td class="textR">{{ $salesInvProd->unit_price }}</td>
-                            <td class="textR">{{ number_format($totalPrice) }}</td>
+                            <td class="textR">{{ number_format($totalPrice, 2) }}</td>
 
                         </tr>
                         <tr>
@@ -314,7 +314,7 @@
                             <td></td>
                             <td class="textR"></td>
                             <td class="textR">TOTAL:</td>
-                            <td class="textR">{{ number_format($totalPrice) }}</td>
+                            <td class="textR">{{ number_format($totalPrice, 2) }}</td>
 
                         </tr>
                     @endforeach

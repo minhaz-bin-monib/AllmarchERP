@@ -45,11 +45,21 @@
         }
 
         .footerDetailsTable {
-            width: 50%;
+            width: 60%;
             margin: 0px auto;
             font-weight: bold;
             ;
         }
+
+        .tableBox td {
+            text-align: center;
+            font-weight: 300;
+        }
+        .footerDetailsTable td {
+            font-size: 16px;
+            font-weight: 300;
+        }
+       
     </style>
 
     <div class="row mb-2">
@@ -64,19 +74,19 @@
     </div>
     <div class="row px-5">
         <div class="col-1"></div>
-        <div class="col-8" style="border: 1px solid red">
+        <div class="col-8">
             <div>
                 <img style="width: 100%;" src="{{ asset('img/Turan_header_logo.jpg') }}">
             </div>
             <div class="row headerPdf">
-                <p>SYNTHETIC ORGANIC COLORING MATTER (CAFL)</p>
-                <p>ECOPLAST FOIL BASE</p>
-                <p>H.S CODE : 3204.17.00</p>
+                <p style="font-size: 15px; font-weight: bold; line-height: 9px;">{{ $product->material_description }}</p>
+                <p style="font-size: 20px; font-weight: bold;">{{ $product->product_name }}</p>
+                <p style="font-size: 14px; font-weight: bold;">H.S CODE : {{ $product->h_s_code }}</p>
                 <p>CAUTION!</p>
             </div>
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col-5">
-                    <p style="font-size: 12px; font-weight: bold;letter-spacing: 1px;">
+                    <p style="font-size: 12px; font-weight: bold;letter-spacing: 0px;">
                         IMPORTER: ALL-MARCH BANGLADESH LTD. <br>
                         ADDRESS: 48/A_B, 9TH FLOOR <br>
                         ROOM NO: 901 PURANA PALTAN <br>
@@ -89,72 +99,74 @@
 
                 </div>
                 <div class="col-4">
-                    <p style="font-size: 11.5px;font-weight: bold; word-spacing: 1px; letter-spacing: 1px;">
+                    <p style="font-size: 11.5px; word-spacing: 1px; letter-spacing: 1px; line-height: 16px;">
                         Storage in excessive heat and failure to keep containers
                         closed may result in skin formation and separation at the
                         surface of the products. In such cases please stir well
                         before use. Product must be protected from high
                         temperature and freezing.
                     </br>
-                   <span style="letter-spacing: -1px;word-spacing: 1px;">ALWAYS TEST PRODUCTS BEFORE USING IN PRODUCTON.</span> 
-                </br> 
-                   www.turankimya.com . info@turankimya.com</p>
+                        <span  style="letter-spacing: -1px;font-weight:bold; word-spacing: 1px; line-height: 16px;">ALWAYS TEST PRODUCTS BEFORE USING IN
+                            PRODUCTON.</span>
+                        </br>
+                       <span style="letter-spacing: -1px;font-weight:bold; word-spacing: 1px;"> www.turankimya.com . info@turankimya.com </span>
+                    </p>
                 </div>
 
                 <div class="col-2">
 
-                    <p><b>30 KG</b></p>
+                    <p style="font-size: 23px;line-height: 1px;margin: -15px 0px 23px 0px; letter-spacing: -0.5px;"><b>{{ $salesInvoiceProduct->packing * $salesInvoiceProduct->no_of_packing }} KG</b></p>
                     <table class="tableBox">
                         <tr>
                             <td>Batch No </br>
-                                PGB 2012202325
+                                {{ $salesInvoiceProduct->batch_no }}
                             </td>
                         </tr>
                         <tr>
                             <td>Production Date </br>
-                                20/12/2023
+                                {{ \Carbon\Carbon::parse($batch->production_date)->format('d/m/Y') }}
                             </td>
                         </tr>
                         <tr>
                             <td>Expiry Date </br>
-                                20/12/2025
+                                {{ \Carbon\Carbon::parse($batch->expire_date)->format('d/m/Y') }}
                             </td>
                         </tr>
                     </table>
 
                 </div>
                 <div class="col-1">
-                    <div style="margin: 79px 0px 0px -66px;">
-                        <svg id="barcode" ></svg>
+                    <div style="margin: 55px 0px 0px -66px;">
+                        <svg id="barcode"></svg>
                     </div>
 
                 </div>
             </div>
             <div id="footer" class="row footerDiv">
-                <div class="col-10">
-                    <p>PRODUCT NAME: PRINTEX GLITTER BASE</p>
-                    <p>CAUTION !</p>
-                    <p >Causes severe skin burns and eye damage. Harmful if swallowed. Harmful in contact with skin. Harmful
+                <div class="col-10" >
+                    <p style="font-size: 19px; font-weight: bold;">PRODUCT NAME: PRINTEX GLITTER BASE</p>
+                    <p style="font-size: 17px; font-weight: bold; line-height: 0px; padding-left: 50px">CAUTION !</p>
+                    <p style="font-size: 16px; font-weight: bold;">Causes severe skin burns and eye damage. Harmful if swallowed. Harmful in contact with skin. Harmful
                         if inhaled. May cause respiratory irritation.</p>
-                    <p>Wear protective gloves/protective clothing/eye protection/ face protection. Wash...thoroughly after
+                    <p style="font-size: 16px; font-weight: bold;">Wear protective gloves/protective clothing/eye protection/ face protection. Wash...thoroughly after
                         handling.
                         Avoid breathing dust/fume/gas/mist/vapours/spray.</p>
                     <table class="footerDetailsTable">
                         <tr>
                             <td>Lot Number</td>
-                            <td>: PGB 2012202325</td>
+                            <td>: {{ $salesInvoiceProduct->batch_no }}</td>
                         </tr>
                         <tr>
                             <td>Production Date </td>
-                            <td>: 20/12/2023</td>
+                            <td>: {{ \Carbon\Carbon::parse($batch->production_date)->format('d/m/Y') }}</td>
                         </tr>
                         <tr>
                             <td>Expiration Date</td>
-                            <td>: 20/12/2025</td>
+                            <td>: {{ \Carbon\Carbon::parse($batch->expire_date)->format('d/m/Y') }}</td>
                         </tr>
                         <tr>
                             <td>Weight</td>
-                            <td>: 30 KG</td>
+                            <td>: {{ $salesInvoiceProduct->packing * $salesInvoiceProduct->no_of_packing }} KG</td>
                         </tr>
                     </table>
                 </div>
@@ -163,13 +175,13 @@
                         src="{{ asset('img/turan_danger.jpg') }}">
                 </div>
                 <div class="col-12">
-                    <img style="width: 100%;" src="{{ asset('img/turan_footer.jpg') }}">
+                    <img style="width: 100%; scale: 0.8;" src="{{ asset('img/turan_footer.jpg') }}">
                 </div>
 
             </div>
         </div>
         <div class="col-1"></div>
-        <div class="col-2" style="border: 1px solid blue">
+        <div class="col-2">
 
         </div>
     </div>
@@ -186,19 +198,23 @@
         }
 
         function isFooterVisalbe1() {
+            debugger;
             var isFooterVisalbe = document.getElementById('isFooterVisalbe').checked;
+            var footer = document.getElementById('footer');
+            dataPelod['isFooterVisalbe'] = isFooterVisalbe;
             if (isFooterVisalbe) {
-                dataPelod['isFooterVisalbe'] = isFooterVisalbe;
-                document.getElementById('footer').style.display = 'block';
+                footer.style.visibility = 'hidden';
+                footer.style.opacity = '0';
             } else {
-                dataPelod['isFooterVisalbe'] = isFooterVisalbe;
-                document.getElementById('footer').style.display = 'none';
+                footer.style.visibility = 'visible';
+                footer.style.opacity = '1';
             }
         }
-        JsBarcode("#barcode", "{{ 'Hi world!' }}", {
+        JsBarcode("#barcode", "{{ $salesInvoiceProduct->batch_no }}", {
             textPosition: "top",
             height: 40,
-            width: 1
+            fontSize: 16,
+            width: 0.9
         });
         document.getElementById("barcode").style.transform = "rotate(90deg)";
     </script>
