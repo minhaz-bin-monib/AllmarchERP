@@ -194,7 +194,7 @@
         </div>
         <!-- title row -->
         <div class="row textL" style="border-top: 2px solid rgb(0, 0, 0)">
-            <p style="font-size: 14px;">Date: {{\Carbon\Carbon::parse($transferInvoice->delivery_date)->format('d/m/Y')  }}</p>
+            <p style="font-size: 14px;">Date: {{\Carbon\Carbon::parse($transferInvoice->invoice_date)->format('d/m/Y')  }}</p>
         </div>
         <div class="row textC" style="margin-bottom: 20px">
             <h2 style="font-size: 16px;">PROFORMA INVOICE</h2>
