@@ -190,8 +190,8 @@
             </div>
             <div class="w-40 floatL textR">
                 <p> Date : {{ $salesInvoice->invoice_date }} </p>
-                <p> Invoice No : {{ $salesInvoice->salesInvoice_id }}</p>
-                <p> Delivery Receipt No : {{ $salesInvoice->salesInvoice_id + 145 }}</p>
+                <p> Invoice No : IN{{ str_pad($salesInvoice->salesInvoice_id, 5, '0', STR_PAD_LEFT)  }}</p>
+                <p> Delivery Receipt No : DN{{ str_pad($salesInvoice->salesInvoice_id + 145, 5, '0', STR_PAD_LEFT)  }}</p>
             </div>
             <div class="floatClear"></div>
         </div>
