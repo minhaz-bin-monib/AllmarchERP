@@ -121,7 +121,7 @@
                 <div class="col-2">
 
                     <p style="font-size: 23px;line-height: 1px;margin: -15px 0px 23px 27px; letter-spacing: -0.5px;">
-                        <b>{{ str_pad($salesInvoiceProduct->packing, 2, '0', STR_PAD_LEFT) }} KG</b></p>
+                        <b>{{ str_pad(number_format($salesInvoiceProduct->packing), 2, '0', STR_PAD_LEFT) }} KG</b></p>
                     <table class="tableBox">
                         <tr>
                             <td>Batch No </br>
@@ -142,7 +142,7 @@
 
                 </div>
                 <div class="col-1">
-                    <div style="margin: 45px 0px 0px -90px;">
+                    <div style="margin: 45px 0px 0px -80px;">
                         <svg id="barcode"></svg>
                     </div>
 
@@ -175,7 +175,7 @@
                         </tr>
                         <tr>
                             <td>Weight</td>
-                            <td>: {{ str_pad($salesInvoiceProduct->packing, 2, '0', STR_PAD_LEFT) }} KG</td>
+                            <td>: {{ str_pad(number_format($salesInvoiceProduct->packing), 2, '0', STR_PAD_LEFT) }} KG</td>
                         </tr>
                     </table>
                 </div>
