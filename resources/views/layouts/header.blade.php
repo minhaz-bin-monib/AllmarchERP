@@ -123,13 +123,28 @@
                         </li>
                         <li>
                             <a href="#accountDaily" data-bs-toggle="collapse" aria-expanded="false"
-                                class="dropdown-toggle">Daily Expense</a>
+                                class="dropdown-toggle">Daily Expanse</a>
                             <ul class="collapse list-unstyled" id="accountDaily">
                                 <li>
-                                    <a href="{{ url('/accountDaily/expanse') }}">Add Daily Expense</a>
+                                    <a href="{{ url('/accountDaily/expanse') }}">Add Daily Expanse</a>
                                 </li>
                                 <li>
-                                    <a href="{{ url('/accountDaily/expanseList') . '/' . date('Y-m-d') }}">Close Daily Expense List</a>
+                                    <a href="{{ url('/accountDaily/expanseList') . '/' . date('Y-m-d') }}">Close Daily Expanse List</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#accountMonthly" data-bs-toggle="collapse" aria-expanded="false"
+                                class="dropdown-toggle">Monthly Expanse</a>
+                            <ul class="collapse list-unstyled" id="accountMonthly">
+                                <li>
+                                    <a href="{{ url('/accountMonthly/openingMonthlyView') }}">Openning Monthly</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('/accountMonthly/addMonthlyExpanse/1') }}">Add Monthly Expanse</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('/accountMonthly/expanseList') . '/' . date('Y-m-d') }}">Monthly Expanse List</a>
                                 </li>
                             </ul>
                         </li>
@@ -241,13 +256,13 @@
                         </li>
                         <li>
                             <a href="#accountDaily" data-bs-toggle="collapse" aria-expanded="false"
-                                class="dropdown-toggle">Daily Expense</a>
+                                class="dropdown-toggle">Daily Expanse</a>
                             <ul class="collapse list-unstyled" id="accountDaily">
                                 <li>
-                                    <a href="{{ url('/accountDaily/expanse') }}">Add Daily Expense</a>
+                                    <a href="{{ url('/accountDaily/expanse') }}">Add Daily Expanse</a>
                                 </li>
                                 <li>
-                                    <a href="{{ url('/accountDaily/expanseList'). '/' . date('Y-m-d')  }}">Close Daily Expense List</a>
+                                    <a href="{{ url('/accountDaily/expanseList'). '/' . date('Y-m-d')  }}">Close Daily Expanse List</a>
                                 </li>
                             </ul>
                         </li>

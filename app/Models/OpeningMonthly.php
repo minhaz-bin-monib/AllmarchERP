@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class OpeningMonthly extends Model
 {
     use HasFactory;
+
+    protected $table = 'opening_monthlies';
+    protected $primaryKey = 'opening_monthly_id';
 }

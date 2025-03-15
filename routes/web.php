@@ -14,6 +14,7 @@ use App\Http\Controllers\AccountReportController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountDailyController;
 use App\Http\Controllers\CustomerPaymentController;
+use App\Http\Controllers\AccountMontlyController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -214,4 +215,20 @@ Route::group(['prefix' => 'customerPayment','middleware' => ['isLoggedIn','roleC
     Route::get('createForward', [CustomerPaymentController::class, 'createForward']);
     Route::post('createForward', [CustomerPaymentController::class, 'storeForward']);
     Route::get('statementReport/{customer_id}/{startDate}/{endDate}/{type}', [CustomerPaymentController::class, 'statementReport']);
+});
+
+
+// ------------------------- Account Daily  Routes ------------------------
+Route::group(['prefix' => 'accountMonthly','middleware' => ['isLoggedIn','roleCheck:Admin,Account']], function () {
+    Route::get('openingMonthlyView', [AccountMontlyController::class, 'openingMonthlyView']);
+    Route::get('openingMontlyAccount/{openning_date}', [AccountMontlyController::class, 'openingMonthlyCreate']);
+    Route::get('addMonthlyExpanse/{accountNoId}', [AccountMontlyController::class, 'addMonthlyExpanse']);
+    Route::get('expanseList/{searchMonthDate}', [AccountMontlyController::class, 'expanseList']);
+    Route::get('openingMonthlyEdit/{opening_monthly_account_id}', [AccountMontlyController::class, 'openingMonthlyEdit']);
+    Route::post('openingMonthlyEditSave/{opening_monthly_account_id}', [AccountMontlyController::class, 'openingMonthlyEditSave']);
+    // Route::get('closingDailyExpanse', [AccountMontlyController::class, 'closingDailyExpanse']);
+    // Route::post('addOpeningDailyDebit', [AccountMontlyController::class, 'addOpeningDailyDebit']);
+    // Route::get('dailyExpenseDetails/{clsExpanseId}', [AccountMontlyController::class, 'DailyExpenseByClosedExpId']);
+    // Route::get('deleteDebitOrCredit/{credOrDebitId}/{typeOf}', [AccountMontlyController::class, 'deleteDebitOrCredit']);
+  
 });
