@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('opening_monthly_id');
             $table->integer('montly_acounts_id');
             $table->integer('montly_categories_id');
+            $table->string('particulars_name')->nullable();
             $table->string('company_name')->nullable();
             $table->string('payment_type')->nullable();
             $table->decimal('opening_amount',20,2);

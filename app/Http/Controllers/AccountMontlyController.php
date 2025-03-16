@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\OpeningMonthlyAccount;
 use Illuminate\Http\Request;
 use App\Models\OpeningMonthly;
+use App\Models\OpenningMonthlyAcountsExpanse;
+use App\Models\MontlyCategory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 class AccountMontlyController extends Controller
@@ -78,7 +80,7 @@ class AccountMontlyController extends Controller
         }
         $toptitle = 'Monthly Openning';
         $urlOpeningMonthlyAccount = url('/accountMonthly/openingMontlyAccount');
-        $urlAddOpeningMonthlySave = url('/accountMonthly/openingMonthlyEditSave/'. $opening_monthly_account_id);
+        $urlAddOpeningMonthlySave = url('/accountMonthly/openingMonthlyEditSave/' . $opening_monthly_account_id);
         $data = compact(
             'openningMontly',
             'accountMontly',
@@ -184,7 +186,62 @@ class AccountMontlyController extends Controller
 
     public function addMonthlyExpanse($accountNoId)
     {
+        // first monthly 1 and accountNo which variable 
+        $isNewDailyExpanse = true;
+        $openingDate = '';
+        $openningMontly = new OpeningMonthly();
+        $openningMontly = OpeningMonthly::where('action_type', '!=', 'DELETE')->first();
+        $openningAccountMontly = null;
+        $accountMontlyList = [];
+        $selectedAccountMonthlyCostList = [];
+        $monthlyExpanseCategoryList = [];
+        $accountMontlyExpanse = new OpenningMonthlyAcountsExpanse();
 
+        if ($openningMontly) {
+            if ($openningMontly->closing_status == 1) {
+                $accountMontlyList = DB::table('opening_monthly_accounts')
+                    ->join('montly_acounts', 'opening_monthly_accounts.montly_acounts_id', '=', 'montly_acounts.montly_acounts_id')
+                    ->where('opening_monthly_accounts.action_type', '!=', 'DELETE')
+                    ->select('opening_monthly_accounts.*', 'montly_acounts.acount_name')
+                    ->get();
+
+                $isNewDailyExpanse = false; // openning done wait for closing
+                $openingDate = Carbon::parse($openningMontly->opening_date)->format('Y-m-d');
+                $selectedAccountMonthlyCostList = OpenningMonthlyAcountsExpanse::where('opening_monthly_id', $accountNoId)
+                    ->orderBy('opening_date')
+                    ->get();
+                    $openningAccountMontly = $accountMontlyList->firstWhere('opening_monthly_account_id', $accountNoId);
+                    $openningAccountMontlyaccountMontlyExpanse = new OpenningMonthlyAcountsExpanse();
+                    $monthlyExpanseCategoryList = MontlyCategory::all();
+            }
+        }
+        $toptitle = 'Monthly Expanse';
+        $urladdMonthlyExpanse = url('/accountMonthly/addMonthlyExpanse');
+        $urlAddOpeningMonthlySave = url('/accountMonthly/addMonthlyExpansePost/'.$accountNoId);
+        $data = compact(
+            'openningMontly',
+            'openningAccountMontly',
+            'accountMontlyList',
+            'toptitle',
+            'openingDate',
+            'isNewDailyExpanse',
+            'urladdMonthlyExpanse',
+            'urlAddOpeningMonthlySave',
+            'accountNoId',
+            'selectedAccountMonthlyCostList',
+            'accountMontlyExpanse',
+            'monthlyExpanseCategoryList'
+        );
+
+        return view('accountMonthly.addMonthlyExpanse')->with($data);
+    }
+
+    public function addMonthlyExpansePost($accountNoId, Request $request){
+        $request->validate(
+            [
+                'opening_date' => 'required'
+            ]
+        );
     }
     public function expanseList($searchMonthDate)
     {
