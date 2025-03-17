@@ -15,6 +15,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountDailyController;
 use App\Http\Controllers\CustomerPaymentController;
 use App\Http\Controllers\AccountMontlyController;
+use App\Http\Controllers\AccountPayController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -229,4 +230,9 @@ Route::group(['prefix' => 'accountMonthly','middleware' => ['isLoggedIn','roleCh
     Route::post('addMonthlyExpansePost/{accountNoId}', [AccountMontlyController::class, 'addMonthlyExpansePost']);
    
   
+});
+// ------------------------- Account Pay  Routes ------------------------
+Route::group(['prefix' => 'accountPay','middleware' => ['isLoggedIn','roleCheck:Admin,Account']], function () {
+    Route::get('checkPrint', [AccountPayController::class, 'checkPrint']);
+
 });

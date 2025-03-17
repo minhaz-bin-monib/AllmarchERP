@@ -122,6 +122,15 @@
                             </ul>
                         </li>
                         <li>
+                            <a href="#PayCheck" data-bs-toggle="collapse" aria-expanded="false"
+                                class="dropdown-toggle">Pay Check</a>
+                            <ul class="collapse list-unstyled" id="PayCheck">
+                                <li>
+                                    <a href="{{ url('/accountPay/checkPrint')}}" target="_blank">Check Print</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
                             <a href="#accountDaily" data-bs-toggle="collapse" aria-expanded="false"
                                 class="dropdown-toggle">Daily Expanse</a>
                             <ul class="collapse list-unstyled" id="accountDaily">
@@ -144,7 +153,7 @@
                                     <a href="{{ url('/accountMonthly/addMonthlyExpanse/1') }}">Add Monthly Expanse</a>
                                 </li>
                                 <li>
-                                    <a href="{{ url('/accountMonthly/expanseList') . '/' . date('Y-m-d') }}">Monthly Expanse List</a>
+                                    {{-- <a href="{{ url('/accountMonthly/expanseList') . '/' . date('Y-m-d') }}">Monthly Expanse List</a> --}}
                                 </li>
                             </ul>
                         </li>
@@ -263,6 +272,21 @@
                                 </li>
                                 <li>
                                     <a href="{{ url('/accountDaily/expanseList'). '/' . date('Y-m-d')  }}">Close Daily Expanse List</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#accountMonthly" data-bs-toggle="collapse" aria-expanded="false"
+                                class="dropdown-toggle">Monthly Expanse</a>
+                            <ul class="collapse list-unstyled" id="accountMonthly">
+                                <li>
+                                    <a href="{{ url('/accountMonthly/openingMonthlyView') }}">Openning Monthly</a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('/accountMonthly/addMonthlyExpanse/1') }}">Add Monthly Expanse</a>
+                                </li>
+                                <li>
+                                    {{-- <a href="{{ url('/accountMonthly/expanseList') . '/' . date('Y-m-d') }}">Monthly Expanse List</a> --}}
                                 </li>
                             </ul>
                         </li>
