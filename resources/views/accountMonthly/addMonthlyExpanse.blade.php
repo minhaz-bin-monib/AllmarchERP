@@ -172,7 +172,7 @@
                     <table id="myTable" class="table table-bordered table-hover" style="table-layout: fixed;">
                         <thead>
                             <tr>
-                                <th style="width: 55px; text-align: center;">Date</th>
+                                <th style="width: 60px; text-align: center;">Date</th>
                                 <th style="width: 50px; text-align: center;">Action</th>
                                 <th style="width: 190px; text-align: center;">Particulars</th>
                                 <th style="width: 75px; text-align: center;">Company Name</th>
@@ -191,6 +191,7 @@
                                 <th style="width: 75px; text-align: center;">Saiful Sir</th>
                                 <th style="width: 75px; text-align: center;">Pubali Bank</th>
                                 <th style="width: 95px; text-align: center;">Amount</th>
+                                <th style="width: 95px; text-align: center;">Total Amount</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -217,10 +218,21 @@
                                     <td></td>
                                     <td></td>
                                     <td style="text-align: right">{{ $openningAccountMontly->opening_amount }}</td>
+                                    <td></td>
                                 </tr>
                             @foreach ($selectedAccountMonthlyCostList as $accMnth)
+                                @php
+                                    if(($accMnth->montly_categories_id >= 1) && ($accMnth->montly_categories_id <= 4)){
+                                        // Debit
+                                        $openingTotalAmount += $accMnth->opening_amount;
+                                    }
+                                    else{
+                                        // Credit
+                                        $openingTotalAmount -= $accMnth->opening_amount;
+                                    }
+                                @endphp
                                 <tr>
-                                    <td> {{ \Carbon\Carbon::parse($openingDate)->format('j-M-y') }}</td>
+                                    <td> {{ \Carbon\Carbon::parse($accMnth->opening_date)->format('j-M-y') }}</td>
                                     <td style="width: 5%">
                                         {{-- <a class=""
                                             href="{{ url('/accountMonthly/openingMonthlyEdit') }}/{{ $accMnth->opening_monthly_account_id }}"><i
@@ -228,10 +240,98 @@
                                     </td>
                                     <td>{{ $accMnth->particulars_name }}</td>
                                     <td>{{ $accMnth->company_name }}</td>
-                                    <td>{{ $accMnth->opening_amount }}</td>
+                                    <td>{{ $accMnth->payment_type }}</td>
+                                    <td style="text-align: right">
+                                        @if($accMnth->montly_categories_id  == 1)
+                                            {{ $accMnth->opening_amount }}
+                                        @endif
+                                    </td>
+                                    <td style="text-align: right">
+                                        @if($accMnth->montly_categories_id  == 2)
+                                            {{ $accMnth->opening_amount }}
+                                        @endif
+                                    </td>
+                                    <td style="text-align: right">
+                                        @if($accMnth->montly_categories_id  == 3)
+                                            {{ $accMnth->opening_amount }}
+                                        @endif
+                                    </td>
+                                    <td style="text-align: right">
+                                        @if($accMnth->montly_categories_id  == 4)
+                                            {{ $accMnth->opening_amount }}
+                                        @endif
+                                    </td>
+                                    <td style="text-align: right">
+                                        @if($accMnth->montly_categories_id  == 5)
+                                            {{ $accMnth->opening_amount }}
+                                        @endif
+                                    </td>
+                                    <td style="text-align: right">
+                                        @if($accMnth->montly_categories_id  == 6)
+                                            {{ $accMnth->opening_amount }}
+                                        @endif
+                                    </td>
+                                    <td style="text-align: right">
+                                        @if($accMnth->montly_categories_id  == 7)
+                                            {{ $accMnth->opening_amount }}
+                                        @endif
+                                    </td>
+                                    <td style="text-align: right">
+                                        @if($accMnth->montly_categories_id  == 8)
+                                            {{ $accMnth->opening_amount }}
+                                        @endif
+                                    </td>
+                                    <td style="text-align: right">
+                                        @if($accMnth->montly_categories_id  == 9)
+                                            {{ $accMnth->opening_amount }}
+                                        @endif
+                                    </td>
+                                    <td style="text-align: right">
+                                        @if($accMnth->montly_categories_id  == 10)
+                                            {{ $accMnth->opening_amount }}
+                                        @endif
+                                    </td>
+                                    <td style="text-align: right">
+                                        @if($accMnth->montly_categories_id  == 11)
+                                            {{ $accMnth->opening_amount }}
+                                        @endif
+                                    </td>
+                                    <td style="text-align: right">
+                                        @if($accMnth->montly_categories_id  == 12)
+                                            {{ $accMnth->opening_amount }}
+                                        @endif
+                                    </td>
+                                    <td style="text-align: right">
+                                        @if($accMnth->montly_categories_id  == 13)
+                                            {{ $accMnth->opening_amount }}
+                                        @endif
+                                    </td>
+                                    <td style="text-align: right">{{ $openingTotalAmount }}</td>
 
                                 </tr>
                             @endforeach
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><b>Total:</b></td>
+                                <td style="text-align: right"><b>{{ $openingTotalAmount }}</b></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

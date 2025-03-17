@@ -210,14 +210,14 @@ class AccountMontlyController extends Controller
                 $selectedAccountMonthlyCostList = OpenningMonthlyAcountsExpanse::where('opening_monthly_id', $accountNoId)
                     ->orderBy('opening_date')
                     ->get();
-                    $openningAccountMontly = $accountMontlyList->firstWhere('opening_monthly_account_id', $accountNoId);
-                    $openningAccountMontlyaccountMontlyExpanse = new OpenningMonthlyAcountsExpanse();
-                    $monthlyExpanseCategoryList = MontlyCategory::all();
+                $openningAccountMontly = $accountMontlyList->firstWhere('opening_monthly_account_id', $accountNoId);
+                $openningAccountMontlyaccountMontlyExpanse = new OpenningMonthlyAcountsExpanse();
+                $monthlyExpanseCategoryList = MontlyCategory::all();
             }
         }
         $toptitle = 'Monthly Expanse';
         $urladdMonthlyExpanse = url('/accountMonthly/addMonthlyExpanse');
-        $urlAddOpeningMonthlySave = url('/accountMonthly/addMonthlyExpansePost/'.$accountNoId);
+        $urlAddOpeningMonthlySave = url('/accountMonthly/addMonthlyExpansePost/' . $accountNoId);
         $data = compact(
             'openningMontly',
             'openningAccountMontly',
@@ -236,12 +236,36 @@ class AccountMontlyController extends Controller
         return view('accountMonthly.addMonthlyExpanse')->with($data);
     }
 
-    public function addMonthlyExpansePost($accountNoId, Request $request){
+    public function addMonthlyExpansePost($accountNoId, Request $request)
+    {
         $request->validate(
             [
                 'opening_date' => 'required'
             ]
         );
+
+        $openingMontlyAccount = OpeningMonthlyAccount::find($accountNoId);
+
+        if ($openingMontlyAccount) {
+            $openingMonthlyExpanse = new OpenningMonthlyAcountsExpanse();
+
+            $openingMonthlyExpanse->opening_date = $request['opening_date'];
+            $openingMonthlyExpanse->opening_monthly_id = $accountNoId;
+            $openingMonthlyExpanse->montly_acounts_id = $accountNoId; // TODO: note 
+            $openingMonthlyExpanse->montly_categories_id = $request['montly_categories_id'];
+            $openingMonthlyExpanse->particulars_name = $request['particulars_name'];
+            $openingMonthlyExpanse->company_name = $request['company_name'];
+            $openingMonthlyExpanse->payment_type = $request['payment_type'];
+            $openingMonthlyExpanse->opening_amount = $request['opening_amount'];
+            $openingMonthlyExpanse->action_type = 'UPDATE'; 
+            $openingMonthlyExpanse->user_id = 'sys-user';   
+            $openingMonthlyExpanse->action_date = now(); 
+          
+            $openingMonthlyExpanse->save();
+
+        }
+
+        return redirect('/accountMonthly/addMonthlyExpanse/'.$accountNoId);
     }
     public function expanseList($searchMonthDate)
     {

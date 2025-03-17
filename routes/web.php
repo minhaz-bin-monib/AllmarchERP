@@ -226,7 +226,7 @@ Route::group(['prefix' => 'accountMonthly','middleware' => ['isLoggedIn','roleCh
     Route::get('openingMonthlyEdit/{opening_monthly_account_id}', [AccountMontlyController::class, 'openingMonthlyEdit']);
     Route::post('openingMonthlyEditSave/{opening_monthly_account_id}', [AccountMontlyController::class, 'openingMonthlyEditSave']);
     Route::get('addMonthlyExpanse/{accountNoId}', [AccountMontlyController::class, 'addMonthlyExpanse']);
-    Route::post('addMonthlyExpansePost/{accountNoId}', [AccountMontlyController::class, 'addMonthlyExpanse']);
+    Route::post('addMonthlyExpansePost/{accountNoId}', [AccountMontlyController::class, 'addMonthlyExpansePost']);
    
   
 });
