@@ -228,7 +228,9 @@ Route::group(['prefix' => 'accountMonthly','middleware' => ['isLoggedIn','roleCh
     Route::post('openingMonthlyEditSave/{opening_monthly_account_id}', [AccountMontlyController::class, 'openingMonthlyEditSave']);
     Route::get('addMonthlyExpanse/{accountNoId}', [AccountMontlyController::class, 'addMonthlyExpanse']);
     Route::post('addMonthlyExpansePost/{accountNoId}', [AccountMontlyController::class, 'addMonthlyExpansePost']);
-   
+    Route::get('closeMonthlyExpanse', [AccountMontlyController::class, 'closeMonthlyExpanse']);
+    Route::get('MonthlyExpanseReport/{id}/{type}', [AccountMontlyController::class, 'MonthlyExpanseReport']);
+    
   
 });
 // ------------------------- Account Pay  Routes ------------------------

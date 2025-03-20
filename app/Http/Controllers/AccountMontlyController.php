@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ClosingMonthlyAccount;
 use App\Models\OpeningMonthlyAccount;
 use Illuminate\Http\Request;
 use App\Models\OpeningMonthly;
 use App\Models\OpenningMonthlyAcountsExpanse;
 use App\Models\MontlyCategory;
+use App\Models\ClosingMonthly;
+use App\Models\ClosingMonthlyAcountsExpanse;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 class AccountMontlyController extends Controller
@@ -257,18 +260,174 @@ class AccountMontlyController extends Controller
             $openingMonthlyExpanse->company_name = $request['company_name'];
             $openingMonthlyExpanse->payment_type = $request['payment_type'];
             $openingMonthlyExpanse->opening_amount = $request['opening_amount'];
-            $openingMonthlyExpanse->action_type = 'UPDATE'; 
-            $openingMonthlyExpanse->user_id = 'sys-user';   
-            $openingMonthlyExpanse->action_date = now(); 
-          
+            $openingMonthlyExpanse->action_type = 'UPDATE';
+            $openingMonthlyExpanse->user_id = 'sys-user';
+            $openingMonthlyExpanse->action_date = now();
+
             $openingMonthlyExpanse->save();
 
         }
 
-        return redirect('/accountMonthly/addMonthlyExpanse/'.$accountNoId);
+        return redirect('/accountMonthly/addMonthlyExpanse/' . $accountNoId);
     }
     public function expanseList($searchMonthDate)
     {
+        $year = date('Y', strtotime($searchMonthDate));
+        // $month = date('m', strtotime($searchMonthDate)); 
+        // Running Month Expanse First Show 
+        $runningMonthly = OpeningMonthly::where('closing_status', '=', '1')->first();
 
+
+        $closingMonthlyList = ClosingMonthly::whereYear('opening_date', $year)
+            ->orderByRaw('MONTH(opening_date) ASC')
+            ->get();
+
+        $searchDate = Carbon::parse($searchMonthDate)->format('Y-m-d');
+        $data = compact('searchDate', 'runningMonthly', 'closingMonthlyList');
+
+
+        return view('accountMonthly.monthlyExpanseList')->with($data);
+    }
+
+    public function closeMonthlyExpanse()
+    {
+
+        DB::beginTransaction();
+        try {
+            // openingMonthly => ClosingMonthly 
+            $closingMonthly = new ClosingMonthly();
+            $openingMonthly = OpeningMonthly::where('closing_status', '=', '1')->first();
+
+            $closingMonthly->opening_date = $openingMonthly->opening_date;
+            $closingMonthly->closing_status = $openingMonthly->closing_status;
+            $closingMonthly->action_type = 'INSERT';
+            $closingMonthly->user_id = 'sys-user';
+            $closingMonthly->action_date = now();
+
+            $closingMonthly->save();  // Save DB
+
+            // OpenningMonthlyAccount => ClosingMonthlyAccount
+            // Both 
+
+
+            $openingMonthlyAccountList = OpeningMonthlyAccount::all();
+            foreach ($openingMonthlyAccountList as $openingMonthlyAccount) {
+
+                $closingMonthlyAccount = new ClosingMonthlyAccount();
+
+                $closingMonthlyAccount->opening_date = $openingMonthlyAccount->opening_date;
+                $closingMonthlyAccount->opening_monthly_id = $closingMonthly->opening_monthly_id; // FK
+                $closingMonthlyAccount->montly_acounts_id = $openingMonthlyAccount->montly_acounts_id;   // FK
+                $closingMonthlyAccount->montly_categories_id = $openingMonthlyAccount->montly_categories_id ?? null;
+                $closingMonthlyAccount->company_name = $openingMonthlyAccount->company_name ?? null;
+                $closingMonthlyAccount->payment_type = $openingMonthlyAccount->payment_type ?? null;
+                $closingMonthlyAccount->opening_amount = $openingMonthlyAccount->opening_amount ?? 0;
+
+                $closingMonthlyAccount->action_type = 'INSERT';
+                $closingMonthlyAccount->user_id = 'sys-user';
+                $closingMonthlyAccount->action_date = now();
+
+                $closingMonthlyAccount->save();  // Save to DB
+
+                // OpenningMonthlyAccountExpanse => ClosingMonthlyAccountExpanse
+                $openningMonthlyAcountsExpanseList = OpenningMonthlyAcountsExpanse::where('montly_acounts_id', '=', $openingMonthlyAccount->montly_acounts_id)->get();
+                $totalBalance = $openingMonthlyAccount->opening_amount ?? 0;
+                foreach ($openningMonthlyAcountsExpanseList as $openningMonthlyAcountsExpanse) {
+
+                    $closingMonthlyAccountExpanse = new ClosingMonthlyAcountsExpanse();
+
+                    $closingMonthlyAccountExpanse->opening_date = $openningMonthlyAcountsExpanse->opening_date;
+                    $closingMonthlyAccountExpanse->opening_monthly_id = $closingMonthly->opening_monthly_id; // FK
+                    $closingMonthlyAccountExpanse->opening_monthly_account_id = $closingMonthlyAccount->opening_monthly_account_id;
+                    $closingMonthlyAccountExpanse->montly_categories_id = $openningMonthlyAcountsExpanse->montly_categories_id ?? null;
+                    $closingMonthlyAccountExpanse->particulars_name = $openningMonthlyAcountsExpanse->particulars_name;
+                    $closingMonthlyAccountExpanse->company_name = $openningMonthlyAcountsExpanse->company_name;
+                    $closingMonthlyAccountExpanse->payment_type = $openningMonthlyAcountsExpanse->payment_type;
+                    $closingMonthlyAccountExpanse->opening_amount = $openningMonthlyAcountsExpanse->opening_amount ?? 0;
+
+                    $closingMonthlyAccountExpanse->action_type = 'INSERT';
+                    $closingMonthlyAccountExpanse->user_id = 'sys-user';
+                    $closingMonthlyAccountExpanse->action_date = now();
+
+                    $closingMonthlyAccountExpanse->save();  // Save the new record to the database
+
+
+                    // is blace if Debit or Credit 
+                    if ($openningMonthlyAcountsExpanse->montly_categories_id >= 1 && $openningMonthlyAcountsExpanse->montly_categories_id <= 4) {
+                        $totalBalance += $openningMonthlyAcountsExpanse->opening_amount ?? 0;
+                    } else {
+                        $totalBalance -= $openningMonthlyAcountsExpanse->opening_amount ?? 0;
+                    }
+                }
+
+                //   Update OpenningMonthlyAccount => blance of each Bank
+                $openingMonthlyAccountUpdate = OpeningMonthlyAccount::where('opening_monthly_account_id', '=', $openingMonthlyAccount->opening_monthly_account_id)->first();
+                $openingMonthlyAccountUpdate->opening_amount = $totalBalance;
+
+                $openingMonthlyAccountUpdate->save();
+            }
+
+
+            // Update OpeningMonlty 1 => 0
+            $openingMonthly->closing_status = 0;
+            $openingMonthly->save();
+
+            OpenningMonthlyAcountsExpanse::truncate();
+
+            // delete all OpenningMonthlyAccountExpanse
+
+            DB::commit();
+            return redirect('/accountMonthly/expanseList/' . now());
+
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Transaction failed: ' . $e->getMessage());
+            return redirect('/accountMonthly/expanseList/' . now())->withErrors('An error occurred. Please try again.');
+        }
+
+    }
+    public function MonthlyExpanseReport($id, $type)
+    {
+
+        $openingDate = '';
+        $openningMontly = new OpeningMonthly();
+        $accountMontlyList = [];
+        $selectedAccountMonthlyExpanseCostList = [];
+        if ($type == 1) {  // Running Opening 
+
+            $openningMontly = OpeningMonthly::where('action_type', '!=', 'DELETE')->first();
+            $openingDate = $openningMontly->opening_date;
+
+            $accountMontlyList = DB::table('opening_monthly_accounts')
+                ->join('montly_acounts', 'opening_monthly_accounts.montly_acounts_id', '=', 'montly_acounts.montly_acounts_id')
+                ->where('opening_monthly_accounts.action_type', '!=', 'DELETE')
+                ->select('opening_monthly_accounts.*', 'montly_acounts.acount_name')
+                ->orderBy('opening_monthly_account_id')
+                ->get();
+
+            $selectedAccountMonthlyExpanseCostList = OpenningMonthlyAcountsExpanse::orderBy('opening_date')
+                ->get();
+            
+            
+        } else {
+            // closing all here 
+            $openningMontly = ClosingMonthly::where('opening_monthly_id', '=', $id)->first();
+            $openingDate = $openningMontly->opening_date;
+
+            $accountMontlyList = DB::table('closing_monthly_accounts')
+                ->join('montly_acounts', 'closing_monthly_accounts.montly_acounts_id', '=', 'montly_acounts.montly_acounts_id')
+                ->where('closing_monthly_accounts.opening_monthly_id', '=', $id)
+                ->select('closing_monthly_accounts.*', 'montly_acounts.acount_name')
+                ->orderBy('opening_monthly_account_id')
+                ->get();
+
+            $selectedAccountMonthlyExpanseCostList = ClosingMonthlyAcountsExpanse::where('opening_monthly_id', '=', $id)
+            ->orderBy('opening_date')
+                ->get();
+        }
+
+        $data = compact('openingDate','type', 'openningMontly', 'accountMontlyList', 'selectedAccountMonthlyExpanseCostList');
+        return view('accountMonthly.monthlyReport')->with($data);
     }
 }

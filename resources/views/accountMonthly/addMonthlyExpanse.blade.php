@@ -339,7 +339,7 @@
        
     </div>
     @else
-        <p class="text-danger">Please Open Monthly First</p>
+        <p class="text-danger text-center" style="margin-top: 120px">Please Open Monthly First</p>
     @endif
     <script>
         document.getElementById('PageName').innerText =
@@ -354,6 +354,14 @@
                 window.location.href = "{{ $urladdMonthlyExpanse }}/" + date;
             } else {
                 document.getElementById('activeAccountId').value = {{ $accountNoId }};
+            }
+        }
+        function CloseMonthly() {
+            if (confirm("Want to Close this Month all Account?")) {
+
+                window.location.href = "{{ url('/accountMonthly/closeMonthlyExpanse') }}";
+            } else {
+               
             }
         }
     </script>
