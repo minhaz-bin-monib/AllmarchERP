@@ -31,7 +31,7 @@
                 </div>
                 <div class="col-3">
                     <button id="searchButton" onClick="Search()"
-                        class="btn btn-sm btn-primary {{ $isNewDailyExpanse == true ? '' : 'disabled' }}"> Opening Daily
+                        class="btn btn-sm btn-success {{ $isNewDailyExpanse == true ? '' : 'disabled' }}"> Opening Daily
                         Expanse</button>
 
                     {{-- <a 
@@ -43,7 +43,7 @@
                 <div class="col-4"></div>
                 <div class="col-3">
                     <a href="{{ $isNewDailyExpanse != true ? $urlClosingDailyExpanse : '#' }}"
-                        class="btn btn-sm btn-primary {{ $isNewDailyExpanse != true ? '' : 'disabled' }}"
+                        class="btn btn-sm btn-danger {{ $isNewDailyExpanse != true ? '' : 'disabled' }}"
                         onclick="return confirmAction({{ $isNewDailyExpanse }});">
                         Close Daily Expanse
                     </a>
@@ -51,7 +51,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="card col-5 p-2">
+            <div class="card col-6 p-2">
                 <div class="row">
                     <div class="col-12">
                         <h6 class="text-primary 
@@ -64,6 +64,17 @@
                             @csrf
 
                             <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label for="blance_type">Type</label>
+                                    <select name="blance_type" id="blance_type" class="form-control">
+
+                                        {{-- <option value="1">Openning Blance</option> --}}
+                                        <option value="2">Loan Return</option>
+                                        <option value="3">Cash Recall from Bank</option>
+                                        <option value="4">Mini Sell from Mini Company</option>
+
+                                    </select>
+                                </div>
                                 <div class="form-group col-md-6">
                                     <label for="debit_name">Name</label>
 
@@ -77,7 +88,8 @@
                                         @enderror
                                     </span>
                                 </div>
-                                <div class="form-group col-md-6">
+
+                                <div class="form-group col-md-3">
                                     <label for="debit_blance">Debit Blance</label>
                                     <input id="debit_blance" type="number" step="0.01" name="debit_blance"
                                         value="{{ old('debit_blance', $openningDebit->debit_blance) }}" min="0"
@@ -97,13 +109,13 @@
                                 <button type="submit"
                                     class="btn btn-sm btn-primary 
                         {{ $isNewDailyExpanse == true ? 'disabled' : '' }}">Add
-                                    Debit</button>
+                                    Debit (+)</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-            <div class="card col-7 p-2">
+            <div class="card col-6 p-2">
                 <div class="row">
                     <div class="col-12">
                         <h6
@@ -159,7 +171,7 @@
                                 <button type="submit"
                                     class="btn btn-sm btn-primary 
                         {{ $isNewDailyExpanse == true ? 'disabled' : '' }}">Add
-                                    Credit</button>
+                                    Credit (-)</button>
                             </div>
                         </form>
                     </div>

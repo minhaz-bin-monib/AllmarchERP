@@ -317,7 +317,7 @@ class AccountDailyController extends Controller
       $openningExpanse = OpenningExpanse::where('action_type', '!=', 'DELETE')->first();
       $debit = new OpenningDailyDebitExpanse();
 
-      $debit->blance_type = 22;
+      $debit->blance_type = $request['blance_type'];// TODO: edit mehedi 22;
       $debit->debit_name = $request['debit_name'];
       $debit->debit_blance = $request['debit_blance'];
       $debit->debit_date = $openningExpanse->opening_date;
@@ -357,7 +357,7 @@ class AccountDailyController extends Controller
       $credit = new OpenningDailyCreditDetailsExpanse();
 
       $credit->openning_daily_credits_id = $opnDailyCredit->openning_daily_credits_id;
-      $credit->credit_category_id = $request['openning_daily_credits_id'];
+      $credit->credit_category_id = $opnDailyCredit->credit_category_id;// TODO: edit mehedi $request['openning_daily_credits_id'];
       $credit->credit_name = $request['credit_name'];
       $credit->credit_blance = $request['credit_blance'];
       $credit->credit_date = $openningExpanse->opening_date;
