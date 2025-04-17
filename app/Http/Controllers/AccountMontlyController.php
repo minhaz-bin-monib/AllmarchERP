@@ -9,6 +9,9 @@ use App\Models\OpeningMonthly;
 use App\Models\OpenningMonthlyAcountsExpanse;
 use App\Models\MontlyCategory;
 use App\Models\ClosingMonthly;
+use App\Models\ClosingDailyExpanse;
+use App\Models\ClosingDailyDebitExpanse;
+use App\Models\ClosingDailyCreditDetailsExpanse;
 use App\Models\ClosingMonthlyAcountsExpanse;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -408,8 +411,8 @@ class AccountMontlyController extends Controller
 
             $selectedAccountMonthlyExpanseCostList = OpenningMonthlyAcountsExpanse::orderBy('opening_date')
                 ->get();
-            
-            
+
+
         } else {
             // closing all here 
             $openningMontly = ClosingMonthly::where('opening_monthly_id', '=', $id)->first();
@@ -423,11 +426,35 @@ class AccountMontlyController extends Controller
                 ->get();
 
             $selectedAccountMonthlyExpanseCostList = ClosingMonthlyAcountsExpanse::where('opening_monthly_id', '=', $id)
-            ->orderBy('opening_date')
+                ->orderBy('opening_date')
                 ->get();
         }
+        // All closing Daily Debit and Credit show on  $openingDate Month 
+        $selectedMonth = Carbon::parse($openingDate)->month;
+        $selectedYear = Carbon::parse($openingDate)->year;
 
-        $data = compact('openingDate','type', 'openningMontly', 'accountMontlyList', 'selectedAccountMonthlyExpanseCostList');
+        // Get all matching closing daily expenses
+        $closingDailyExpanse_all = ClosingDailyExpanse::where('action_type', '!=', 'DELETE')
+            ->whereMonth('openning_date', $selectedMonth)
+            ->whereYear('openning_date', $selectedYear)
+            ->orderBy('closing_daily_expense_id', 'asc')
+            ->get();
+
+        $expenseIds = $closingDailyExpanse_all->pluck('closing_daily_expense_id');
+
+        $allDebitList = ClosingDailyDebitExpanse::where('action_type', '!=', 'DELETE')
+            ->whereIn('closing_daily_expense_id', $expenseIds)
+            ->orderBy('closing_daily_debit_expense_id')
+            ->get();
+
+        $allCreditDetailsList = ClosingDailyCreditDetailsExpanse::where('action_type', '!=', 'DELETE')
+            ->whereIn('closing_daily_expense_id', $expenseIds)
+            ->get();
+
+
+
+
+        $data = compact('openingDate','closingDailyExpanse_all','allDebitList','allCreditDetailsList', 'type', 'openningMontly', 'accountMontlyList', 'selectedAccountMonthlyExpanseCostList');
         return view('accountMonthly.monthlyReport')->with($data);
     }
 }

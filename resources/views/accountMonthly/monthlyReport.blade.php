@@ -19,7 +19,8 @@
                 <p class="text-center" style="font-size: 12px">Cash Summary As at
                     {{ $closingExpanse && $closingExpanse->openning_date ? \Carbon\Carbon::parse($closingExpanse->openning_date)->format('d-m-Y') : 'N/A' }}
                 </p> --}}
-                <p class="text-center text-primary" style="letter-spacing: 1px; margin-bottom: 1px;">All March Bangladesh Limited</p>
+                <p class="text-center text-primary" style="letter-spacing: 1px; margin-bottom: 1px;">All March Bangladesh
+                    Limited</p>
                 <p class="text-center " style="letter-spacing: 1px; margin-bottom: 1px;">All Payment & Received</p>
                 <p class="text-center " style="letter-spacing: 1px; margin-bottom: 1px;">
                     {{ \Carbon\Carbon::parse($openingDate)->startOfMonth()->format('jS') }} to
@@ -44,6 +45,7 @@
                     <th style="width: 75px; text-align: center;">Payment Type</th>
                     <th style="width: 75px; text-align: center;">Saiful Sir</th>
                     <th style="width: 75px; text-align: center;">Pubali Bank</th>
+                    <th style="width: 75px; text-align: center;">Cash Rec. to Bank</th>
                     <th style="width: 75px; text-align: center;">Internal Received</th>
                     <th style="width: 75px; text-align: center;">Received </th>
                     <th style="width: 75px; text-align: center;">MD Sir</th>
@@ -85,23 +87,22 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td></td>
                         <td style="text-align: right">{{ $openningAccountMontly->opening_amount }}</td>
                         <td></td>
                     </tr>
                     {{-- Second Print Cost Expanse Details --}}
                     @php
-                        $targetMonthlyAccountId =  $openningAccountMontly->opening_monthly_account_id; 
+                        $targetMonthlyAccountId = $openningAccountMontly->opening_monthly_account_id;
 
                         // Filter by montly_acounts_id
-                        if($type == 1){
-
+                        if ($type == 1) {
                             $selectedAccountMonthlyCostList = $selectedAccountMonthlyExpanseCostList->filter(function (
                                 $item,
                             ) use ($targetMonthlyAccountId) {
                                 return $item->montly_acounts_id == $targetMonthlyAccountId;
                             });
-                        }
-                        else{
+                        } else {
                             $selectedAccountMonthlyCostList = $selectedAccountMonthlyExpanseCostList->filter(function (
                                 $item,
                             ) use ($targetMonthlyAccountId) {
@@ -134,6 +135,7 @@
                                     {{ $accMnth->opening_amount }}
                                 @endif
                             </td>
+                            <td></td>
                             <td style="text-align: right">
                                 @if ($accMnth->montly_categories_id == 3)
                                     {{ $accMnth->opening_amount }}
@@ -212,13 +214,146 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td></td>
                         <td><b>Total:</b></td>
                         <td style="text-align: right"><b>{{ $openingTotalAmount }}</b></td>
                     </tr>
                 @endforeach
 
+                {{-- DAILY Expanse Print --}}
 
+                @php
+                    $totalDailyAmount = 0;
+                @endphp
+                @foreach ($closingDailyExpanse_all as $DailyExpanse_all)
+                    {{-- $loop->iteration  starts from 1 --}}
 
+                    @php
+                        $isFirstIteration = $loop->iteration;
+                        $closing_daily_expense_id = $DailyExpanse_all->closing_daily_expense_id;
+
+                        // Filter by montly_acounts_id
+
+                        $selectedDebitList = $allDebitList->filter(function ($item) use ($closing_daily_expense_id) {
+                            return $item->closing_daily_expense_id == $closing_daily_expense_id;
+                        });
+
+                        $selectedallCreditDetailsList = $allCreditDetailsList->filter(function ($item) use (
+                            $closing_daily_expense_id,
+                        ) {
+                            return $item->closing_daily_expense_id == $closing_daily_expense_id;
+                        });
+
+                    @endphp
+                    {{-- Daily Openning Cash print and Debits --}}
+                    @foreach ($selectedDebitList as $Debit)
+                        @if ($isFirstIteration == 1 && $Debit->blance_type == 1)
+                            @php
+                                $totalDailyAmount += $Debit->debit_blance;
+                            @endphp
+                            <tr>
+                                <td>{{ \Carbon\Carbon::parse($DailyExpanse_all->openning_date)->format('j-M-y') }}</td>
+                                <td>{{ $Debit->debit_name }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="text-align: right">{{  $totalDailyAmount }}</td>
+                                <td></td>
+                            </tr>
+                        @elseif ($Debit->blance_type > 1)
+                            @php
+                                 $totalDailyAmount += $Debit->debit_blance;
+                            @endphp
+                            <tr>
+                                <td>{{ \Carbon\Carbon::parse($DailyExpanse_all->openning_date)->format('j-M-y') }}</td>
+                                <td>{{ $Debit->debit_name }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="text-align: right">
+                                    @if ($Debit->blance_type == 3)
+                                        {{ $Debit->debit_blance }}
+                                    @endif
+                                </td>
+                                <td style="text-align: right">
+                                    @if ($Debit->blance_type == 2)
+                                        {{ $Debit->debit_blance }}
+                                    @endif
+                                </td>
+                                <td style="text-align: right">
+                                    @if ($Debit->blance_type == 4)
+                                        {{ $Debit->debit_blance }}
+                                    @endif
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style="text-align: right">{{ $totalDailyAmount }}</td>
+                                <td></td>
+                            </tr>
+                        @endif
+                    @endforeach
+                    {{-- Daily All Credits --}}
+                    @foreach ($selectedallCreditDetailsList as $CreditDetails)
+                            @php
+                                $totalDailyAmount -= $CreditDetails->credit_blance;
+                            @endphp
+                        <tr>
+                            <td>{{ \Carbon\Carbon::parse($DailyExpanse_all->openning_date)->format('j-M-y') }}</td>
+                            <td>{{ $CreditDetails->credit_name }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="text-align: right">
+                                @if ($CreditDetails->credit_category_id == 1)
+                                    {{ $CreditDetails->credit_blance }}
+                                @endif
+                            </td>
+                            <td style="text-align: right">
+                                @if ($CreditDetails->credit_category_id == 2)
+                                    {{ $CreditDetails->credit_blance }}
+                                @endif
+                            </td>
+                            <td></td>
+                            <td style="text-align: right">
+                                @if ($CreditDetails->credit_category_id > 2)
+                                    {{ $CreditDetails->credit_blance }}
+                                @endif
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="text-align: right">{{ $totalDailyAmount }}</td>
+                            <td></td>
+                        </tr>
+                @endforeach
+                @endforeach
 
             </tbody>
         </table>
@@ -232,9 +367,8 @@
                 sortable: false, // Disable sorting
                 ordering: false, // Disable ordering
                 dom: 'Bfrtip', // Define the table control elements
-                searching: false, 
-                buttons: [
-                    {
+                searching: false,
+                buttons: [{
                         extend: 'excelHtml5',
                         text: 'Export to Excel',
                         className: 'btn  btn-sm  btn-success'

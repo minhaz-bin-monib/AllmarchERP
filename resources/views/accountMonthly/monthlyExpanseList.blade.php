@@ -22,7 +22,7 @@
                     <button id="searchButton" onClick="Search()" class="btn btn-sm btn-primary"> Search by Year</button>
                 </div>
                 <div class="col-6">
-                    <p>Monthly Expense List of : <b> {{ \Carbon\Carbon::parse($searchDate)->format('F Y') }} </b> </p>
+                    <p>Monthly Expense List of : <b> {{ \Carbon\Carbon::parse($searchDate)->format('Y') }} </b> </p>
                 </div>
             </div>
         </div>
