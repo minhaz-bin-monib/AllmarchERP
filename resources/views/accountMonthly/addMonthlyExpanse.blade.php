@@ -234,9 +234,10 @@
                                 <tr>
                                     <td> {{ \Carbon\Carbon::parse($accMnth->opening_date)->format('j-M-y') }}</td>
                                     <td style="width: 5%">
-                                        {{-- <a class=""
-                                            href="{{ url('/accountMonthly/openingMonthlyEdit') }}/{{ $accMnth->opening_monthly_account_id }}"><i
-                                                class="fa fa-edit"></i></a> --}}
+                                        <a class="link"
+                                        onClick="confirmDelete('{{ url('/accountMonthly/deleteMonthly') }}/{{ $accMnth->openning_monthly_acounts_expanses_id }}/{{$accountNoId}}')">
+                                        <i class="fa fa-trash text-danger"></i>
+                                    </a>
                                     </td>
                                     <td>{{ $accMnth->particulars_name }}</td>
                                     <td>{{ $accMnth->company_name }}</td>
@@ -362,6 +363,11 @@
                 window.location.href = "{{ url('/accountMonthly/closeMonthlyExpanse') }}";
             } else {
                
+            }
+        }
+        function confirmDelete(url) {
+            if (confirm("Want to delete this item?")) {
+                window.location.href = url;
             }
         }
     </script>

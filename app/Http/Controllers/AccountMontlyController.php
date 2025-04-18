@@ -457,4 +457,22 @@ class AccountMontlyController extends Controller
         $data = compact('openingDate','closingDailyExpanse_all','allDebitList','allCreditDetailsList', 'type', 'openningMontly', 'accountMontlyList', 'selectedAccountMonthlyExpanseCostList');
         return view('accountMonthly.monthlyReport')->with($data);
     }
+
+    function deleteMonthly($monthly_id, $return_accountNo_id){
+        DB::beginTransaction();
+        try{
+    
+         
+            OpenningMonthlyAcountsExpanse::where('action_type', '!=', 'DELETE')
+            ->where('openning_monthly_acounts_expanses_id', '=', $monthly_id)
+            ->delete();
+        
+          DB::commit();
+          return redirect('/accountMonthly/addMonthlyExpanse/' . $return_accountNo_id);
+        } catch (\Exception $e) {
+          DB::rollBack();
+          \Log::error('Transaction failed: ' . $e->getMessage());
+          redirect('/accountMonthly/addMonthlyExpanse/' . $return_accountNo_id);
+        }
+    }
 }

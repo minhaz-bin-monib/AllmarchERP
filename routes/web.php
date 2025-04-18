@@ -230,6 +230,7 @@ Route::group(['prefix' => 'accountMonthly','middleware' => ['isLoggedIn','roleCh
     Route::post('addMonthlyExpansePost/{accountNoId}', [AccountMontlyController::class, 'addMonthlyExpansePost']);
     Route::get('closeMonthlyExpanse', [AccountMontlyController::class, 'closeMonthlyExpanse']);
     Route::get('MonthlyExpanseReport/{id}/{type}', [AccountMontlyController::class, 'MonthlyExpanseReport']);
+    Route::get('deleteMonthly/{monthly_id}/{return_accountNo_id}', [AccountMontlyController::class, 'deleteMonthly']);
     
   
 });
