@@ -149,7 +149,7 @@
             $buyerNameImg = '';
             $buyerSignature = '';
             $footerAddress = '';
-          
+
             if ($transferInvoice->company == 'Allmarch Bangladesh') {
                 $companylogoName = 'local';
                 $companyName = 'All-March Bangladesh Limited';
@@ -174,7 +174,7 @@
             } elseif ($transferInvoice->manufacturer_id == '3') {
                 // 3 for Impex
                 $buyerNameImg = 'Impex';
-                $buyerSignature = 'impex'; 
+                $buyerSignature = 'impex';
             }
         @endphp
         <div class="row w-70 middle ">
@@ -194,7 +194,8 @@
         </div>
         <!-- title row -->
         <div class="row textL" style="border-top: 2px solid rgb(0, 0, 0)">
-            <p style="font-size: 14px;">Date: {{\Carbon\Carbon::parse($transferInvoice->invoice_date)->format('d/m/Y')  }}</p>
+            <p style="font-size: 14px;">Date:
+                {{ \Carbon\Carbon::parse($transferInvoice->invoice_date)->format('d/m/Y') }}</p>
         </div>
         <div class="row textC" style="margin-bottom: 20px">
             <h2 style="font-size: 16px;">PROFORMA INVOICE</h2>
@@ -206,17 +207,17 @@
                 <p>
                     <br>
                     @if ($buyerNameImg == 'Impex')
-                        <b style="color:black; font: 16px Arial Narrow, Arial;">Impex </b><br>
-                        <b style="color:black; font: 12px Arial Narrow, Arial;">IDOSB Kazlice§me cad. No:20/A
-                            Aydnili-Tuzla</b><br>
-                        <b style="color:black; font: 12px Arial Narrow, Arial;">34000 Istanbul, TURKEY</b>
-                   
+                        <b style="color:black; font: 16px Arial Narrow, Arial;">IMPEX KIMYA SAN VE TIC.LTD.STI.</b><br>
+                        <b style="color:black; font: 12px Arial Narrow, Arial;">(EGSBusinessPark) Yesilkoy Mah. Ataturk
+                            Cad.</b><br>
+                        <b style="color:black; font: 12px Arial Narrow, Arial;">No:12 Kapi No:134149 BAKIRKoY/
+                            Istanbul</b> <br>
+                        <b style="color:black; font: 12px Arial Narrow, Arial;">Tel: 02129701192 Fax: 08502200451</b>
                     @elseif($buyerNameImg == 'NanoPrint')
                         <b style="color:black; font: 16px Arial Narrow, Arial;">Nanoprint Kimya San. A.S</b><br>
                         <b style="color:black; font: 12px Arial Narrow, Arial;">IDOSB Kazlice§me cad. No:20/A
                             Aydnili-Tuzla</b><br>
                         <b style="color:black; font: 12px Arial Narrow, Arial;">34000 Istanbul, TURKEY</b>
-                    
                     @elseif($buyerNameImg == 'turankimya')
                         <img class="img-responsive pull-left" width="" height="100px"
                             src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('img/' . $buyerNameImg . '.jpg'))) }}"
@@ -226,7 +227,8 @@
             </div>
             <div class="w-50 floatL textR">
                 <p> PROFORMA INVOICE NO : {{ $transferInvoice->proforma_invoice }}</p>
-                <p> PROFORMA INVOICE DATE : {{\Carbon\Carbon::parse($transferInvoice->invoice_date)->format('d/m/Y')}} </p>
+                <p> PROFORMA INVOICE DATE : {{ \Carbon\Carbon::parse($transferInvoice->invoice_date)->format('d/m/Y') }}
+                </p>
                 <div class="htable">
                     <p style="border-bottom: none">SEND TO:</p>
                     <p style="border-bottom: none">Name: {{ $customer->customer_name }} (Local Agent)</p>
@@ -245,54 +247,65 @@
 
                     @php
                         $totalCost = 0;
+                        $totalPcsCount = 0;
                         $totalWeightCount = 0;
                     @endphp
                     @foreach ($transferInvoiceProduct as $salesInvProd)
                         @php
                             $totalWeight = $salesInvProd->packing * $salesInvProd->no_of_packing;
-                            $totalPrice = $totalWeight * $salesInvProd->unit_price;
+                            $totalPcsCount += $salesInvProd->no_of_packing;
                             $totalWeightCount += $totalWeight;
+                          
+                        @endphp
+                    @endforeach
+                    <tr>
+                        <td width="20%" style="text-align:center;"></td>
+                        <td width="20%"></td>
+                        <td width="" style="text-align:center;"></td>
+                        <td width="" style="text-align:center;"></td>
+                        <td width="" colspan="4" style="text-align:left;">No.of pieces</td>
+                        <td width="12%" style="text-align:right;">{{ number_format($totalPcsCount,2)}}</td>
+                        
+                    </tr>
+                    <tr>
+                        <td width="20%" style="text-align:center;"></td>
+                        <td width="20%"></td>
+                        <td width="" style="text-align:center;">Gross Weight</td>
+                        <td width="" style="text-align:center;"></td>
+                        <td width="" colspan="4" style="text-align:left;">Net Weight</td>
+                        <td id="t_weight" width="12%" style="text-align:right;">{{ number_format($totalWeightCount,2)}}</td>
+                      
+                    </tr>
+                    <tr>
+                        <td width="20%" style="text-align:center;">Full Description Of Goods</td>
+                        <td width="20%" style="text-align:center;">Product Name</td>
+                        <td width="" style="text-align:center;">H.S CODE NO.</td>
+                        <td width="" style="text-align:center;">Quantity</td>
+                        <td width="" style="text-align:center;">Package</td>
+                        <td width="3%" style="text-align:center;">Unit</td>
+                        <td width="" style="text-align:center;">Net Weight</td>
+                        <td width="" style="text-align:center;">Unit Value & currency</td>
+                        <td width="12%" style="text-align:center;">Sub Total Value</td>
+                    </tr>
+                    <tr>
+                        <td width="20%" style="text-align:center;"></td>
+                        <td width="20%" style="text-align:center;"></td>
+                        <td width="" style="text-align:center;"></td>
+                        <td width="" style="text-align:center;"></td>
+                        <td width="" style="text-align:center;"></td>
+                        <td width="3%" style="text-align:center;"></td>
+                        <td width="" style="text-align:center;">KG</td>
+                        <td width="" style="text-align:center;">USD</td>
+                        <td width="12%" style="text-align:center;">USD</td>
+                    </tr>
+                    @foreach ($transferInvoiceProduct as $salesInvProd)
+                        @php
+                            $totalWeight = $salesInvProd->packing * $salesInvProd->no_of_packing;
+                            $totalPrice = $totalWeight * $salesInvProd->unit_price;
                             $totalCost += $totalPrice;
                         @endphp
 
-                        <tr>
-                            <td width="20%" style="text-align:center;"></td>
-                            <td width="20%"></td>
-                            <td width="" style="text-align:center;"></td>
-                            <td width="" style="text-align:center;"></td>
-                            <td width="" colspan="4" style="text-align:left;">No.of pieces</td>
-                            <td width="12%" style="text-align:right;">{{ $salesInvProd->no_of_packing }}</td>
-                        </tr>
-                        <tr>
-                            <td width="20%" style="text-align:center;"></td>
-                            <td width="20%"></td>
-                            <td width="" style="text-align:center;">Gross Weight</td>
-                            <td width="" style="text-align:center;"></td>
-                            <td width="" colspan="4" style="text-align:left;">Net Weight</td>
-                            <td width="12%" style="text-align:right;">{{ number_format($totalWeight) }}</td>
-                        </tr>
-                        <tr>
-                            <td width="20%" style="text-align:center;">Full Description Of Goods</td>
-                            <td width="20%" style="text-align:center;">Product Name</td>
-                            <td width="" style="text-align:center;">H.S CODE NO.</td>
-                            <td width="" style="text-align:center;">Quantity</td>
-                            <td width="" style="text-align:center;">Package</td>
-                            <td width="3%" style="text-align:center;">Unit</td>
-                            <td width="" style="text-align:center;">Net Weight</td>
-                            <td width="" style="text-align:center;">Unit Value & currency</td>
-                            <td width="12%" style="text-align:center;">Sub Total Value</td>
-                        </tr>
-                        <tr>
-                            <td width="20%" style="text-align:center;"></td>
-                            <td width="20%" style="text-align:center;"></td>
-                            <td width="" style="text-align:center;"></td>
-                            <td width="" style="text-align:center;"></td>
-                            <td width="" style="text-align:center;"></td>
-                            <td width="3%" style="text-align:center;"></td>
-                            <td width="" style="text-align:center;">KG</td>
-                            <td width="" style="text-align:center;">USD</td>
-                            <td width="12%" style="text-align:center;">USD</td>
-                        </tr>
+
                         <tr>
                             <td>{{ $salesInvProd->material_description }}</td>
                             <td>{{ $salesInvProd->product_name }}</td>
@@ -305,19 +318,19 @@
                             <td class="textR">{{ number_format($totalPrice, 2) }}</td>
 
                         </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td class="textR"></td>
-                            <td class="textR"></td>
-                            <td></td>
-                            <td class="textR"></td>
-                            <td class="textR">TOTAL:</td>
-                            <td class="textR">{{ number_format($totalPrice, 2) }}</td>
-
-                        </tr>
                     @endforeach
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="textR"></td>
+                        <td class="textR"></td>
+                        <td></td>
+                        <td class="textR"></td>
+                        <td class="textR">TOTAL:</td>
+                        <td class="textR">{{ number_format($totalCost, 2) }}</td>
+
+                    </tr>
 
                 </tbody>
             </table>
@@ -330,9 +343,15 @@
                 <p>With Best Regards,</p>
             </div>
             <div class="w-50 textC floatL" style="margin-top:10px">
-                <img class="img-responsive pull-left" width="" height="160px"
-                    src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('img/' . $buyerSignature . '.jpg'))) }}"
-                    alt="User profile picture">
+                @if ($buyerNameImg == 'Impex')
+                    <img class="img-responsive pull-left" width="" height="95px"
+                        src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('img/' . $buyerSignature . '.jpg'))) }}"
+                        alt="User profile picture">
+                @else
+                    <img class="img-responsive pull-left" width="" height="160px"
+                        src="data:image/jpeg;base64,{{ base64_encode(file_get_contents(public_path('img/' . $buyerSignature . '.jpg'))) }}"
+                        alt="User profile picture">
+                @endif
             </div>
             <div class="floatClear"></div>
         </div>
@@ -354,6 +373,7 @@
         </div>
 
     </div>
+
 
 </body>
 

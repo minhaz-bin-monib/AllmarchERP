@@ -278,7 +278,7 @@ class CustomerPaymentController extends Controller
             ->where('invoice_type', 'Statement')
             ->where('customer_id', $customer_id)
             ->where('action_type', '!=', 'DELETE')
-            ->select('salesInvoice_id', 'customer_id', 'invoice_date')
+            ->select('salesInvoice_id', 'customer_id', 'invoice_date', 'company')
             ->get();
 
         $salInvIds = $salesInvoiceFromDate->pluck('salesInvoice_id');
@@ -315,7 +315,7 @@ class CustomerPaymentController extends Controller
             ->where('invoice_type', 'Statement')
             ->where('customer_id', $customer_id)
             ->where('action_type', '!=', 'DELETE')
-            ->select('salesInvoice_id', 'customer_id', 'invoice_date')
+            ->select('salesInvoice_id', 'customer_id', 'invoice_date', 'company')
             ->orderBy('invoice_date', 'ASC')
             ->get();
 
@@ -351,6 +351,7 @@ class CustomerPaymentController extends Controller
                 'quantity' => $quantitySum,
                 'invoice_amount' => $invoice_amount,
                 'diposit_amount' => '',
+                'company' => $salesInv->company,
             ];
         });
 
@@ -380,6 +381,7 @@ class CustomerPaymentController extends Controller
                 'quantity' => 'Ref:' . $custPay->reference,
                 'invoice_amount' => '',
                 'diposit_amount' => $custPay->diposit_dmount,
+                'company' => '',
             ];
         });
         // Date wise sort them and like table way 

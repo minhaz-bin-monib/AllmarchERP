@@ -246,54 +246,63 @@
 
                     @php
                         $totalCost = 0;
+                        $totalPcsCount = 0;
                         $totalWeightCount = 0;
                     @endphp
                     @foreach ($transferInvoiceProduct as $salesInvProd)
                         @php
                             $totalWeight = $salesInvProd->packing * $salesInvProd->no_of_packing;
-                            $totalPrice = $totalWeight * $salesInvProd->unit_price;
+                            $totalPcsCount += $salesInvProd->no_of_packing;
                             $totalWeightCount += $totalWeight;
+                          
+                        @endphp
+                    @endforeach
+                      <tr>
+                        <td width="20%" style="text-align:center;"></td>
+                        <td width="20%"></td>
+                        <td width="" style="text-align:center;"></td>
+                        <td width="" style="text-align:center;"></td>
+                        <td width="" colspan="2" style="text-align:left;">No.of pieces</td>
+                        <td width="12%" style="text-align:right;">{{ number_format($totalPcsCount,2) }}</td>
+                    </tr>
+                    <tr>
+                        <td width="20%" style="text-align:center;"></td>
+                        <td width="20%"></td>
+                        <td width="" style="text-align:center;">Gross Weight</td>
+                        <td width="" style="text-align:center;"></td>
+                        <td width="" colspan="2" style="text-align:left;">Net Weight</td>
+                        <td width="12%" style="text-align:right;">{{ number_format( $totalWeightCount,2) }}</td>
+                    </tr>
+                    <tr>
+                        <td width="20%" style="text-align:center;">Full Description Of Goods</td>
+                        <td width="20%" style="text-align:center;">Product Name</td>
+                        <td width="" style="text-align:center;">H.S CODE NO.</td>
+                        <td width="" style="text-align:center;">Quantity</td>
+                        <td width="" style="text-align:center;">Package</td>
+                        <td width="3%" style="text-align:center;">Unit</td>
+                        <td width="" style="text-align:center;">Net Weight</td>
+                        {{-- <td width="" style="text-align:center;">Unit Value & currency</td>
+                        <td width="12%" style="text-align:center;">Sub Total Value</td> --}}
+                    </tr>
+                    <tr>
+                        <td width="20%" style="text-align:center;"></td>
+                        <td width="20%" style="text-align:center;"></td>
+                        <td width="" style="text-align:center;"></td>
+                        <td width="" style="text-align:center;"></td>
+                        <td width="" style="text-align:center;"></td>
+                        <td width="3%" style="text-align:center;"></td>
+                        <td width="" style="text-align:center;">KG</td>
+                        {{-- <td width="" style="text-align:center;">USD</td>
+                        <td width="12%" style="text-align:center;">USD</td> --}}
+                    </tr>
+                    @foreach ($transferInvoiceProduct as $salesInvProd)
+                        @php
+                            $totalWeight = $salesInvProd->packing * $salesInvProd->no_of_packing;
+                            $totalPrice = $totalWeight * $salesInvProd->unit_price;
                             $totalCost += $totalPrice;
                         @endphp
 
-                        <tr>
-                            <td width="20%" style="text-align:center;"></td>
-                            <td width="20%"></td>
-                            <td width="" style="text-align:center;"></td>
-                            <td width="" style="text-align:center;"></td>
-                            <td width="" colspan="2" style="text-align:left;">No.of pieces</td>
-                            <td width="12%" style="text-align:right;">{{ $salesInvProd->no_of_packing }}</td>
-                        </tr>
-                        <tr>
-                            <td width="20%" style="text-align:center;"></td>
-                            <td width="20%"></td>
-                            <td width="" style="text-align:center;">Gross Weight</td>
-                            <td width="" style="text-align:center;"></td>
-                            <td width="" colspan="2" style="text-align:left;">Net Weight</td>
-                            <td width="12%" style="text-align:right;">{{ number_format($totalWeight) }}</td>
-                        </tr>
-                        <tr>
-                            <td width="20%" style="text-align:center;">Full Description Of Goods</td>
-                            <td width="20%" style="text-align:center;">Product Name</td>
-                            <td width="" style="text-align:center;">H.S CODE NO.</td>
-                            <td width="" style="text-align:center;">Quantity</td>
-                            <td width="" style="text-align:center;">Package</td>
-                            <td width="3%" style="text-align:center;">Unit</td>
-                            <td width="" style="text-align:center;">Net Weight</td>
-                            {{-- <td width="" style="text-align:center;">Unit Value & currency</td>
-                            <td width="12%" style="text-align:center;">Sub Total Value</td> --}}
-                        </tr>
-                        <tr>
-                            <td width="20%" style="text-align:center;"></td>
-                            <td width="20%" style="text-align:center;"></td>
-                            <td width="" style="text-align:center;"></td>
-                            <td width="" style="text-align:center;"></td>
-                            <td width="" style="text-align:center;"></td>
-                            <td width="3%" style="text-align:center;"></td>
-                            <td width="" style="text-align:center;">KG</td>
-                            {{-- <td width="" style="text-align:center;">USD</td>
-                            <td width="12%" style="text-align:center;">USD</td> --}}
-                        </tr>
+                      
                         <tr>
                             <td>{{ $salesInvProd->material_description }}</td>
                             <td>{{ $salesInvProd->product_name }}</td>
@@ -306,6 +315,7 @@
                             <td class="textR">{{ number_format($totalPrice) }}</td> --}}
 
                         </tr>
+                        @endforeach
                         <tr>
                             <td></td>
                             <td></td>
@@ -313,12 +323,11 @@
                             <td class="textR"></td>
                             <td class="textR"></td>
                             <td>TOTAL:</td>
-                            <td class="textR">{{ $totalWeight }} Kg</td>
+                            <td class="textR">{{ $totalWeightCount }} Kg</td>
                             {{-- <td class="textR"></td>
                             <td class="textR">{{ number_format($totalPrice) }}</td> --}}
 
                         </tr>
-                    @endforeach
 
                 </tbody>
             </table>

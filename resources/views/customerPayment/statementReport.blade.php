@@ -96,6 +96,7 @@
                     <th>Quantity</th>
                     <th>Invoice Amount</th>
                     <th>Diposit</th>
+                    <th>Company Name</th>
                 </tr>
             </thead>
             <tbody>
@@ -110,6 +111,7 @@
                     <td></td>
                     <td class="text-end"><b>{{ $openingInvAmt }}</b></td>
                     <td class="text-end"><b>{{ $openingDipositAmt > 0 ? $openingDipositAmt: '' }}</b></td>
+                    <td></td>
                 </tr>
                 @foreach ($finalStatemnetResults as $stm)
                     @php
@@ -123,6 +125,7 @@
                         <td>{{ $stm['quantity'] }}</td>
                         <td class="text-end">{{ $stm['invoice_amount'] }}</td>
                         <td class="text-end">{{ $stm['diposit_amount'] }}</td>
+                        <td class="text-end">{{ $stm['company'] }}</td>
                     </tr>
                 @endforeach
                 @if ($finalStatemnetResults->isNotEmpty())
@@ -133,6 +136,7 @@
                         <td></td>
                         <td class="text-end"><b>{{ $totalInvAmt}}</b></td>
                         <td class="text-end"><b>{{$totalDipositAmt}}</b></td>
+                        <td></td>
 
                     </tr>
                 @else
@@ -140,6 +144,7 @@
                         <td></td>
                         <td></td>
                         <td>No Records</td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
