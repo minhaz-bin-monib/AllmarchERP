@@ -7,7 +7,6 @@
 
 @section('main-section')
     <!-- START View Content Here -->
-
     <div class="container mt-4">
         {{-- <h5>{{ $toptitle }}</h5> --}}
         <form action="{{ $url }}" method="post">
@@ -131,9 +130,10 @@
                         @enderror
                     </span>
                 </div>
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-3 tooltip-container tooltip-right" id="rightTooltip">
+                    <div id="tooltipText" class="tooltip-text"></div>
                     <label for="unit_price">Unit price<span class="text-danger"><b>*</b></span></label>
-                    <input type="number" name="unit_price" min="0.0" step="0.01"
+                    <input type="number" id="unitPrice" name="unit_price" min="0.0" step="0.01"
                         value="{{ old('unit_price', $salesInvoice->unit_price) }}" class="form-control" id="unit_price">
                     <span class="text-danger">
                         @error('unit_price')
@@ -516,6 +516,7 @@
                 getBatchItems(selectedCustomerId, selectedProductId);
             }
 
+         
             function getBatchById() {
                 if (customerIdByOnchange && productIdByOnChange) {
                     getBatchItems(customerIdByOnchange, productIdByOnChange);
@@ -523,6 +524,8 @@
             }
 
             function getBatchItems(customerId, productId) {
+                getSalesPreviousItems(customerId, productId);
+
                 $.ajax({
                     url: "{{ url('/batch/getBatchByCustomerAndProductId') }}/" + customerId + "/" +
                         productId,
@@ -553,6 +556,34 @@
                     }
                 });
 
+            }
+
+            function getSalesPreviousItems(customerId, productId){
+                 $.ajax({
+                    url: "{{ url('/salesInvoice/salesPreviousList') }}/" + customerId + "/" +
+                        productId,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        batchList = data;
+                        console.log(data);                  
+                        let prevSalesList = '';
+                        let cnt = 1;
+                        $.each(data, function(key, item) {
+                           
+                            if(cnt <= 10){
+                                prevSalesList = prevSalesList + `${item.unit_price} tk [ ${item.invoice_date},  ${item.packing} x ${item.no_of_packing}  = ${item.packing * item.no_of_packing } ] ${item.invoice_type} | ${item.batch_no}, ${item.production_date}, ${item.expire_date} | ${item.nick_name} <br/>`;
+                            }
+                            else{
+                                prevSalesList = prevSalesList + '....';
+                            }
+                            cnt++;
+                        });
+
+                        document.getElementById("tooltipText").innerHTML = prevSalesList; 
+
+                    }
+                });
             }
         });
     </script>

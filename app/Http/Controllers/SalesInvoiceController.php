@@ -22,14 +22,14 @@ class SalesInvoiceController extends Controller
     // [httpGet]
     public function show()
     {
-       
-        $salesInvoices =  DB::table('invoices')
-         ->join('customers', 'invoices.customer_id', '=', 'customers.customer_id')
-         ->leftJoin('employees', 'invoices.delivery_by', '=', 'employees.employee_id')
-        ->where('invoices.action_type', '!=', 'DELETE')
-        ->select('invoices.*', 'customers.customer_name', 'employees.nick_name')
-        ->orderBy('invoices.salesInvoice_id', 'desc')
-        ->get();
+
+        $salesInvoices = DB::table('invoices')
+            ->join('customers', 'invoices.customer_id', '=', 'customers.customer_id')
+            ->leftJoin('employees', 'invoices.delivery_by', '=', 'employees.employee_id')
+            ->where('invoices.action_type', '!=', 'DELETE')
+            ->select('invoices.*', 'customers.customer_name', 'employees.nick_name')
+            ->orderBy('invoices.salesInvoice_id', 'desc')
+            ->get();
 
         $data = compact('salesInvoices');
 
@@ -44,9 +44,9 @@ class SalesInvoiceController extends Controller
         $salesInvoice->invoice_date = Carbon::now()->format('Y-m-d');
         $salesInvoice->no_of_packing = 1;
         $employeeslist = Employee::where('action_type', '!=', 'DELETE')
-                                 ->where('employee_designation', '=' ,'Delivery Man')
-                                ->orderBy('employee_id')
-                                ->get();
+            ->where('employee_designation', '=', 'Delivery Man')
+            ->orderBy('employee_id')
+            ->get();
         $url = url('/salesInvoice/create');
         $toptitle = 'Sales Invoice';
         $data = compact('salesInvoice', 'employeeslist', 'url', 'toptitle');
@@ -65,7 +65,7 @@ class SalesInvoiceController extends Controller
                 'product_id' => 'required',
                 // 'manufacturer_id' => 'required',
                 'batch_no' => 'required',
-               // 'order_ref' => 'required',
+                // 'order_ref' => 'required',
                 'packing' => 'required',
                 'no_of_packing' => 'required',
                 'unit_price' => 'required',
@@ -159,10 +159,10 @@ class SalesInvoiceController extends Controller
                 ->select('invoice_products.*', 'products.product_name')
                 ->get();
 
-                $employeeslist = Employee::where('action_type', '!=', 'DELETE')
-                                        ->where('employee_designation', '=' ,'Delivery Man')
-                                        ->orderBy('employee_id')
-                                        ->get();
+            $employeeslist = Employee::where('action_type', '!=', 'DELETE')
+                ->where('employee_designation', '=', 'Delivery Man')
+                ->orderBy('employee_id')
+                ->get();
             $url = url('/salesInvoice/update') . "/" . $id;
             $toptitle = 'Sales Invoice ' . $salesInvoice->salesInvoice_id;
 
@@ -180,12 +180,12 @@ class SalesInvoiceController extends Controller
         $request->validate(
             [
                 'registration_date' => 'required',
-               // 'customer_id' => 'required',
+                // 'customer_id' => 'required',
                 'batch_id' => 'required',
                 'product_id' => 'required',
                 // 'manufacturer_id' => 'required',
                 'batch_no' => 'required',
-               // 'order_ref' => 'required',
+                // 'order_ref' => 'required',
                 'packing' => 'required',
                 'no_of_packing' => 'required',
                 'unit_price' => 'required',
@@ -199,8 +199,8 @@ class SalesInvoiceController extends Controller
                 ->first();
             if (!is_null($salesInvoice)) {
 
-               // $salesInvoice->registration_date = $request['registration_date'];
-               // $salesInvoice->customer_id = $request['customer_id'];
+                // $salesInvoice->registration_date = $request['registration_date'];
+                // $salesInvoice->customer_id = $request['customer_id'];
                 $salesInvoice->batch_id = $request['batch_id'];
                 $salesInvoice->product_id = $request['product_id'];
                 $salesInvoice->manufacturer_id = $request['manufacturer_id'];
@@ -319,41 +319,40 @@ class SalesInvoiceController extends Controller
     // [httpGet]
     public function invoiceProductStickar($invoiceId, $invoiceProductid)
     {
-        
-        
+
+
         $salesInvoice = SalesInvoice::where('action_type', '!=', 'DELETE')
-        ->where('salesInvoice_id', $invoiceId)
-        ->first();
-        $salesInvoiceProduct = [];
-        if($salesInvoice)
-        {
-            $salesInvoiceProduct = SalesInvoiceProduct::where('action_type', '!=', 'DELETE')
-            ->where('salesInvoiceProduct_id', $invoiceProductid)
+            ->where('salesInvoice_id', $invoiceId)
             ->first();
-          
-             $product = Product::where('action_type', '!=', 'DELETE')
+        $salesInvoiceProduct = [];
+        if ($salesInvoice) {
+            $salesInvoiceProduct = SalesInvoiceProduct::where('action_type', '!=', 'DELETE')
+                ->where('salesInvoiceProduct_id', $invoiceProductid)
+                ->first();
+
+            $product = Product::where('action_type', '!=', 'DELETE')
                 ->where('product_id', $salesInvoiceProduct->product_id)
                 ->first();
-             $batch = Batch::where('action_type', '!=', 'DELETE')
-             ->where('batch_id', $salesInvoiceProduct->batch_id)
-             ->first();
-          
+            $batch = Batch::where('action_type', '!=', 'DELETE')
+                ->where('batch_id', $salesInvoiceProduct->batch_id)
+                ->first();
+
             // $this->BarCodeImageGenerator($batch);
-             $barcodeData = 'Name 2025'; // Change this dynamically as needed
-             $barcode = new DNS1D();
-  
+            $barcodeData = 'Name 2025'; // Change this dynamically as needed
+            $barcode = new DNS1D();
+
             $toptitle = 'Sales Invoice ' . $salesInvoice->salesInvoice_id;
-            $data = compact( 'salesInvoice','product', 'batch', 'salesInvoiceProduct', 'toptitle'); // data and dynamic url pass into view
+            $data = compact('salesInvoice', 'product', 'batch', 'salesInvoiceProduct', 'toptitle'); // data and dynamic url pass into view
 
             return view('templateForPdf.stickarSpicialTuran')->with($data);
-        }
-        else{
+        } else {
             return redirect()->back();
         }
-       
-       
+
+
     }
-    public function BarCodeImageGenerator($batch){
+    public function BarCodeImageGenerator($batch)
+    {
         $barcodeData = 'Name 2025'; // Change this dynamically as needed
         $fileName = 'barcode.jpg';  // Always use the same filename
         $filePath = public_path('img/' . $fileName);
@@ -365,12 +364,12 @@ class SalesInvoiceController extends Controller
 
         // Generate Barcode as PNG Base64
         $barcode = new DNS1D();
-        $barcodeBase64 =$barcode->getBarcodePNG($barcodeData, 'C39', 2, 100);
+        $barcodeBase64 = $barcode->getBarcodePNG($barcodeData, 'C39', 2, 100);
         $barcodeBase64 = preg_replace('/^data:image\/\w+;base64,/', '', $barcodeBase64);
 
         // Convert Base64 to binary data
         $imageData = base64_decode($barcodeBase64);
-        
+
         // Save directly as a JPG file
         file_put_contents($filePath, $imageData);
     }
@@ -382,7 +381,7 @@ class SalesInvoiceController extends Controller
         $converter = $numberToWords->getNumberTransformer('en');
         $options = new Options();
         $options->set('defaultFont', 'Arial');
-       // $options->set('isRemoteEnabled', true); // Enable remote content
+        // $options->set('isRemoteEnabled', true); // Enable remote content
         $options->set('isHtml5ParserEnabled', true); // Enable HTML5 support
         $dompdf = new Dompdf($options);
 
@@ -390,17 +389,17 @@ class SalesInvoiceController extends Controller
         $salesInvoice = SalesInvoice::where('salesInvoice_id', $salesInvoiceId)
             ->where('action_type', '!=', 'DELETE')
             ->first();
-        
+
         if (!is_null($salesInvoice)) {
             $salesInvoice->invoice_date = date('d-m-Y', strtotime($salesInvoice->invoice_date));
             $customer = Customer::where('customer_id', $salesInvoice->customer_id)
-            ->where('action_type', '!=', 'DELETE')
-            ->first();
+                ->where('action_type', '!=', 'DELETE')
+                ->first();
             $employee = Employee::where('employee_id', $salesInvoice->delivery_by)
-            ->where('action_type', '!=', 'DELETE')
-            ->first();
+                ->where('action_type', '!=', 'DELETE')
+                ->first();
 
-  
+
             $salesInvoiceProduct = DB::table('invoice_products')
                 ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
                 // ->join('customers', 'batches.customer_id', '=', 'customers.customer_id')
@@ -409,10 +408,10 @@ class SalesInvoiceController extends Controller
                 ->select('invoice_products.*', 'products.product_name')
                 ->get();
 
-            $data = compact('converter','employee', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
+            $data = compact('converter', 'employee', 'salesInvoice', 'salesInvoiceProduct', 'customer');
 
             $html = view('templateForPdf.salesCustomerInvoice')->with($data)->render();
-    
+
             $dompdf->loadHtml($html);
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
@@ -428,7 +427,7 @@ class SalesInvoiceController extends Controller
         $converter = $numberToWords->getNumberTransformer('en');
         $options = new Options();
         $options->set('defaultFont', 'Arial');
-       // $options->set('isRemoteEnabled', true); // Enable remote content
+        // $options->set('isRemoteEnabled', true); // Enable remote content
         $options->set('isHtml5ParserEnabled', true); // Enable HTML5 support
         $dompdf = new Dompdf($options);
 
@@ -436,16 +435,16 @@ class SalesInvoiceController extends Controller
         $salesInvoice = SalesInvoice::where('salesInvoice_id', $salesInvoiceId)
             ->where('action_type', '!=', 'DELETE')
             ->first();
-        
+
         if (!is_null($salesInvoice)) {
             $salesInvoice->invoice_date = date('d-m-Y', strtotime($salesInvoice->invoice_date));
             $customer = Customer::where('customer_id', $salesInvoice->customer_id)
-            ->where('action_type', '!=', 'DELETE')
-            ->first();
+                ->where('action_type', '!=', 'DELETE')
+                ->first();
             $employee = Employee::where('employee_id', $salesInvoice->delivery_by)
-            ->where('action_type', '!=', 'DELETE')
-            ->first();
-  
+                ->where('action_type', '!=', 'DELETE')
+                ->first();
+
             $salesInvoiceProduct = DB::table('invoice_products')
                 ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
                 // ->join('customers', 'batches.customer_id', '=', 'customers.customer_id')
@@ -454,10 +453,10 @@ class SalesInvoiceController extends Controller
                 ->select('invoice_products.*', 'products.product_name')
                 ->get();
 
-            $data = compact('converter', 'salesInvoice','employee', 'salesInvoiceProduct', 'customer'); 
+            $data = compact('converter', 'salesInvoice', 'employee', 'salesInvoiceProduct', 'customer');
 
             $html = view('templateForPdf.salesDeliveryInvoice')->with($data)->render();
-    
+
             $dompdf->loadHtml($html);
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
@@ -474,7 +473,7 @@ class SalesInvoiceController extends Controller
         $converter = $numberToWords->getNumberTransformer('en');
         $options = new Options();
         $options->set('defaultFont', 'Arial');
-       // $options->set('isRemoteEnabled', true); // Enable remote content
+        // $options->set('isRemoteEnabled', true); // Enable remote content
         $options->set('isHtml5ParserEnabled', true); // Enable HTML5 support
         $dompdf = new Dompdf($options);
 
@@ -482,16 +481,16 @@ class SalesInvoiceController extends Controller
         $salesInvoice = SalesInvoice::where('salesInvoice_id', $salesInvoiceId)
             ->where('action_type', '!=', 'DELETE')
             ->first();
-        
+
         if (!is_null($salesInvoice)) {
             $salesInvoice->invoice_date = date('d-m-Y', strtotime($salesInvoice->invoice_date));
             $customer = Customer::where('customer_id', $salesInvoice->customer_id)
-            ->where('action_type', '!=', 'DELETE')
-            ->first();
+                ->where('action_type', '!=', 'DELETE')
+                ->first();
             $employee = Employee::where('employee_id', $salesInvoice->delivery_by)
-            ->where('action_type', '!=', 'DELETE')
-            ->first();
-  
+                ->where('action_type', '!=', 'DELETE')
+                ->first();
+
             $salesInvoiceProduct = DB::table('invoice_products')
                 ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
                 // ->join('customers', 'batches.customer_id', '=', 'customers.customer_id')
@@ -500,10 +499,10 @@ class SalesInvoiceController extends Controller
                 ->select('invoice_products.*', 'products.product_name', 'products.product_unit_price_c', 'products.material_description')
                 ->get();
 
-            $data = compact('converter','employee', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
+            $data = compact('converter', 'employee', 'salesInvoice', 'salesInvoiceProduct', 'customer');
 
             $html = view('templateForPdf.salesSpecialInvoice')->with($data)->render();
-    
+
             $dompdf->loadHtml($html);
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
@@ -519,7 +518,7 @@ class SalesInvoiceController extends Controller
         $converter = $numberToWords->getNumberTransformer('en');
         $options = new Options();
         $options->set('defaultFont', 'Arial');
-       // $options->set('isRemoteEnabled', true); // Enable remote content
+        // $options->set('isRemoteEnabled', true); // Enable remote content
         $options->set('isHtml5ParserEnabled', true); // Enable HTML5 support
         $dompdf = new Dompdf($options);
 
@@ -527,16 +526,16 @@ class SalesInvoiceController extends Controller
         $salesInvoice = SalesInvoice::where('salesInvoice_id', $salesInvoiceId)
             ->where('action_type', '!=', 'DELETE')
             ->first();
-        
+
         if (!is_null($salesInvoice)) {
             $salesInvoice->invoice_date = date('d-m-Y', strtotime($salesInvoice->invoice_date));
             $customer = Customer::where('customer_id', $salesInvoice->customer_id)
-            ->where('action_type', '!=', 'DELETE')
-            ->first();
+                ->where('action_type', '!=', 'DELETE')
+                ->first();
             $employee = Employee::where('employee_id', $salesInvoice->delivery_by)
-            ->where('action_type', '!=', 'DELETE')
-            ->first();
-  
+                ->where('action_type', '!=', 'DELETE')
+                ->first();
+
             $salesInvoiceProduct = DB::table('invoice_products')
                 ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
                 // ->join('customers', 'batches.customer_id', '=', 'customers.customer_id')
@@ -545,10 +544,10 @@ class SalesInvoiceController extends Controller
                 ->select('invoice_products.*', 'products.product_name', 'products.material_description')
                 ->get();
 
-            $data = compact('converter','employee', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
+            $data = compact('converter', 'employee', 'salesInvoice', 'salesInvoiceProduct', 'customer');
 
             $html = view('templateForPdf.salesSpecialDeliveryInvoice')->with($data)->render();
-    
+
             $dompdf->loadHtml($html);
             $dompdf->setPaper('A4', 'portrait');
             $dompdf->render();
@@ -558,50 +557,80 @@ class SalesInvoiceController extends Controller
         // If pdf not gennrate then return into Invoice list
         return redirect('/salesInvoice/list');
     }
-     // [httpGet]
-     public function salesSpecialCalculateInvoicePdf($salesInvoiceId)
-     {
-         $numberToWords = new NumberToWords();
-         $converter = $numberToWords->getNumberTransformer('en');
-         $options = new Options();
-         $options->set('defaultFont', 'Arial');
+    // [httpGet]
+    public function salesSpecialCalculateInvoicePdf($salesInvoiceId)
+    {
+        $numberToWords = new NumberToWords();
+        $converter = $numberToWords->getNumberTransformer('en');
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
         // $options->set('isRemoteEnabled', true); // Enable remote content
-         $options->set('isHtml5ParserEnabled', true); // Enable HTML5 support
-         $dompdf = new Dompdf($options);
- 
-         // $salesInvoice = SalesInvoice::find($id);
-         $salesInvoice = SalesInvoice::where('salesInvoice_id', $salesInvoiceId)
-             ->where('action_type', '!=', 'DELETE')
-             ->first();
-         
-         if (!is_null($salesInvoice)) {
-             $salesInvoice->invoice_date = date('d-m-Y', strtotime($salesInvoice->invoice_date));
-             $customer = Customer::where('customer_id', $salesInvoice->customer_id)
-             ->where('action_type', '!=', 'DELETE')
-             ->first();
-             $employee = Employee::where('employee_id', $salesInvoice->delivery_by)
-             ->where('action_type', '!=', 'DELETE')
-             ->first();
-   
-             $salesInvoiceProduct = DB::table('invoice_products')
-                 ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
-                  ->join('batches', 'batches.batch_id', '=', 'invoice_products.batch_id')
-                 ->where('invoice_products.salesInvoice_id', '=', $salesInvoice->salesInvoice_id)
-                 ->where('invoice_products.action_type', '!=', 'DELETE')
-                 ->select('invoice_products.*', 'batches.import_info', 'products.product_name', 'products.product_unit_price_c', 'products.atv_rate', 'products.material_description')
-                 ->get();
- 
-             $data = compact('converter','employee', 'salesInvoice', 'salesInvoiceProduct', 'customer'); 
- 
-             $html = view('templateForPdf.salesSpecialCalculateInvoice')->with($data)->render();
-     
-             $dompdf->loadHtml($html);
-             $dompdf->setPaper('A4', 'portrait');
-             $dompdf->render();
-             return $dompdf->stream('Invoice.pdf', ['Attachment' => false]);
-         }
- 
-         // If pdf not gennrate then return into Invoice list
-         return redirect('/salesInvoice/list');
-     }
+        $options->set('isHtml5ParserEnabled', true); // Enable HTML5 support
+        $dompdf = new Dompdf($options);
+
+        // $salesInvoice = SalesInvoice::find($id);
+        $salesInvoice = SalesInvoice::where('salesInvoice_id', $salesInvoiceId)
+            ->where('action_type', '!=', 'DELETE')
+            ->first();
+
+        if (!is_null($salesInvoice)) {
+            $salesInvoice->invoice_date = date('d-m-Y', strtotime($salesInvoice->invoice_date));
+            $customer = Customer::where('customer_id', $salesInvoice->customer_id)
+                ->where('action_type', '!=', 'DELETE')
+                ->first();
+            $employee = Employee::where('employee_id', $salesInvoice->delivery_by)
+                ->where('action_type', '!=', 'DELETE')
+                ->first();
+
+            $salesInvoiceProduct = DB::table('invoice_products')
+                ->join('products', 'invoice_products.product_id', '=', 'products.product_id')
+                ->join('batches', 'batches.batch_id', '=', 'invoice_products.batch_id')
+                ->where('invoice_products.salesInvoice_id', '=', $salesInvoice->salesInvoice_id)
+                ->where('invoice_products.action_type', '!=', 'DELETE')
+                ->select('invoice_products.*', 'batches.import_info', 'products.product_name', 'products.product_unit_price_c', 'products.atv_rate', 'products.material_description')
+                ->get();
+
+            $data = compact('converter', 'employee', 'salesInvoice', 'salesInvoiceProduct', 'customer');
+
+            $html = view('templateForPdf.salesSpecialCalculateInvoice')->with($data)->render();
+
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+            return $dompdf->stream('Invoice.pdf', ['Attachment' => false]);
+        }
+
+        // If pdf not gennrate then return into Invoice list
+        return redirect('/salesInvoice/list');
+    }
+
+    public function salesPreviousList($customerId, $productId)
+    {
+        $invoiceList = DB::table('invoices')
+            ->join('invoice_products', 'invoices.salesInvoice_id', '=', 'invoice_products.salesInvoice_id')
+            ->leftJoin('batches', 'batches.batch_id', '=', 'invoice_products.batch_id')
+            ->leftJoin('employees', 'employees.employee_id', '=', 'invoices.delivery_by')
+            ->where('invoices.customer_id', '=', $customerId)
+            ->where('invoice_products.product_id', '=', $productId)
+            ->where('invoices.action_type', '!=', 'DELETE')
+            ->where('invoice_products.action_type', '!=', 'DELETE')
+            ->select(
+                'invoice_products.packing',
+                'invoice_products.no_of_packing',
+                'invoice_products.unit_price',
+                'invoice_products.batch_no',
+                'batches.production_date',
+                'batches.expire_date',
+                'invoices.invoice_type',
+                'invoices.invoice_date',
+                'employees.nick_name'
+            )
+            ->orderBy('invoices.invoice_date', 'desc')
+            ->limit(11)
+            ->get();
+
+
+        return response()->json($invoiceList);
+    }
+
 }
