@@ -133,7 +133,7 @@
                 <div class="form-group col-md-3 tooltip-container tooltip-right" id="rightTooltip">
                     <div id="tooltipText" class="tooltip-text"></div>
                     <label for="unit_price">Unit price<span class="text-danger"><b>*</b></span></label>
-                    <input type="number" id="unitPrice" name="unit_price" min="0.0" step="0.01"
+                    <input type="number" name="unit_price" min="0.0" step="0.01"
                         value="{{ old('unit_price', $salesInvoice->unit_price) }}" class="form-control" id="unit_price">
                     <span class="text-danger">
                         @error('unit_price')
@@ -524,7 +524,7 @@
             }
 
             function getBatchItems(customerId, productId) {
-                getSalesPreviousItems(customerId, productId);
+              
 
                 $.ajax({
                     url: "{{ url('/batch/getBatchByCustomerAndProductId') }}/" + customerId + "/" +
@@ -555,7 +555,7 @@
                         });
                     }
                 });
-
+                getSalesPreviousItems(customerId, productId);
             }
 
             function getSalesPreviousItems(customerId, productId){

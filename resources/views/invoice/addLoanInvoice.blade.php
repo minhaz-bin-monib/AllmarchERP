@@ -535,7 +535,7 @@
             }
 
             function getBatchItems(customerId, productId) {
-                 getSalesPreviousItems(customerId, productId);
+                
                 $.ajax({
                     url: "{{ url('/batch/getBatchByCustomerAndProductId') }}/" + customerId + "/" +
                         productId,
@@ -565,7 +565,7 @@
                         });
                     }
                 });
-
+                getSalesPreviousItems(customerId, productId);
             }
              function getSalesPreviousItems(customerId, productId){
                  $.ajax({
