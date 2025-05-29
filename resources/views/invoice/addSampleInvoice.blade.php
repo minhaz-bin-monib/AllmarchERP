@@ -565,8 +565,7 @@
                     type: "GET",
                     dataType: "json",
                     success: function(data) {
-                        batchList = data;
-                        console.log(data);                  
+                                 
                         let prevSalesList = '';
                         let cnt = 1;
                         $.each(data, function(key, item) {

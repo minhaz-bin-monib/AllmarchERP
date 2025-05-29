@@ -343,8 +343,19 @@ class SalesInvoiceController extends Controller
 
             $toptitle = 'Sales Invoice ' . $salesInvoice->salesInvoice_id;
             $data = compact('salesInvoice', 'product', 'batch', 'salesInvoiceProduct', 'toptitle'); // data and dynamic url pass into view
-
-            return view('templateForPdf.stickarSpicialTuran')->with($data);
+            if( $salesInvoice->manufacturer_id == '1'){
+                // Turan
+                return view('templateForPdf.stickarSpicialTuran')->with($data);
+            }
+            else if($salesInvoice->manufacturer_id == '2')
+            {
+                //Nanoprint
+                return view('templateForPdf.stickarSpicialNanoPrint')->with($data);
+            }
+            else{
+                // Impex
+                return view('templateForPdf.stickarSpicialTuran')->with($data);
+            }
         } else {
             return redirect()->back();
         }

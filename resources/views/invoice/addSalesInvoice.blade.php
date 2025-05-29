@@ -497,9 +497,10 @@
 
             $('#existingBatchItems').on('change', function() {
                 var batchId = $(this).val();
+                console.log(batchId);
                 //debugger;
                 if (batchId) {
-
+                    console.log(batchList);
                     let batchProduct = batchList.find(f => f.batch_id == batchId);
                     //console.log(batchProduct);
 
@@ -565,8 +566,7 @@
                     type: "GET",
                     dataType: "json",
                     success: function(data) {
-                        batchList = data;
-                        console.log(data);                  
+                                      
                         let prevSalesList = '';
                         let cnt = 1;
                         $.each(data, function(key, item) {
