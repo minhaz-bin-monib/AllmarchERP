@@ -136,8 +136,8 @@
            If you need to overlay their values, create similar .imp-tin-value, .imp-irc-value spans and CSS */
 
     .imp-batch-value {
-        top: 395px;
-        left: 150px;
+        top: 397px;
+        left: 130px;
         font-size: 17px;
         font-weight: bold;
     }
@@ -195,7 +195,7 @@
 
     /* --- LOWER SECTION of the Combined Label --- */
     .imp-lower-product-name-value {
-        top: 630px;
+        top: 635px;
         left: 375px;
         font-size: 32px;
         font-weight: bold;
@@ -248,7 +248,7 @@
     {{-- <div class="col-1"></div> --}}
     <div class="col-12">
 
-       
+
         <div class="label-instance">
             <img
                 class="label-background-image"
