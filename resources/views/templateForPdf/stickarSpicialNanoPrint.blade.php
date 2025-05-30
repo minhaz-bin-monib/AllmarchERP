@@ -116,10 +116,11 @@
         /* Positions and sizes from the 900px wide version */
         .product-name-value {
             top: 14px;
-            left: 460px;
+            left: 400px;
             font-size: 30px;
             font-weight: bold;
             text-align: center;
+            text-transform: uppercase;
         }
 
         .product-description-value {
@@ -130,6 +131,7 @@
             font-weight: bold;
             text-align: center;
             white-space: normal;
+            text-transform: uppercase;
         }
 
         .hs-code-value {
@@ -144,28 +146,30 @@
         .batch-no-value {
             top: 181px;
             left: 280px;
-            font-size: 14px;
+            font-size: 20px;
             font-weight: bold;
+            margin-top: -5px;
         }
 
         .net-weight-value {
             top: 181px;
             left: 700px;
-            font-size: 14px;
+            font-size: 20px;
             font-weight: bold;
+             margin-top: -5px;
         }
 
         .production-date-value {
             top: 207px;
             left: 210px;
-            font-size: 14px;
+            font-size: 18px;
             font-weight: bold;
         }
 
         .expiration-date-value {
             top: 207px;
             left: 545px;
-            font-size: 14px;
+            font-size: 18px;
             font-weight: bold;
         }
 </style>
@@ -190,7 +194,37 @@
             </div>
             <div class="main-content-area">
                 <img class="lower-part-image" src="{{ asset('img/back-ground.jpg') }}" alt="Label Lower Part">
-                <span class="variable-text product-name-value">NANOPRINT NW 4619</span>
+                <span class="variable-text product-name-value">{{ $product->product_name }}</span>
+                <span class="variable-text product-description-value">{{ $product->material_description }}</span>
+                <span class="variable-text hs-code-value">H.S CODE {{ $product->h_s_code }}</span>
+                <span class="variable-text batch-no-value"> {{ $salesInvoiceProduct->batch_no }}</span>
+                <span class="variable-text net-weight-value">{{ str_pad(number_format($salesInvoiceProduct->packing), 2, '0', STR_PAD_LEFT) }} KG.</span>
+                <span class="variable-text production-date-value">{{ \Carbon\Carbon::parse($batch->production_date)->format('d/m/Y') }}</span>
+                <span class="variable-text expiration-date-value"> {{ \Carbon\Carbon::parse($batch->expire_date)->format('d/m/Y') }}</span>
+            </div>
+        </div>
+        <div class="label-instance" style="margin-top: 30px;">
+            <div class="header-image-container">
+                <img src="{{ asset('img/download.png') }}" alt="Nanoprint Kimya Header">
+            </div>
+            <div class="main-content-area">
+                <img class="lower-part-image" src="{{ asset('img/back-ground.jpg') }}" alt="Label Lower Part">
+                <span class="variable-text product-name-value">{{ $product->product_name }}</span>
+                <span class="variable-text product-description-value">{{ $product->material_description }}</span>
+                <span class="variable-text hs-code-value">H.S CODE {{ $product->h_s_code }}</span>
+                <span class="variable-text batch-no-value"> {{ $salesInvoiceProduct->batch_no }}</span>
+                <span class="variable-text net-weight-value">{{ str_pad(number_format($salesInvoiceProduct->packing), 2, '0', STR_PAD_LEFT) }} KG.</span>
+                <span class="variable-text production-date-value">{{ \Carbon\Carbon::parse($batch->production_date)->format('d/m/Y') }}</span>
+                <span class="variable-text expiration-date-value"> {{ \Carbon\Carbon::parse($batch->expire_date)->format('d/m/Y') }}</span>
+            </div>
+        </div>
+        <div class="label-instance" style="margin-top: 30px;">
+            <div class="header-image-container">
+                <img src="{{ asset('img/download.png') }}" alt="Nanoprint Kimya Header">
+            </div>
+            <div class="main-content-area">
+                <img class="lower-part-image" src="{{ asset('img/back-ground.jpg') }}" alt="Label Lower Part">
+                <span class="variable-text product-name-value">{{ $product->product_name }}</span>
                 <span class="variable-text product-description-value">{{ $product->material_description }}</span>
                 <span class="variable-text hs-code-value">H.S CODE {{ $product->h_s_code }}</span>
                 <span class="variable-text batch-no-value"> {{ $salesInvoiceProduct->batch_no }}</span>
