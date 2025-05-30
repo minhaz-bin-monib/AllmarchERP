@@ -311,7 +311,7 @@
         // window.location.href = "{{ url('salesInvoice/productStickar') }}/" + {{ $salesInvoice->salesInvoice_id }} +
         //     "/" + {{ $salesInvoiceProduct->salesInvoiceProduct_id }} + "/" + dataPelod;
     }
-    JsBarcode("#barcode", "TR-MBS1403202426", {
+    JsBarcode("#barcode", "{{ $salesInvoiceProduct->batch_no }}", {
         textPosition: "top",
         height: 70,
         fontSize: 16,
