@@ -354,7 +354,7 @@ class SalesInvoiceController extends Controller
             }
             else{
                 // Impex
-                return view('templateForPdf.stickarSpicialTuran')->with($data);
+                return view('templateForPdf.stickarSpicialImpex')->with($data);
             }
         } else {
             return redirect()->back();
