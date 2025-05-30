@@ -176,13 +176,22 @@
     /* Adjusted left */
 
     .imp-barcode-text-placeholder {
-        position: absolute;
-        top: 240px;
-        right: 10px;
-        font-size: 6px;
-        color: #333;
+        position: fixed;
+        top: 348px;
+        right: 30px;
         z-index: 2;
     }
+
+    .barcode-wrapper {
+        width: 300px;
+        /* Set a fixed size to stabilize layout */
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+
 
     /* --- LOWER SECTION of the Combined Label --- */
     .imp-lower-product-name-value {
@@ -239,21 +248,7 @@
     {{-- <div class="col-1"></div> --}}
     <div class="col-12">
 
-        <!-- <div class="label-instance">
-            <div class="header-image-container">
-                <img src="{{ asset('img/download.png') }}" alt="Nanoprint Kimya Header">
-            </div>
-            <div class="main-content-area">
-                <img class="lower-part-image" src="{{ asset('img/back-ground.jpg') }}" alt="Label Lower Part">
-                <span class="variable-text product-name-value">{{ $product->product_name }}</span>
-                <span class="variable-text product-description-value">{{ $product->material_description }}</span>
-                <span class="variable-text hs-code-value">H.S CODE {{ $product->h_s_code }}</span>
-                <span class="variable-text batch-no-value"> {{ $salesInvoiceProduct->batch_no }}</span>
-                <span class="variable-text net-weight-value">{{ str_pad(number_format($salesInvoiceProduct->packing), 2, '0', STR_PAD_LEFT) }} KG.</span>
-                <span class="variable-text production-date-value">{{ \Carbon\Carbon::parse($batch->production_date)->format('d/m/Y') }}</span>
-                <span class="variable-text expiration-date-value"> {{ \Carbon\Carbon::parse($batch->expire_date)->format('d/m/Y') }}</span>
-            </div>
-        </div> -->
+       
         <div class="label-instance">
             <img
                 class="label-background-image"
@@ -274,7 +269,7 @@
             <span class="variable-text imp-gross-weight-value">{{ str_pad(number_format($salesInvoiceProduct->packing+2,2), 2, '0', STR_PAD_LEFT) }} KG</span>
 
             <span class="variable-text imp-barcode-text-placeholder">
-                <div style="margin: 70px 0px 0px -80px;">
+                <div class="barcode-wrapper">
                     <svg id="barcode"></svg>
                 </div>
             </span>
@@ -314,10 +309,13 @@
     JsBarcode("#barcode", "{{ $salesInvoiceProduct->batch_no }}", {
         textPosition: "top",
         height: 70,
-        fontSize: 16,
-        width: 1.8
+        fontSize: 20,
+        width: 1.5
     });
-    document.getElementById("barcode").style.transform = "rotate(90deg)";
+    // document.getElementById("barcode").style.transform = "rotate(90deg)";
+    const barcodeEl = document.getElementById("barcode");
+    barcodeEl.style.transform = "rotate(90deg)";
+    barcodeEl.style.transformOrigin = "center";
 </script>
 
 
