@@ -178,7 +178,7 @@
     .imp-barcode-text-placeholder {
         position: absolute;
         top: 240px;
-        right: 40px;
+        right: 10px;
         font-size: 6px;
         color: #333;
         z-index: 2;
@@ -311,11 +311,11 @@
         // window.location.href = "{{ url('salesInvoice/productStickar') }}/" + {{ $salesInvoice->salesInvoice_id }} +
         //     "/" + {{ $salesInvoiceProduct->salesInvoiceProduct_id }} + "/" + dataPelod;
     }
-    JsBarcode("#barcode", "{{ $salesInvoiceProduct->batch_no }}", {
+    JsBarcode("#barcode", "TR-MBS1403202426", {
         textPosition: "top",
         height: 70,
         fontSize: 16,
-        width: 3
+        width: 1.8
     });
     document.getElementById("barcode").style.transform = "rotate(90deg)";
 </script>
