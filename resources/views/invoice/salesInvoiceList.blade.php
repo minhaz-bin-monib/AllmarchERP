@@ -41,6 +41,7 @@
                                     'Sales' => 'sales',
                                     'Sample' => 'sample',
                                     'Loan' => 'loan',
+                                    'Exchange' => 'exchange',
                                     default => null,
                                 };
                             @endphp

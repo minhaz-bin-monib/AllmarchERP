@@ -8,6 +8,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\BatchController;
 use App\Http\Controllers\SalesInvoiceController;
 use App\Http\Controllers\SampleInvoiceController;
+use App\Http\Controllers\ExchangeInvoiceController;
 use App\Http\Controllers\LoanInvoiceController;
 use App\Http\Controllers\TransferInvoiceController;
 use App\Http\Controllers\AccountReportController;
@@ -135,6 +136,26 @@ Route::group(['prefix' => 'sampleInvoice','middleware' => ['isLoggedIn','roleChe
     Route::get('sampleSpecialInvoicePdf/{salesInvoiceId}', [SampleInvoiceController::class, 'sampleSpecialInvoicePdf']);
     Route::get('sampleSpecialDeliveryInvoicePdf/{salesInvoiceId}', [SampleInvoiceController::class, 'sampleSpecialDeliveryInvoicePdf']);
     Route::get('sampleSpecialCalculateInvoicePdf/{salesInvoiceId}', [SampleInvoiceController::class, 'sampleSpecialCalculateInvoicePdf']);
+    
+});
+// ------------------------- Exchange Invoice Routes ------------------------
+
+Route::group(['prefix' => 'exchangeInvoice','middleware' => ['isLoggedIn','roleCheck:Admin,Account']], function () {
+    //Route::get('list', [ExchangeInvoiceController::class, 'show']);
+    Route::get('create', [ExchangeInvoiceController::class, 'create']);
+    Route::post('create', [ExchangeInvoiceController::class, 'store']);
+    //Route::get('delete/{id}', [ExchangeInvoiceController::class, 'delete']);
+    Route::get('productDelete/{invoiceId}/{invoiceProductid}', [ExchangeInvoiceController::class, 'invoiceProductDelete']);
+    Route::get('productStickar/{invoiceId}/{invoiceProductid}', [ExchangeInvoiceController::class, 'invoiceProductStickar']);
+    Route::get('edit/{id}', [ExchangeInvoiceController::class, 'edit']);
+    Route::post('update/{id}', [ExchangeInvoiceController::class, 'update']);
+    
+    // APIs
+    Route::get('exchangeCustomerInvoicePdf/{salesInvoiceId}', [ExchangeInvoiceController::class, 'exchangeCustomerInvoicePdf']);
+    Route::get('exchangeDeliveryInvoicePdf/{salesInvoiceId}', [ExchangeInvoiceController::class, 'exchangeDeliveryInvoicePdf']);
+    Route::get('exchangeSpecialInvoicePdf/{salesInvoiceId}', [ExchangeInvoiceController::class, 'exchangeSpecialInvoicePdf']);
+    Route::get('exchangeSpecialDeliveryInvoicePdf/{salesInvoiceId}', [ExchangeInvoiceController::class, 'exchangeSpecialDeliveryInvoicePdf']);
+    Route::get('exchangeSpecialCalculateInvoicePdf/{salesInvoiceId}', [ExchangeInvoiceController::class, 'exchangeSpecialCalculateInvoicePdf']);
     
 });
 // ------------------------- Loan Invoice Routes ------------------------

@@ -67,7 +67,7 @@
         /* Fixed width for the label */
         background-color: white;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-        border: 1px solid #ccc;
+        /* border: 1px solid #ccc; */
         margin-bottom: 20px;
         padding: 0;
         position: relative;
