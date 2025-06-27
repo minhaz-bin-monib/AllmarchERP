@@ -286,8 +286,8 @@
                             <td>{{ $totalPrice }}
                             </td>
                             <td>
-                                <a class=""
-                                    href="{{ url('/exchangeInvoice/productStickar') }}/{{ $salesInvProd->salesInvoice_id }}/{{ $salesInvProd->salesInvoiceProduct_id }}">Special</a>
+                                <a class="" target="_blank"
+                                    href="{{ url('/salesInvoice/productStickar') }}/{{ $salesInvProd->salesInvoice_id }}/{{ $salesInvProd->salesInvoiceProduct_id }}">Special</a>
                                 <a class="btn btn-sm btn-danger"
                                     onClick="confirmDelete('{{ url('/exchangeInvoice/productDelete') }}/{{ $salesInvProd->salesInvoice_id }}/{{ $salesInvProd->salesInvoiceProduct_id }}')">
                                     <i class="fa fa-trash"></i>

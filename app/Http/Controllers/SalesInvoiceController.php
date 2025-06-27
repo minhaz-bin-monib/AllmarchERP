@@ -108,7 +108,7 @@ class SalesInvoiceController extends Controller
             $salesInvoiceProduct->salesInvoice_id = $salesInvoice->salesInvoice_id;
             $salesInvoiceProduct->batch_id = $request['batch_id'];
             $salesInvoiceProduct->product_id = $request['product_id'];
-            //$salesInvoiceProduct->manufacturer_id = $request['manufacturer_id'];
+            $salesInvoiceProduct->manufacturer_id = $request['manufacturer_id'];
             $salesInvoiceProduct->batch_no = $request['batch_no'];
             $salesInvoiceProduct->packing = $request['packing'];
             $salesInvoiceProduct->no_of_packing = $request['no_of_packing'];
@@ -229,7 +229,7 @@ class SalesInvoiceController extends Controller
                 $salesInvoiceProduct->salesInvoice_id = $salesInvoice->salesInvoice_id;
                 $salesInvoiceProduct->batch_id = $request['batch_id'];
                 $salesInvoiceProduct->product_id = $request['product_id'];
-                //$salesInvoiceProduct->manufacturer_id = $request['manufacturer_id'];
+                $salesInvoiceProduct->manufacturer_id = $request['manufacturer_id'];
                 $salesInvoiceProduct->batch_no = $request['batch_no'];
                 $salesInvoiceProduct->packing = $request['packing'];
                 $salesInvoiceProduct->no_of_packing = $request['no_of_packing'];
@@ -343,11 +343,15 @@ class SalesInvoiceController extends Controller
 
             $toptitle = 'Sales Invoice ' . $salesInvoice->salesInvoice_id;
             $data = compact('salesInvoice', 'product', 'batch', 'salesInvoiceProduct', 'toptitle'); // data and dynamic url pass into view
-            if( $salesInvoice->manufacturer_id == '1'){
+           
+            // product wise stiker assing but defaul invoice 
+            $stikerType =  $salesInvoiceProduct->manufacturer_id ?? $salesInvoice->manufacturer_id;
+            
+            if($stikerType == '1'){
                 // Turan
                 return view('templateForPdf.stickarSpicialTuran')->with($data);
             }
-            else if($salesInvoice->manufacturer_id == '2')
+            else if( $stikerType == '2')
             {
                 //Nanoprint
                 return view('templateForPdf.stickarSpicialNanoPrint')->with($data);

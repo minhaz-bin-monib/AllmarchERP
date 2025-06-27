@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('user_id',200)->nullable();
             $table->date('action_date')->nullable();
             $table->timestamps();
+            $table->string('manufacturer_id',250)->nullable();
         });
     }
 

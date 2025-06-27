@@ -102,7 +102,7 @@ class SampleInvoiceController extends Controller
            $salesInvoiceProduct->salesInvoice_id = $salesInvoice->salesInvoice_id;
            $salesInvoiceProduct->batch_id = $request['batch_id'];
            $salesInvoiceProduct->product_id = $request['product_id'];
-           //$salesInvoiceProduct->manufacturer_id = $request['manufacturer_id'];
+           $salesInvoiceProduct->manufacturer_id = $request['manufacturer_id'];
            $salesInvoiceProduct->batch_no = $request['batch_no'];
            $salesInvoiceProduct->packing = $request['packing'];
            $salesInvoiceProduct->no_of_packing = $request['no_of_packing'];
@@ -224,7 +224,7 @@ class SampleInvoiceController extends Controller
                $salesInvoiceProduct->salesInvoice_id = $salesInvoice->salesInvoice_id;
                $salesInvoiceProduct->batch_id = $request['batch_id'];
                $salesInvoiceProduct->product_id = $request['product_id'];
-               //$salesInvoiceProduct->manufacturer_id = $request['manufacturer_id'];
+               $salesInvoiceProduct->manufacturer_id = $request['manufacturer_id'];
                $salesInvoiceProduct->batch_no = $request['batch_no'];
                $salesInvoiceProduct->packing = $request['packing'];
                $salesInvoiceProduct->no_of_packing = $request['no_of_packing'];
