@@ -42,6 +42,7 @@
                                     'Sample' => 'sample',
                                     'Loan' => 'loan',
                                     'Exchange' => 'exchange',
+                                    'Demo' => 'demo',
                                     default => null,
                                 };
                             @endphp

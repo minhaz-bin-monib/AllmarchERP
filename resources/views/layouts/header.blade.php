@@ -80,6 +80,9 @@
                                 <a href="{{ url('/exchangeInvoice/create') }}">Add Exchange Invoice</a>
                             </li>
                             <li>
+                                <a href="{{ url('/demoInvoice/create') }}">Add Demo Invoice</a>
+                            </li>
+                            <li>
                                 <a href="{{ url('/salesInvoice/list') }}">Invoice List</a>
                             </li>
                         </ul>

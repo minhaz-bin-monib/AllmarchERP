@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\BatchController;
+use App\Http\Controllers\DemoInvoiceController;
 use App\Http\Controllers\SalesInvoiceController;
 use App\Http\Controllers\SampleInvoiceController;
 use App\Http\Controllers\ExchangeInvoiceController;
@@ -115,6 +116,28 @@ Route::group(['prefix' => 'salesInvoice','middleware' => ['isLoggedIn','roleChec
     Route::get('salesSpecialDeliveryPdf/{salesInvoiceId}', [SalesInvoiceController::class, 'salesSpecialDeliveryPdf']);
     Route::get('salesSpecialCalculateInvoicePdf/{salesInvoiceId}', [SalesInvoiceController::class, 'salesSpecialCalculateInvoicePdf']);
     Route::get('salesPreviousList/{customerId}/{productId}', [SalesInvoiceController::class, 'salesPreviousList']);
+    
+});
+
+// ------------------------- Demo Sales Invoice Routes ------------------------
+
+Route::group(['prefix' => 'demoInvoice','middleware' => ['isLoggedIn','roleCheck:Admin,Account']], function () {
+    // Route::get('list', [DemoInvoiceController::class, 'show']);
+    Route::get('create', [DemoInvoiceController::class, 'create']);
+    Route::post('create', [DemoInvoiceController::class, 'store']);
+    // Route::get('delete/{id}', [DemoInvoiceController::class, 'delete']);
+    Route::get('productDelete/{invoiceId}/{invoiceProductid}', [DemoInvoiceController::class, 'invoiceProductDelete']);
+    Route::get('productStickar/{invoiceId}/{invoiceProductid}', [DemoInvoiceController::class, 'invoiceProductStickar']);
+    Route::get('edit/{id}', [DemoInvoiceController::class, 'edit']);
+    Route::post('update/{id}', [DemoInvoiceController::class, 'update']);
+    
+    // APIs
+    Route::get('demoCustomerInvoicePdf/{salesInvoiceId}', [DemoInvoiceController::class, 'salesCustomerInvoicePdf']);
+    Route::get('demoDeliveryInvoicePdf/{salesInvoiceId}', [DemoInvoiceController::class, 'salesDeliveryInvoicePdf']);
+    Route::get('demoSpecialInvoicePdf/{salesInvoiceId}', [DemoInvoiceController::class, 'salesSpecialInvoicePdf']);
+    Route::get('demoSpecialDeliveryPdf/{salesInvoiceId}', [DemoInvoiceController::class, 'salesSpecialDeliveryPdf']);
+    Route::get('demoSpecialCalculateInvoicePdf/{salesInvoiceId}', [DemoInvoiceController::class, 'salesSpecialCalculateInvoicePdf']);
+    Route::get('demoPreviousList/{customerId}/{productId}', [DemoInvoiceController::class, 'salesPreviousList']);
     
 });
 
