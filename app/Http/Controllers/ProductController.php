@@ -46,6 +46,36 @@ class ProductController extends Controller
         $data = compact('product','material', 'secondMaterial','url', 'toptitle');
         return view('product.addproduct')->with($data);
     }
+     public function storeProduct(Request $request)
+    {
+        $request->validate([
+            'product_name' => 'required'
+        ]);
+
+        $product = new Product();
+
+        $product->registration_date =  now();
+        $product->product_name = $request->product_name;
+        $product->product_code = $request['product_code'] ; 
+        $product->product_unit_type = 'KG';  
+        $product->product_unit_price = 650.00 ; 
+        $product->atv_rate = 5.00;  
+        $product->material_description = 'SYNTHETIC ORGANIC COLORING MATTER';  
+        $product->product_packing = 30.00;  
+        $product->import_information = '';  
+        $product->h_s_code = '3906.90.00';
+        $product->product_description = 'SYNTHETIC ORGANICO COLORING MATTER';  
+        $product->action_type = 'INSERT';
+        $product->user_id = 'sys-user';
+        $product->action_date = now();
+
+        $product->save();
+
+        return response()->json([
+            'success' => true,
+            'product' => $product
+        ]);
+    }
 
     // [httpPost]
     public function store(Request $request)

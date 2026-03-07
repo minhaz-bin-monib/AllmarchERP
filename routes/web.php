@@ -56,6 +56,7 @@ Route::group(['prefix' => 'product','middleware' => ['isLoggedIn','roleCheck:Adm
 
     // APIs
     Route::get('getList', [ProductController::class, 'getList']);
+    Route::post('storeProduct', [ProductController::class, 'storeProduct']);
 });
 
 // ------------------------- Employee Routes ------------------------

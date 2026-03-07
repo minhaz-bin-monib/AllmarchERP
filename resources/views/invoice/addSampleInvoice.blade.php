@@ -423,7 +423,11 @@
         }
         $(document).ready(function() {
             $('#customers').selectpicker();
-            $('#products').selectpicker();
+            $('#products').selectpicker({
+                    liveSearch: true,
+                    noneResultsText: 'No result match with "{0}". Press Enter to add'
+            });
+
             $.ajax({
                 url: "{{ url('/customer/getList') }}",
                 method: 'GET',
@@ -584,7 +588,63 @@
                     }
                 });
             }
+        
+        $('#products').on('shown.bs.select', function () {
+
+            $('.bs-searchbox input').off('keydown').on('keydown', function(e){
+
+                if(e.key === "Enter"){
+
+                    e.preventDefault();
+
+                    console.log('Enter key pressed');
+                    let productName = $(this).val();
+
+                    if (!productName) return;
+
+                    $.ajax({
+                        url: "{{ url('/product/storeProduct') }}",
+                        type: "POST",
+                        data: {
+                            product_name: productName,
+                            _token: "{{ csrf_token() }}"
+                        },
+
+                        success: function(res) {
+                           
+                            if(res.success){
+                                let product = res.product;
+                                productList.push(product);
+                                // add option
+                                $('#products').append(
+                                    '<option value="'+product.product_id+'" selected>'+
+                                    product.product_name+
+                                    '</option>'
+                                );
+
+                                $('#products').selectpicker('refresh');
+
+                                // select new product
+                                $('#products').selectpicker('val', product.product_id);
+
+                                $('#packing').val(product.product_packing);
+                                $('#unit_price').val(product.product_unit_price);
+                                $('#discount').text(product.atv_rate);
+
+                            }
+
+                        }
+                    });
+
+                }
+
+            });
+
         });
+        
+        });
+        
+       
     </script>
 
     <!-- END View Content Here -->
