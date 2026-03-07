@@ -101,7 +101,7 @@
                     </span>
                 </div>
                 <div class="form-group col-md-3">
-                    <label for="batch_no">Batch No <span class="text-danger"><b>*</b></span></label>
+                    <label for="batch_no">Batch No <span class="text-danger"><b></b></span></label>
                     <input type="text" name="batch_no" value="{{ old('batch_no', $salesInvoice->batch_no) }}"
                         class="form-control" id="batch_no">
                     <span class="text-danger">
