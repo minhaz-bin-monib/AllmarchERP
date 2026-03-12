@@ -35,7 +35,7 @@ class DemoInvoiceController extends Controller
         $url = url('/demoInvoice/create');
         $toptitle = 'Demo Sales Invoice';
         $data = compact('salesInvoice', 'employeeslist', 'url', 'toptitle');
-        return view('invoice.adDdemoInvoice')->with($data);
+        return view('invoice.addDemoInvoice')->with($data);
     }
 
     // [httpPost]
@@ -153,7 +153,7 @@ class DemoInvoiceController extends Controller
 
             $data = compact('converter', 'salesInvoice', 'employeeslist', 'salesInvoiceProduct', 'url', 'toptitle'); // data and dynamic url pass into view
 
-            return view('invoice.adDdemoInvoice')->with($data);
+            return view('invoice.addDemoInvoice')->with($data);
 
         }
 
