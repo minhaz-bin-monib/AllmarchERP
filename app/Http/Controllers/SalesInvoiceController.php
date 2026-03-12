@@ -36,6 +36,43 @@ class SalesInvoiceController extends Controller
         return view('invoice.salesInvoiceList')->with($data);
     }
 
+    public function convertInvoiceCategoryType($invoiceId, $categoryType, $remark)
+    {
+        try {
+            $salesInvoice = SalesInvoice::where('salesInvoice_id', $invoiceId)
+                ->where('action_type', '!=', 'DELETE')
+                ->first();
+
+            if (!is_null($salesInvoice)) {
+
+                if($salesInvoice->invoice_type_category == 'Sales' && $categoryType == 'Demo')
+                {
+                    $salesInvoice->invoice_type = 'Demo';
+                    $salesInvoice->invoice_type_category = 'Demo';
+                }
+                else if($salesInvoice->invoice_type_category == 'Demo' && $categoryType == 'Sales')
+                {
+                    $salesInvoice->invoice_type = 'Statement';
+                    $salesInvoice->invoice_type_category = 'Sales';
+                }
+
+                $cleanRemark = is_string($remark) ? trim($remark) : '';
+                if ($cleanRemark !== '' && $cleanRemark !== '__EMPTY__') {
+                    $salesInvoice->remark = $cleanRemark;
+                }
+                $salesInvoice->action_type = 'UPDATE';
+                $salesInvoice->user_id = 'sys-user';
+                $salesInvoice->action_date = now();
+                $salesInvoice->save();
+            }
+
+             return redirect('/salesInvoice/list');
+        } catch (\Exception $e) {
+            \Log::error('Error updating invoice category type: ' . $e->getMessage());
+           return redirect('/salesInvoice/list');
+        }
+    }
+
     // [httpGet]
     public function create()
     {

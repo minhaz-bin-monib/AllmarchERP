@@ -117,6 +117,7 @@ Route::group(['prefix' => 'salesInvoice','middleware' => ['isLoggedIn','roleChec
     Route::get('salesSpecialDeliveryPdf/{salesInvoiceId}', [SalesInvoiceController::class, 'salesSpecialDeliveryPdf']);
     Route::get('salesSpecialCalculateInvoicePdf/{salesInvoiceId}', [SalesInvoiceController::class, 'salesSpecialCalculateInvoicePdf']);
     Route::get('salesPreviousList/{customerId}/{productId}', [SalesInvoiceController::class, 'salesPreviousList']);
+    Route::get('convertInvoiceCategoryType/{salesInvoiceId}/{categoryType}/{remark}', [SalesInvoiceController::class, 'convertInvoiceCategoryType']);
     
 });
 
