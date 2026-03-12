@@ -7,7 +7,7 @@
 
 @section('main-section')
     <!-- START View Content Here -->
-    <div class="container mt-4">
+    <div class="container-fluid mt-4 px-2">
 
         <div class="card p-2">
             <div class="row">
